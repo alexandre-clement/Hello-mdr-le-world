@@ -1,8 +1,13 @@
 package interpreter;
 
+import model.Memory;
 import option.*;
 import file.*;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -21,8 +26,8 @@ import java.util.*;
  */
 
 public class Interpreter {
-    private final static Map<String, String> options = new HashMap<>();
-    private final static Map<String, String> extensions = new HashMap<>();
+    private final static Map<String, BfckOption> options = new HashMap<>();
+    private final static Map<String, BfckFile> extensions = new HashMap<>();
 
     private String[] commandline;
     private String filename;
@@ -30,14 +35,15 @@ public class Interpreter {
     private String program;
     private List<BfckOption> bfckOptions = new ArrayList<>();
 
+    public static Memory MEMORY = new Memory();
 
     public Interpreter(String... commandline) {
         this.commandline = commandline;
         // Initialize a map with <extensions of supported files as a String, name of the associated Class as a String>
-        extensions.put(".Bf", "Bf");
-        extensions.put(".Bmp", "Bmp");
+        extensions.put(".bf", new Bf());
+        extensions.put(".bmp", new Bmp());
         // Initialize a map with <name of options, name of the associated Class as a String>
-        options.put("-p", "Print");
+        options.put("-p", new Print());
         FindFileName(commandline);
         FindOption(commandline);
         if (bfckOptions.size() == 0) Display.ExitCode(126);
@@ -64,12 +70,7 @@ public class Interpreter {
     private BfckFile getFile(String name) {
         if (name == null) return null;
         if (extensions.containsKey(getExtension(name))) {
-            try {
-                Class cls = Class.forName("File." + extensions.get(getExtension(name)));
-                bfckFile = (BfckFile) cls.newInstance();
-            } catch (InstantiationException | ClassNotFoundException | IllegalAccessException exception) {
-                return null;
-            }
+            bfckFile = extensions.get(getExtension(name));
             bfckFile.setFile(name);
             return bfckFile;
         }
@@ -85,12 +86,7 @@ public class Interpreter {
     private List<BfckOption> FindOption(String... args) {
         for (String arg: args) {
             if (options.containsKey(arg)) {
-                try {
-                    Class cls = Class.forName("Option." + options.get(arg));
-                    bfckOptions.add((BfckOption) cls.newInstance());
-                } catch (InstantiationException | ClassNotFoundException | IllegalAccessException exception) {
-                    return null;
-                }
+                bfckOptions.add(options.get(arg));
             }
         }
         return bfckOptions;

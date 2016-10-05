@@ -26,7 +26,7 @@ public class Memory {
      * exitCode 2 : moving the pointer to the extreme right
      */
     public void right() {
-        if (i < M.length) {
+        if (p < M.length) {
             p++;
         }else {
             System.exit(2);
@@ -38,7 +38,7 @@ public class Memory {
      * exitCode 2 : moving the pointer left to the first cell
      */
     public void left() {
-        if (i > 0) {
+        if (p > 0) {
             p--;
         }else {
             System.exit(2);
@@ -49,10 +49,10 @@ public class Memory {
     public String toString() {
         String s = "";
         for (int j = 0; j < M.length; j++) {
-            if (s != "") {
-                s += "\n";
-            }
             if (M[j] != 0) {
+                if (!"".equals(s)) {
+                    s += "\n";
+                }
                 s += "C" + j + ": " + M[j];
             }
         }

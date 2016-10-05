@@ -15,6 +15,5 @@ package option;
  */
 
 public interface BfckOption {
-
     void Call(String program);
 }
