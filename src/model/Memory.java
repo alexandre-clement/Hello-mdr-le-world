@@ -5,7 +5,7 @@ package model;
  */
 public class Memory {
 
-    public static int MEMORY_CAPACITY=30000;
+    private final static int MEMORY_CAPACITY=30000;
 
     private int[] M;//contain up to 8 bits of unsigned data (denoted as di), i.e., 8i 2 [0; 29999]; di 2 [0; 28 􀀀 1].
     private int p;//pointer to the memory cell currently used by the program
