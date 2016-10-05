@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Created by user on 21/09/2016.
+ * @author SmartCoding
  */
 public class Memory {
 
@@ -23,7 +23,7 @@ public class Memory {
 
     /**
      * move the memory pointer to the right
-     * @exitCode 2 : moving the pointer to the extreme right
+     * exitCode 2 : moving the pointer to the extreme right
      */
     public void right() {
         if (i < M.length) {
@@ -35,7 +35,7 @@ public class Memory {
 
     /**
      * move the memory pointer to the left
-     * @exitCode 2 : moving the pointer left to the first cell
+     * exitCode 2 : moving the pointer left to the first cell
      */
     public void left() {
         if (i > 0) {

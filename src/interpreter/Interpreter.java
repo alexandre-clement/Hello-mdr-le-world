@@ -10,7 +10,7 @@ import java.util.*;
  * Interpreter Class
  *
  * Take a commandline of the shell
- * Find and get the macros and the brainfuck file
+ * Find and get the options and the brainfuck file
  * Applies macro to the file
  *
  *
@@ -21,14 +21,14 @@ import java.util.*;
  */
 
 public class Interpreter {
-    private final static Map<String, String> macros = new HashMap<>();
+    private final static Map<String, String> options = new HashMap<>();
     private final static Map<String, String> extensions = new HashMap<>();
 
     private String[] commandline;
     private String filename;
     private BfckFile bfckFile;
     private String program;
-    private List<BfckOption> bfckMacros = new ArrayList<>();
+    private List<BfckOption> bfckOptions = new ArrayList<>();
 
 
     public Interpreter(String... commandline) {
@@ -37,7 +37,9 @@ public class Interpreter {
         extensions.put(".Bf", "Bf");
         extensions.put(".Bmp", "Bmp");
         // Initialize a map with <name of options, name of the associated Class as a String>
-        macros.put("-p", "Print");
+        options.put("-p", "Print");
+        FindFileName(commandline);
+        FindOption(commandline);
     }
 
     private String FindFileName(String... args) {
@@ -79,18 +81,18 @@ public class Interpreter {
         return program;
     }
 
-    private List<BfckOption> FindMacro(String... args) {
+    private List<BfckOption> FindOption(String... args) {
         for (String arg: args) {
-            if (macros.containsKey(arg)) {
+            if (options.containsKey(arg)) {
                 try {
-                    Class cls = Class.forName("Option." + macros.get(arg));
-                    bfckMacros.add((BfckOption) cls.newInstance());
+                    Class cls = Class.forName("Option." + options.get(arg));
+                    bfckOptions.add((BfckOption) cls.newInstance());
                 } catch (InstantiationException | ClassNotFoundException | IllegalAccessException exception) {
                     return null;
                 }
             }
         }
-        return bfckMacros;
+        return bfckOptions;
     }
 
     public void buildSystem() {
@@ -98,8 +100,6 @@ public class Interpreter {
             Display.ExitCode(126);
             return;
         }
-        FindFileName(commandline);
-        FindMacro(commandline);
         if (filename == null) {
             Display.ExitCode(127);
             Display.display(extensions.keySet().toString());
@@ -114,11 +114,11 @@ public class Interpreter {
             Display.ExitCode(127);
             return;
         }
-        for (BfckOption macro : bfckMacros) {
+        for (BfckOption macro : bfckOptions) {
             macro.Call(program);
         }
         // execute the program if the user do not give any macro
-        if (bfckMacros.size() == 0) Display.display(program, "\n");
+        if (bfckOptions.size() == 0) Display.display(program, "\n");
         Display.ExitCode(0);
     }
 }
