@@ -40,6 +40,7 @@ public class Interpreter {
         options.put("-p", "Print");
         FindFileName(commandline);
         FindOption(commandline);
+        if (bfckOptions.size() == 0) Display.ExitCode(126);
     }
 
     private String FindFileName(String... args) {
@@ -114,11 +115,9 @@ public class Interpreter {
             Display.ExitCode(127);
             return;
         }
-        for (BfckOption macro : bfckOptions) {
-            macro.Call(program);
+        for (BfckOption option : bfckOptions) {
+            option.Call(program);
         }
-        // execute the program if the user do not give any macro
-        if (bfckOptions.size() == 0) Display.display(program, "\n");
         Display.ExitCode(0);
     }
 }
