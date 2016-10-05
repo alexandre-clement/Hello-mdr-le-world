@@ -4,10 +4,10 @@ import interpreter.Display;
 
 /**
  * Brainfuck Project
- * print Class
+ * Print Class
  *
  * The Class associated to the -p macro
- * print Call will print on standard output the content of the memory
+ * Print Call will Print on standard output the content of the memory
  *
  *
  * @author SmartCoding
@@ -16,7 +16,7 @@ import interpreter.Display;
  * Created the 4 October 2016
  */
 
-public class print implements BfckOption{
+public class Print implements BfckOption{
 
     @Override
     public void Call(String program) {

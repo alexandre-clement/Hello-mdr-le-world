@@ -37,7 +37,7 @@ public class Interpreter {
         extensions.put(".Bf", "Bf");
         extensions.put(".Bmp", "Bmp");
         // Initialize a map with <name of options, name of the associated Class as a String>
-        macros.put("-p", "print");
+        macros.put("-p", "Print");
     }
 
     private String FindFileName(String... args) {
@@ -95,23 +95,23 @@ public class Interpreter {
 
     public void buildSystem() {
         if (commandline == null || commandline.length == 0)  {
-            Display.ExitCode(400);
+            Display.ExitCode(126);
             return;
         }
         FindFileName(commandline);
         FindMacro(commandline);
         if (filename == null) {
-            Display.ExitCode(401);
+            Display.ExitCode(127);
             Display.display(extensions.keySet().toString());
             return;
         }
         getFile(filename);
         if (!bfckFile.isFile()) {
-            Display.ExitCode(402);
+            Display.ExitCode(127);
         }
         readFile(bfckFile);
         if (program == null) {
-            Display.ExitCode(403);
+            Display.ExitCode(127);
             return;
         }
         for (BfckOption macro : bfckMacros) {
