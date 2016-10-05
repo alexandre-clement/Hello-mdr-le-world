@@ -16,7 +16,7 @@ import interpreter.Interpreter;
 
 public class Main {
     public static void main(String... args) {
-        System.out.println("edit3");
+        System.out.println("edit4");
         Interpreter interpreter = new Interpreter(args);
         interpreter.buildSystem();
     }
