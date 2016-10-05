@@ -1,6 +1,10 @@
 package option;
 
 import interpreter.Display;
+import model.Memory;
+
+import static interpreter.Interpreter.MEMORY;
+
 
 /**
  * Brainfuck Project
@@ -20,6 +24,27 @@ public class Print implements BfckOption{
 
     @Override
     public void Call(String program) {
-        Display.display(program, "\n");
+        execute(program);
+        Display.displayMemory();
+    }
+
+    private void execute(String program) {
+        String[] commands = program.split("\n");
+        //Display.display(commands);
+        for (String command : commands) {
+            switch (command) {
+                case "INCR":
+                    MEMORY.incr();
+                    break;
+                case "RIGHT":
+                    MEMORY.right();
+                    break;
+                case "LEFT":
+                    MEMORY.left();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
