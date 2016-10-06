@@ -1,7 +1,6 @@
 package option;
 
 import interpreter.Display;
-import model.Memory;
 
 import static interpreter.Interpreter.MEMORY;
 
@@ -29,10 +28,10 @@ public class Print implements BfckOption{
     }
 
     private void execute(String program) {
-        String[] commands = program.split("\n");
+        String[] instructions = program.split("\n");
         //Display.display(commands);
-        for (String command : commands) {
-            switch (command) {
+        while(MEMORY.getI() < instructions.length) {
+            switch (instructions[MEMORY.getI()]) {
                 case "INCR":
                     MEMORY.incr();
                     break;
