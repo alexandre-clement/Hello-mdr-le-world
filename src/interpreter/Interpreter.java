@@ -81,7 +81,6 @@ public class Interpreter {
         String filename = findFileName(commandline);
         if (filename == null) Display.ExitCode(127);
 
-
         List<BfckOption> bfckOptions = findOption(commandline);
         if (bfckOptions.size() == 0) Display.ExitCode(126);
 
