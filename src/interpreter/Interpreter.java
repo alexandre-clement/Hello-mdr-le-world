@@ -1,13 +1,7 @@
 package interpreter;
 
-import model.Memory;
 import option.*;
 import file.*;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -30,31 +24,22 @@ public class Interpreter {
     private final static Map<String, BfckFile> extensions = new HashMap<>();
 
     private String[] commandline;
-    private String filename;
-    private BfckFile bfckFile;
-    private String program;
-    private List<BfckOption> bfckOptions = new ArrayList<>();
-
-    public static Memory MEMORY = new Memory();
 
     public Interpreter(String... commandline) {
         this.commandline = commandline;
-        // Initialize a map with <extensions of supported files as a String, name of the associated Class as a String>
+        // Initialize a map with <extensions of supported files, name of the associated Class>
         extensions.put(".bf", new Bf());
         extensions.put(".bmp", new Bmp());
-        // Initialize a map with <name of options, name of the associated Class as a String>
+
+        // Initialize a map with <name of options, name of the associated Class>
         options.put("-p", new Print());
-        FindFileName(commandline);
-        FindOption(commandline);
-        if (bfckOptions.size() == 0) Display.ExitCode(126);
     }
 
-    private String FindFileName(String... args) {
+    private String findFileName(String... args) {
         if (args == null) return null;
         for (String arg : args) {
             if (extensions.containsKey(getExtension(arg))) {
-                filename = arg;
-                return filename;
+                return arg;
             }
         }
         return null;
@@ -67,53 +52,46 @@ public class Interpreter {
         return null;
     }
 
-    private BfckFile getFile(String name) {
+    private BfckFile createFile(String name) {
         if (name == null) return null;
         if (extensions.containsKey(getExtension(name))) {
-            bfckFile = extensions.get(getExtension(name));
-            bfckFile.setFile(name);
-            return bfckFile;
+            BfckFile file = extensions.get(getExtension(name));
+            file.setFile(name);
+            return file;
         }
         else return null;
     }
 
     private String readFile(BfckFile bfckFile) {
         if (bfckFile == null) return null;
-        program = bfckFile.ReadFile();
-        return program;
+        return bfckFile.ReadFile();
     }
 
-    private List<BfckOption> FindOption(String... args) {
+    private List<BfckOption> findOption(String... args) {
+        List<BfckOption> optionsList = new ArrayList<>();
         for (String arg: args) {
             if (options.containsKey(arg)) {
-                bfckOptions.add(options.get(arg));
+                optionsList.add(options.get(arg));
             }
         }
-        return bfckOptions;
+        return optionsList;
     }
 
     public void buildSystem() {
-        if (commandline == null || commandline.length == 0)  {
-            Display.ExitCode(126);
-            return;
-        }
-        if (filename == null) {
-            Display.ExitCode(127);
-            Display.display(extensions.keySet().toString());
-            return;
-        }
-        getFile(filename);
-        if (!bfckFile.isFile()) {
-            Display.ExitCode(127);
-        }
-        readFile(bfckFile);
-        if (program == null) {
-            Display.ExitCode(127);
-            return;
-        }
-        for (BfckOption option : bfckOptions) {
-            option.Call(program);
-        }
+        String filename = findFileName(commandline);
+        if (filename == null) Display.ExitCode(127);
+
+        List<BfckOption> bfckOptions = findOption(commandline);
+        if (bfckOptions.size() == 0) Display.ExitCode(126);
+
+        BfckFile bfckFile = createFile(filename);
+        if (bfckFile == null || !bfckFile.isFile()) Display.ExitCode(127);
+
+        String program = readFile(bfckFile);
+        if (program == null) Display.ExitCode(127);
+
+        for (BfckOption option : bfckOptions) option.Call(program);
+
         Display.ExitCode(0);
     }
 }

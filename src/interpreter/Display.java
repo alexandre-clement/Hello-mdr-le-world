@@ -1,7 +1,5 @@
 package interpreter;
 
-import static interpreter.Interpreter.MEMORY;
-
 /**
  * Brainfuck Project
  * Display Static Class
@@ -18,17 +16,10 @@ import static interpreter.Interpreter.MEMORY;
  */
 
 public class Display {
-    static void display(String... output) {
-        for (String out : output) {
+    public static void display(Object... output) {
+        for (Object out : output) {
             System.out.println(out);
         }
-    }
-
-    /**
-     * print the contents of memory (relevant)
-     */
-    public static void displayMemory() {
-        System.out.println(MEMORY.toString());
     }
 
     static void ExitCode(int exitCode) {
