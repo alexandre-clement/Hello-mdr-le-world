@@ -7,12 +7,12 @@ public class Memory {
 
     private final static int MEMORY_CAPACITY=30000;
 
-    private int[] M;//contain up to 8 bits of unsigned data (denoted as di), i.e., 8i 2 [0; 29999]; di 2 [0; 28 􀀀 1].
+    private Cell[] M;//contain up to 8 bits of unsigned data (denoted as di), i.e., 8i 2 [0; 29999]; di 2 [0; 28 􀀀 1].
     private int p;//pointer to the memory cell currently used by the program
     private int i;//pointer to the next instruction to be executed in the program
 
     public Memory() {
-        M = new int[MEMORY_CAPACITY];
+        M = new Cell[MEMORY_CAPACITY];
         p = 0;
         i = 0;
     }
@@ -21,10 +21,6 @@ public class Memory {
         return i;
     }
 
-    public void incr() {
-        M[p]++;
-        i++;
-    }
 
     /**
      * move the memory pointer to the right
@@ -56,12 +52,7 @@ public class Memory {
     public String toString() {
         String s = "";
         for (int j = 0; j < M.length; j++) {
-            if (M[j] != 0) {
-                if (!"".equals(s)) {
-                    s += "\n";
-                }
-                s += "C" + j + ": " + M[j];
-            }
+            //
         }
         return s;
     }
