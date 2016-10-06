@@ -17,8 +17,13 @@ public class Memory {
         i = 0;
     }
 
+    public int getI() {
+        return i;
+    }
+
     public void incr() {
         M[p]++;
+        i++;
     }
 
     /**
@@ -28,6 +33,7 @@ public class Memory {
     public void right() {
         if (p < M.length) {
             p++;
+            i++;
         }else {
             System.exit(2);
         }
@@ -40,6 +46,7 @@ public class Memory {
     public void left() {
         if (p > 0) {
             p--;
+            i++;
         }else {
             System.exit(2);
         }
