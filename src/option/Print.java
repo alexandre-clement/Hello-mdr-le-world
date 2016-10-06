@@ -1,8 +1,7 @@
 package option;
 
 import interpreter.Display;
-
-import static interpreter.Interpreter.MEMORY;
+import model.Memory;
 
 
 /**
@@ -23,27 +22,29 @@ public class Print implements BfckOption{
 
     @Override
     public void Call(String program) {
-        execute(program);
-        Display.displayMemory();
+        Memory memory = execute(program);
+        Display.display(memory.toString());
     }
 
-    private void execute(String program) {
+    private Memory execute(String program) {
+        Memory memory = new Memory();
         String[] instructions = program.split("\n");
         //Display.display(commands);
-        while(MEMORY.getI() < instructions.length) {
-            switch (instructions[MEMORY.getI()]) {
+        while(memory.getI() < instructions.length) {
+            switch (instructions[memory.getI()]) {
                 case "INCR":
-                    MEMORY.incr();
+                    memory.incr();
                     break;
                 case "RIGHT":
-                    MEMORY.right();
+                    memory.right();
                     break;
                 case "LEFT":
-                    MEMORY.left();
+                    memory.left();
                     break;
                 default:
                     break;
             }
         }
+        return memory;
     }
 }
