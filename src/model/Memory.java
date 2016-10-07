@@ -52,7 +52,9 @@ public class Memory {
     public String toString() {
         String s = "";
         for (int j = 0; j < M.length; j++) {
-            //
+            if (M[j].getValue()!= 0) {
+                s += "C"+j+": "+M[j].getValue();
+            }
         }
         return s;
     }
