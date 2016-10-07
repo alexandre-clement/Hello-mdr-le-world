@@ -1,6 +1,5 @@
 package language.instruction;
 
-import model.Memory;
 import system.OperatingSystem;
 
 /**
@@ -12,7 +11,6 @@ import system.OperatingSystem;
  */
 public interface Instruction {
 
-    Memory memory = new Memory();
     /**
      * execute the instruction
      */

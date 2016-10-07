@@ -14,12 +14,7 @@ public class Memory {
     public Memory() {
         M = new Cell[MEMORY_CAPACITY];
         for (int j=0; j<MEMORY_CAPACITY; j++) M[j] = new Cell();
-
         p = 0;
-    }
-
-    public Cell[] getM() {
-        return M;
     }
 
     public void incr() {
