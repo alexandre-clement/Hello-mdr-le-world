@@ -25,7 +25,7 @@ public class OperatingSystem {
     }
 
     public void nextI() {
-        i++;
+        i++;//
     }
 
     public void incr() {

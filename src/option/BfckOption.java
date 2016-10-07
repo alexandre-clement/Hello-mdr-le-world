@@ -1,5 +1,8 @@
 package option;
 
+import language.Language;
+import system.OperatingSystem;
+
 /**
  * Brainfuck Project
  *
@@ -15,5 +18,6 @@ package option;
  */
 
 public interface BfckOption {
-    void Call(String program);
+    Language language = new Language();
+    void Call(String program, OperatingSystem os);
 }

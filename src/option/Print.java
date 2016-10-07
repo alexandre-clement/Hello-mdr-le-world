@@ -1,7 +1,7 @@
 package option;
 
 import interpreter.Display;
-import model.*;
+import system.OperatingSystem;
 
 
 /**
@@ -21,18 +21,14 @@ import model.*;
 public class Print implements BfckOption{
 
     @Override
-    public void Call(String program) {
-        Memory memory = execute(program);
-        Display.display(memory.toString());
+    public void Call(String program, OperatingSystem os) {
+        execute(program,os);
+        Display.display(os.getMemory().toString());
     }
 
-    private Memory execute(String program) {
-        Memory memory = new Memory();
-        String[] instructions = program.split("\n");
-        Display.display(instructions);
-        //while(memory.getI() < instructions.length) {
+    private void execute(String program,OperatingSystem os) {
+        language.setInst(program);
+        language.execute(os);
 
-        //}
-        return memory;
     }
 }

@@ -15,9 +15,9 @@ import java.util.List;
  * @author SmartCoding
  */
 public class Language {
-    static final List<String> longSyntax = new ArrayList<>(Arrays.asList(new String[]{"INCR","DECR","LEFT","RIGHT"}));//"OUT","IN","JUMP","BACK"
-    static final List<Character> shortSyntax = new ArrayList<>(Arrays.asList(new Character[]{'+','-','<','>'}));//'.',',','[',']'
-    static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Instruction[]{new Incr(),new Decr(),new Left(),new Right()}));
+    private static final List<String> longSyntax = new ArrayList<>(Arrays.asList(new String[]{"INCR","DECR","LEFT","RIGHT"}));//"OUT","IN","JUMP","BACK"
+    private static final List<Character> shortSyntax = new ArrayList<>(Arrays.asList(new Character[]{'+','-','<','>'}));//'.',',','[',']'
+    private static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Instruction[]{new Incr(),new Decr(),new Left(),new Right()}));
 
     private List<Instruction> inst;
 
@@ -38,8 +38,7 @@ public class Language {
     }
 
     public void execute(OperatingSystem os) {
-        int i = os.getI();
-        while(i != inst.size()) {
+        for (int i=os.getI(); i < inst.size();i = os.getI()) {
             inst.get(i).exec(os);
         }
     }
