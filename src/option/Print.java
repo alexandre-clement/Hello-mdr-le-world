@@ -29,22 +29,10 @@ public class Print implements BfckOption{
     private Memory execute(String program) {
         Memory memory = new Memory();
         String[] instructions = program.split("\n");
-        //Display.display(commands);
-        while(memory.getI() < instructions.length) {
-            switch (instructions[memory.getI()]) {
-                case "INCR":
-                    memory.incr();
-                    break;
-                case "RIGHT":
-                    memory.right();
-                    break;
-                case "LEFT":
-                    memory.left();
-                    break;
-                default:
-                    break;
-            }
-        }
+        Display.display(instructions);
+        //while(memory.getI() < instructions.length) {
+
+        //}
         return memory;
     }
 }

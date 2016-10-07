@@ -79,19 +79,19 @@ public class Interpreter {
 
     public void buildSystem() {
         String filename = findFileName(commandline);
-        if (filename == null) Display.ExitCode(127);
+        if (filename == null) Display.exitCode(127);
 
         List<BfckOption> bfckOptions = findOption(commandline);
-        if (bfckOptions.size() == 0) Display.ExitCode(126);
+        if (bfckOptions.size() == 0) Display.exitCode(126);
 
         BfckFile bfckFile = createFile(filename);
-        if (bfckFile == null || !bfckFile.isFile()) Display.ExitCode(127);
+        if (bfckFile == null || !bfckFile.isFile()) Display.exitCode(127);
 
         String program = readFile(bfckFile);
-        if (program == null) Display.ExitCode(127);
+        if (program == null) Display.exitCode(127);
 
         for (BfckOption option : bfckOptions) option.Call(program);
 
-        Display.ExitCode(0);
+        Display.exitCode(0);
     }
 }
