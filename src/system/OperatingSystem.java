@@ -24,13 +24,17 @@ public class OperatingSystem {
         return i;
     }
 
-    public void setI(int i) {
-        this.i = i;
+    public void nextI() {
+        i++;
     }
 
     public void incr() {
+        memory.incr();
     }
 
+    public void decr() {
+        memory.decr();
+    }
     public void left() {
         memory.left();
     }

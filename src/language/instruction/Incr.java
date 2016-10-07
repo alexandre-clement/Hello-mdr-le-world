@@ -7,5 +7,6 @@ public class Incr implements Instruction {
     @Override
     public void exec(OperatingSystem os) {
         os.incr();
+        os.nextI();
     }
 }

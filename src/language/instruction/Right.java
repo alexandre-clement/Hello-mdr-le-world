@@ -1,6 +1,5 @@
 package language.instruction;
 
-import model.Memory;
 import system.OperatingSystem;
 
 /**
@@ -12,5 +11,6 @@ public class Right implements Instruction {
     @Override
     public void exec(OperatingSystem os) {
         os.right();
+        os.nextI();
     }
 }
