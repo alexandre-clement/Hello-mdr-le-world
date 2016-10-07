@@ -1,5 +1,8 @@
 package language.instruction;
 
+import model.Memory;
+import system.OperatingSystem;
+
 /**
  * Brainfuck Project
  *
@@ -8,8 +11,10 @@ package language.instruction;
  * @author SmartCoding
  */
 public interface Instruction {
+
+    Memory memory = new Memory();
     /**
      * execute the instruction
      */
-    void exec();
+    void exec(OperatingSystem os);
 }

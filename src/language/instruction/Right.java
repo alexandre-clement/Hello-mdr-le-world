@@ -1,5 +1,8 @@
 package language.instruction;
 
+import model.Memory;
+import system.OperatingSystem;
+
 /**
  * Brainfuck Project
  *
@@ -7,7 +10,7 @@ package language.instruction;
  */
 public class Right implements Instruction {
     @Override
-    public void exec() {
-
+    public void exec(OperatingSystem os) {
+        os.right();
     }
 }
