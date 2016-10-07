@@ -22,7 +22,7 @@ public class Display {
         }
     }
 
-    static void exitCode(int exitCode) {
+    public static void exitCode(int exitCode) {
         Display.display("Exit code " + exitCode);
         System.exit(exitCode);
     }

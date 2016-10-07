@@ -1,7 +1,7 @@
 package option;
 
 import interpreter.Display;
-import model.Memory;
+import model.*;
 
 
 /**
