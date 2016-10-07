@@ -1,6 +1,7 @@
 package language;
 
 import language.instruction.*;
+import system.OperatingSystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,17 +19,28 @@ public class Language {
     static final List<Character> shortSyntax = new ArrayList<>(Arrays.asList(new Character[]{'+','-','<','>'}));//'.',',','[',']'
     static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Instruction[]{new Incr(),new Decr(),new Left(),new Right()}));
 
-    public static void execute(String program) {
-        // delete the blank spaces and indents
-        //program.replaceAll(" ","");
+    private List<Instruction> inst;
+
+    public Language() {
+        inst = new ArrayList<>();
+    }
+
+    public void setInst(String program) {
+        program = program.replaceAll(" ","");// delete blank spaces
+        program = program.replaceAll("\t","");// delete indents
         String[] lines = program.split("\n");
         for (String line:lines) {
-
+            if (longSyntax.contains(line)) {
+                int i = longSyntax.indexOf(line);
+                inst.add(instructions.get(i));
+            }//else short... or not exist
         }
     }
 
-    public static void main(String[] args) {
-        String program = "hello wor hqpp \nbut            e";
-        System.out.println(program+"\n------\n"+program.replaceAll(" ",""));
+    public void execute(OperatingSystem os) {
+        int i = os.getI();
+        while(i != inst.size()) {
+            inst.get(i).exec(os);
+        }
     }
 }
