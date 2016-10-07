@@ -22,6 +22,13 @@ public class Memory {
         return M;
     }
 
+    public void incr() {
+        M[p].incr();
+    }
+    public void decr() {
+        M[p].decr();
+    }
+
     /**
      * move the memory pointer to the right
      * exitCode 2 : moving the pointer to the extreme right
