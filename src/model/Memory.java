@@ -2,14 +2,16 @@ package model;
 
 
 /**
+ * Brainfuck Project
+ *
  * @author SmartCoding
  */
 public class Memory {
 
     private final static int MEMORY_CAPACITY=30000;
 
-    private Cell[] M; //contain up to 8 bits of unsigned data (denoted as di), i.e., 8i 2 [0; 29999]; di 2 [0; 28 􀀀 1].
-    private int p; //pointer to the memory cell currently used by the program
+    private Cell[] M; // contain up to 8 bits of unsigned data (denoted as di), i.e., 8i 2 [0; 29999]; di 2 [0; 28 􀀀 1].
+    private int p; // pointer to the memory cell currently used by the program
 
     public Memory() {
         M = new Cell[MEMORY_CAPACITY];
@@ -20,6 +22,7 @@ public class Memory {
     public void incr() {
         M[p].incr();
     }
+
     public void decr() {
         M[p].decr();
     }

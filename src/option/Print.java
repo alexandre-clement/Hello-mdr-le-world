@@ -13,7 +13,6 @@ import system.OperatingSystem;
  *
  *
  * @author SmartCoding
- * @version Slice 0
  *
  * Created the 4 October 2016
  */
@@ -29,6 +28,5 @@ public class Print implements BfckOption{
     private void execute(String program,OperatingSystem os) {
         language.setInst(program);
         language.execute(os);
-
     }
 }

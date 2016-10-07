@@ -2,6 +2,11 @@ package language.instruction;
 
 import system.OperatingSystem;
 
+/**
+ * Brainfuck Project
+ *
+ * @author SmartCoding
+ */
 public class Left implements Instruction {
 
     @Override

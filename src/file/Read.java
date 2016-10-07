@@ -10,9 +10,7 @@ import java.util.Scanner;
  *
  * Convert a file to a String
  *
- *
  * @author SmartCoding
- * @version Slice 0
  *
  * Created the 4 October 2016
  */
@@ -33,6 +31,7 @@ class Read {
             return builder.toString();
         } catch (FileNotFoundException exception) { return null; }
     }
+
     @Override
     public String toString() {
         return file.getPath();

@@ -10,9 +10,7 @@ import java.io.File;
  * Implement a ReadFile method which read the given file
  * Override toString
  *
- *
  * @author SmartCoding
- * @version Slice 0
  *
  * Created the 4 October 2016
  */

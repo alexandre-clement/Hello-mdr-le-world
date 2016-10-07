@@ -8,9 +8,7 @@ package interpreter;
  * Print error
  * Print exit code
  *
- *
  * @author SmartCoding
- * @version Slice 0+
  *
  * Created the 4 October 2016
  */

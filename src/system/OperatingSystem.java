@@ -6,6 +6,7 @@ import model.Memory;
  * Brainfuck Project
  *
  * @author SmartCoding
+ *
  */
 public class OperatingSystem {
     private Memory memory;
@@ -25,7 +26,7 @@ public class OperatingSystem {
     }
 
     public void nextI() {
-        i++;//
+        i++;
     }
 
     public void incr() {
@@ -35,6 +36,7 @@ public class OperatingSystem {
     public void decr() {
         memory.decr();
     }
+
     public void left() {
         memory.left();
     }

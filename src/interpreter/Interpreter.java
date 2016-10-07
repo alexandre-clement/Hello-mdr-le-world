@@ -14,9 +14,7 @@ import java.util.*;
  * Find and get the options and the brainfuck file
  * Applies macro to the file
  *
- *
  * @author SmartCoding
- * @version Slice 0
  *
  * Created the 4 October 2016
  */

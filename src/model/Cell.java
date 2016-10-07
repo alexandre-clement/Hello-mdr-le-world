@@ -1,8 +1,12 @@
 package model;
 
-
 import interpreter.Display;
 
+/**
+ * Brainfuck Project
+ *
+ * @author SmartCoding
+ */
 class Cell {
     final private int MIN = Byte.MIN_VALUE; // -128
     final private int MAX = Byte.MAX_VALUE; // 127
