@@ -14,4 +14,9 @@ public class Left implements Instruction {
         os.left();
         os.nextI();
     }
+
+    @Override
+    public String toString() {
+        return "Left";
+    }
 }

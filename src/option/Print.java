@@ -1,7 +1,6 @@
 package option;
 
 import interpreter.Display;
-import system.OperatingSystem;
 
 
 /**
@@ -20,13 +19,14 @@ import system.OperatingSystem;
 public class Print implements BfckOption{
 
     @Override
-    public void Call(String program, OperatingSystem os) {
-        execute(program,os);
+    public void Call(String program) {
+        execute(program);
         Display.display(os.getMemory().toString());
     }
 
-    private void execute(String program,OperatingSystem os) {
-        language.setInst(program);
+    private void execute(String program) {
+        if (language.getInst().size() == 0) language.setInst(program);
+        // System.out.println(language);
         language.execute(os);
     }
 }

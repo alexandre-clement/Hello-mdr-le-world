@@ -14,4 +14,9 @@ public class Right implements Instruction {
         os.right();
         os.nextI();
     }
+
+    @Override
+    public String toString() {
+        return "Right";
+    }
 }

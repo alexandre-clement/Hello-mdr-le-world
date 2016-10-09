@@ -9,4 +9,9 @@ public class Decr implements Instruction {
         os.decr();
         os.nextI();
     }
+
+    @Override
+    public String toString() {
+        return "Decr";
+    }
 }

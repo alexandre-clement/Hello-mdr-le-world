@@ -2,7 +2,6 @@ package interpreter;
 
 import option.*;
 import file.*;
-import system.OperatingSystem;
 
 import java.util.*;
 
@@ -78,7 +77,6 @@ public class Interpreter {
     }
 
     public void buildSystem() {
-        OperatingSystem os = new OperatingSystem();
         String filename = findFileName(commandline);
         if (filename == null) Display.exitCode(127);
 
@@ -91,7 +89,7 @@ public class Interpreter {
         String program = readFile(bfckFile);
         if (program == null) Display.exitCode(127);
 
-        for (BfckOption option : bfckOptions) option.Call(program, os);
+        for (BfckOption option : bfckOptions) option.Call(program);
 
         Display.exitCode(0);
     }

@@ -6,6 +6,7 @@ import system.OperatingSystem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Brainfuck Project
@@ -42,5 +43,14 @@ public class Language {
         for (int i=os.getI(); i < instSize; i = os.getI()) {
             inst.get(i).exec(os);
         }
+    }
+
+    public List<Instruction> getInst() {
+        return inst;
+    }
+
+    @Override
+    public String toString() {
+        return inst.stream().map(Instruction::toString).collect(Collectors.joining(", "));
     }
 }

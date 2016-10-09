@@ -17,6 +17,7 @@ import system.OperatingSystem;
 
 public interface BfckOption {
     Language language = new Language();
+    OperatingSystem os = new OperatingSystem();
 
-    void Call(String program, OperatingSystem os);
+    void Call(String program);
 }

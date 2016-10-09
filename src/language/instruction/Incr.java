@@ -14,4 +14,9 @@ public class Incr implements Instruction {
         os.incr();
         os.nextI();
     }
+
+    @Override
+    public String toString() {
+        return "Incr";
+    }
 }

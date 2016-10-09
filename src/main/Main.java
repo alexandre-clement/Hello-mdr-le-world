@@ -14,6 +14,6 @@ import interpreter.Interpreter;
 
 public class Main {
     public static void main(String... args) {
-            new Interpreter(args).buildSystem();
+        new Interpreter(args).buildSystem();
     }
 }
