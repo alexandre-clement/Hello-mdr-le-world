@@ -16,6 +16,9 @@ public class Bf extends BfckFile{
 
     public Bf() { super(); }
 
+    /**
+     * @return the content of the file as a Strign
+     */
     @Override
     public String ReadFile() {
         Read read = new Read(super.getFile());

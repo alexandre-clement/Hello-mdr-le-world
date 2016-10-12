@@ -19,5 +19,10 @@ public interface BfckOption {
     Language language = new Language();
     OperatingSystem os = new OperatingSystem();
 
+    /**
+     * Execute the option on the program
+     *
+     * @param program the String version of the file
+     */
     void Call(String program);
 }

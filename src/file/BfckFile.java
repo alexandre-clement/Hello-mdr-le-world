@@ -28,8 +28,14 @@ public abstract class BfckFile {
         return file;
     }
 
+    /**
+     * Convert the file content to a String
+     */
     public abstract String ReadFile();
 
+    /**
+     * Check if the file exists
+     */
     public boolean isFile() { return file.isFile(); }
 
     @Override

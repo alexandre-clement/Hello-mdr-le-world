@@ -34,8 +34,13 @@ public class Interpreter {
         options.put("-p", new Print());
     }
 
+    /**
+     * Find, if it exists, the name of the file in the arguments. i.e a String which have an extension
+     *
+     * @param args the arguments given in the commandline
+     * @return the name of the file with its extension
+     */
     private String findFileName(String... args) {
-        if (args == null) return null;
         for (String arg : args) {
             if (extensions.containsKey(getExtension(arg))) {
                 return arg;
@@ -44,13 +49,24 @@ public class Interpreter {
         return null;
     }
 
+    /**
+     * Find and return the extension of a String
+     *
+     * @param name the filename
+     * @return the extension of the String
+     */
     private String getExtension(String name) {
-        if (name == null) return null;
         int index = name.lastIndexOf(".");
         if (index > 0) return name.substring(index);
         return null;
     }
 
+    /**
+     * Create the file with the name
+     *
+     * @param name the filename
+     * @return a new brainfuck file
+     */
     private BfckFile createFile(String name) {
         if (name == null) return null;
         if (extensions.containsKey(getExtension(name))) {
@@ -61,11 +77,21 @@ public class Interpreter {
         else return null;
     }
 
+    /**
+     * Convert a file content to a string
+     * @param bfckFile the file just created
+     * @return the file content
+     */
     private String readFile(BfckFile bfckFile) {
-        if (bfckFile == null) return null;
         return bfckFile.ReadFile();
     }
 
+    /**
+     * Add the options found in the commandline to the optionsList
+     *
+     * @param args the commandline
+     * @return a list of options
+     */
     private List<BfckOption> findOption(String... args) {
         List<BfckOption> optionsList = new ArrayList<>();
         for (String arg: args) {
@@ -76,6 +102,13 @@ public class Interpreter {
         return optionsList;
     }
 
+    /**
+     * Find the filename and the options in the commandline
+     * Create the associated brainfuck file to the extensions found in the commandline
+     * Read the file just created
+     * Call the options on the String version of the file
+     *
+     */
     public void buildSystem() {
         String filename = findFileName(commandline);
         if (filename == null) Display.exitCode(127);

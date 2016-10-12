@@ -18,6 +18,12 @@ import interpreter.Display;
 
 public class Print implements BfckOption{
 
+
+    /**
+     * Print the content of the memory
+     *
+     * @param program the String version of the file
+     */
     @Override
     public void Call(String program) {
         execute(program);

@@ -19,10 +19,16 @@ public class Memory {
         p = 0;
     }
 
+    /**
+     * Increment the cell
+     */
     public void incr() {
         M[p].incr();
     }
 
+    /**
+     * Decrement the cell
+     */
     public void decr() {
         M[p].decr();
     }
@@ -32,7 +38,7 @@ public class Memory {
      * exitCode 2 : moving the pointer to the extreme right
      */
     public void right() {
-        if (p < M.length-1) {
+        if (p < M.length - 1) {
             p++;
         }else {
             System.exit(2);
