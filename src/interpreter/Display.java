@@ -21,7 +21,7 @@ public class Display {
     }
 
     public static void exitCode(int exitCode) {
-        Display.display("Exit code " + exitCode);
+        //Display.display("Exit code " + exitCode);
         System.exit(exitCode);
     }
 }

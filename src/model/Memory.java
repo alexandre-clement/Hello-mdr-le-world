@@ -32,7 +32,7 @@ public class Memory {
      * exitCode 2 : moving the pointer to the extreme right
      */
     public void right() {
-        if (p < M.length) {
+        if (p < M.length-1) {
             p++;
         }else {
             System.exit(2);
