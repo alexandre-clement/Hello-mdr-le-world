@@ -1,8 +1,6 @@
 package option;
 
 import interpreter.Display;
-import language.Language;
-import language.instruction.Instruction;
 
 /**
  * @author SmartCoding
@@ -17,10 +15,7 @@ public class Rewrite implements BrainfuckOption {
      */
     @Override
     public void Call(String program) {
-        language.setInst(program);
-
-        for (Instruction instruction: language.getInst()) {
-            Display.display(Language.shortSyntax.get(Language.instructions.indexOf(instruction)));
-        }
+        if (language.getInst().size() == 0) language.setInst(program);
+        Display.display(language.rewrite(os));
     }
 }

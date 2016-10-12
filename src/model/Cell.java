@@ -8,8 +8,8 @@ import interpreter.Display;
  * @author SmartCoding
  */
 class Cell {
-    final private int MIN = Byte.MIN_VALUE; // -128
-    final private int MAX = Byte.MAX_VALUE; // 127
+    private final static int MIN = Byte.MIN_VALUE; // -128
+    private final static int MAX = Byte.MAX_VALUE; // 127
     private byte value;
 
 
@@ -41,6 +41,10 @@ class Cell {
         if (value > MIN) value--;
         else Display.exitCode(1);
     }
+
+    void in() {}
+
+    void out() {}
 
     @Override
     public String toString() { return String.valueOf(value - MIN);}

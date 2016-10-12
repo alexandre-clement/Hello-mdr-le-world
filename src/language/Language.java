@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
  * @author SmartCoding
  */
 public class Language {
-    public static final List<String> longSyntax = new ArrayList<>(Arrays.asList("INCR","DECR","LEFT","RIGHT"));//"OUT","IN","JUMP","BACK"
-    public static final List<Character> shortSyntax = new ArrayList<>(Arrays.asList('+','-','<','>'));//'.',',','[',']'
-    public static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Incr(),new Decr(),new Left(),new Right()));
+    private static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Incr(),new Decr(),new Left(),new Right(),new Out(), new In()));
+    private static final List<String> longSyntax = new ArrayList<>(instructions.stream().map(Instruction::getLongSyntax).collect(Collectors.toList()));
+    private static final List<Character> shortSyntax = new ArrayList<>(instructions.stream().map(Instruction::getShortSyntax).collect(Collectors.toList()));
 
     private List<Instruction> inst;
 
@@ -51,6 +51,16 @@ public class Language {
         for (int i=os.getI(); i < instSize; i = os.getI()) {
             inst.get(i).exec(os);
         }
+    }
+
+    public String rewrite(OperatingSystem os) {
+        int instSize = inst.size();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i=os.getI(); i < instSize; i = os.getI()) {
+            stringBuilder.append(inst.get(i).getShortSyntax());
+            os.nextI();
+        }
+        return stringBuilder.toString();
     }
 
     public List<Instruction> getInst() {

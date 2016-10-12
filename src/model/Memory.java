@@ -57,6 +57,14 @@ public class Memory {
         }
     }
 
+    public void in() {
+        M[p].in();
+    }
+
+    public void out() {
+        M[p].out();
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

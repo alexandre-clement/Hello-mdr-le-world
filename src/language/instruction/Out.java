@@ -3,30 +3,29 @@ package language.instruction;
 import system.OperatingSystem;
 
 /**
- * Brainfuck Project
- *
- * @author SmartCoding
+ * @author Alexandre Clement
+ *         Created the 12 octobre 2016.
  */
-public class Left implements Instruction {
+public class Out implements Instruction {
 
     @Override
     public void exec(OperatingSystem os) {
-        os.left();
+        os.out();
         os.nextI();
     }
 
     @Override
     public String getLongSyntax() {
-        return "LEFT";
+        return "OUT";
     }
 
     @Override
     public Character getShortSyntax() {
-        return '<';
+        return '.';
     }
 
     @Override
     public String toString() {
-        return "Left";
+        return "Out";
     }
 }

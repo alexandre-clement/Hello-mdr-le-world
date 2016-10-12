@@ -16,6 +16,16 @@ public class Right implements Instruction {
     }
 
     @Override
+    public String getLongSyntax() {
+        return "RIGHT";
+    }
+
+    @Override
+    public Character getShortSyntax() {
+        return '>';
+    }
+
+    @Override
     public String toString() {
         return "Right";
     }

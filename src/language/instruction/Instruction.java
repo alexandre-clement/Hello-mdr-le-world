@@ -15,4 +15,8 @@ public interface Instruction {
      * execute the instruction
      */
     void exec(OperatingSystem os);
+
+    String getLongSyntax();
+
+    Character getShortSyntax();
 }

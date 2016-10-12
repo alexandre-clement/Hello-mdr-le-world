@@ -26,13 +26,9 @@ public class Print implements BrainfuckOption {
      */
     @Override
     public void Call(String program) {
-        execute(program);
-        Display.display(os.getMemory().toString());
-    }
-
-    private void execute(String program) {
         if (language.getInst().size() == 0) language.setInst(program);
         // System.out.println(language);
         language.execute(os);
+        Display.display(os.getMemory().toString());
     }
 }

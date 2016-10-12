@@ -44,4 +44,8 @@ public class OperatingSystem {
     public void right() {
         memory.right();
     }
+
+    public void in() { memory.in(); }
+
+    public void out() { memory.out(); }
 }
