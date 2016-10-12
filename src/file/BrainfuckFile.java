@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  * Brainfuck Project
- * BfckFile abstract Class
+ * BrainfuckFile abstract Class
  *
  * Implement a set/get file
  * Implement a ReadFile method which read the given file
@@ -15,10 +15,10 @@ import java.io.File;
  * Created the 4 October 2016
  */
 
-public abstract class BfckFile {
+public abstract class BrainfuckFile {
     private File file;
 
-    BfckFile() {}
+    BrainfuckFile() {}
 
     public void setFile(String name) {
         this.file = new File(name);

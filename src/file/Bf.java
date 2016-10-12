@@ -12,7 +12,7 @@ package file;
  * Created the 4 October 2016
  */
 
-public class Bf extends BfckFile{
+public class Bf extends BrainfuckFile {
 
     public Bf() { super(); }
 

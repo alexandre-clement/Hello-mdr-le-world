@@ -9,7 +9,7 @@ package file;
  * Created the 4 October 2016
  */
 
-public class Bmp extends BfckFile {
+public class Bmp extends BrainfuckFile {
 
     @Override
     public String ReadFile() {

@@ -19,8 +19,8 @@ import java.util.*;
  */
 
 public class Interpreter {
-    private final static Map<String, BfckOption> options = new HashMap<>();
-    private final static Map<String, BfckFile> extensions = new HashMap<>();
+    private final static Map<String, BrainfuckOption> options = new HashMap<>();
+    private final static Map<String, BrainfuckFile> extensions = new HashMap<>();
 
     static {
         // Initialize a map with <extensions of supported files, name of the associated Class>
@@ -71,10 +71,10 @@ public class Interpreter {
      * @param name the filename
      * @return a new brainfuck file
      */
-    private BfckFile createFile(String name) {
+    private BrainfuckFile createFile(String name) {
         if (name == null) return null;
         if (extensions.containsKey(getExtension(name))) {
-            BfckFile file = extensions.get(getExtension(name));
+            BrainfuckFile file = extensions.get(getExtension(name));
             file.setFile(name);
             return file;
         }
@@ -86,7 +86,7 @@ public class Interpreter {
      * @param bfckFile the file just created
      * @return the file content
      */
-    private String readFile(BfckFile bfckFile) {
+    private String readFile(BrainfuckFile bfckFile) {
         return bfckFile.ReadFile();
     }
 
@@ -96,8 +96,8 @@ public class Interpreter {
      * @param args the commandline
      * @return a list of options
      */
-    private List<BfckOption> findOption(String... args) {
-        List<BfckOption> optionsList = new ArrayList<>();
+    private List<BrainfuckOption> findOption(String... args) {
+        List<BrainfuckOption> optionsList = new ArrayList<>();
         for (String arg: args) {
             if (options.containsKey(arg)) {
                 optionsList.add(options.get(arg));
@@ -114,19 +114,19 @@ public class Interpreter {
      *
      */
     public void buildSystem() {
+        List<BrainfuckOption> bfckOptions = findOption(commandline);
+        if (bfckOptions.size() == 0) Display.exitCode(126);
+
         String filename = findFileName(commandline);
         if (filename == null) Display.exitCode(127);
 
-        List<BfckOption> bfckOptions = findOption(commandline);
-        if (bfckOptions.size() == 0) Display.exitCode(126);
-
-        BfckFile bfckFile = createFile(filename);
+        BrainfuckFile bfckFile = createFile(filename);
         if (bfckFile == null || !bfckFile.isFile()) Display.exitCode(127);
 
         String program = readFile(bfckFile);
         if (program == null) Display.exitCode(127);
 
-        for (BfckOption option : bfckOptions) option.Call(program);
+        for (BrainfuckOption option : bfckOptions) option.Call(program);
 
         Display.exitCode(0);
     }

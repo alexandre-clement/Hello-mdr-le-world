@@ -15,7 +15,7 @@ import system.OperatingSystem;
  * Created the 4 October 2016
  */
 
-public interface BfckOption {
+public interface BrainfuckOption {
     Language language = new Language();
     OperatingSystem os = new OperatingSystem();
 

@@ -16,7 +16,7 @@ import interpreter.Display;
  * Created the 4 October 2016
  */
 
-public class Print implements BfckOption{
+public class Print implements BrainfuckOption {
 
 
     /**
