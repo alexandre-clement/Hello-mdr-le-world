@@ -20,7 +20,7 @@ public class Display {
      */
     public static void display(Object... output) {
         for (Object out : output) {
-            System.out.println(out);
+            System.out.print(out);
         }
     }
 

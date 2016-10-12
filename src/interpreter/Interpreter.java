@@ -22,16 +22,20 @@ public class Interpreter {
     private final static Map<String, BfckOption> options = new HashMap<>();
     private final static Map<String, BfckFile> extensions = new HashMap<>();
 
-    private String[] commandline;
-
-    public Interpreter(String... commandline) {
-        this.commandline = commandline;
+    static {
         // Initialize a map with <extensions of supported files, name of the associated Class>
         extensions.put(".bf", new Bf());
         extensions.put(".bmp", new Bmp());
 
         // Initialize a map with <name of options, name of the associated Class>
         options.put("-p", new Print());
+        options.put("--rewrite", new Rewrite());
+    }
+
+    private String[] commandline;
+
+    public Interpreter(String... commandline) {
+        this.commandline = commandline;
     }
 
     /**

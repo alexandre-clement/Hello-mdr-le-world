@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
  * @author SmartCoding
  */
 public class Language {
-    private static final List<String> longSyntax = new ArrayList<>(Arrays.asList("INCR","DECR","LEFT","RIGHT"));//"OUT","IN","JUMP","BACK"
-    private static final List<Character> shortSyntax = new ArrayList<>(Arrays.asList('+','-','<','>'));//'.',',','[',']'
-    private static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Incr(),new Decr(),new Left(),new Right()));
+    public static final List<String> longSyntax = new ArrayList<>(Arrays.asList("INCR","DECR","LEFT","RIGHT"));//"OUT","IN","JUMP","BACK"
+    public static final List<Character> shortSyntax = new ArrayList<>(Arrays.asList('+','-','<','>'));//'.',',','[',']'
+    public static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Incr(),new Decr(),new Left(),new Right()));
 
     private List<Instruction> inst;
 
