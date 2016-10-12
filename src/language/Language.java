@@ -34,7 +34,15 @@ public class Language {
             if (longSyntax.contains(line)) {
                 int i = longSyntax.indexOf(line);
                 inst.add(instructions.get(i));
-            }//else short... or not exist
+            } else {
+                char[] characters = line.toCharArray();
+                for (char character : characters) {
+                    if (shortSyntax.contains(character)) {
+                        int i = shortSyntax.indexOf(character);
+                        inst.add(instructions.get(i));
+                    }
+                }
+            }
         }
     }
 
