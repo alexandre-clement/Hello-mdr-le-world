@@ -8,10 +8,19 @@ package model;
  */
 class Memory {
 
+    /**
+     * the total memory capacity
+     */
     private final static int MEMORY_CAPACITY=30000;
 
-    private Cell[] M; // contain up to 8 bits of unsigned data (denoted as di), i.e., 8i 2 [0; 29999]; di 2 [0; 28 􀀀 1].
-    private int p; // pointer to the memory cell currently used by the program
+    /**
+     * contain up to 8 bits of unsigned date (denoted as di)
+     */
+    private Cell[] M;
+    /**
+     * the pointer to the memory cell currently used by used by the program
+     */
+    private int p;
 
     Memory() {
         M = new Cell[MEMORY_CAPACITY];
@@ -70,6 +79,9 @@ class Memory {
      */
     boolean dp() { return M[p].getValue() == 0; }
 
+    /**
+     * @return a readable version of the memory such as : Ci: the value of the cell i
+     */
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

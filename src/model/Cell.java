@@ -10,6 +10,9 @@ import interpreter.Display;
 class Cell {
     private final static int MIN = Byte.MIN_VALUE; // -128
     private final static int MAX = Byte.MAX_VALUE; // 127
+    /**
+     * the value of the cell such as MIN < value < MAX
+     */
     private byte value;
 
 
@@ -46,6 +49,9 @@ class Cell {
 
     void out() { }
 
+    /**
+     * @return the value of the cell
+     */
     @Override
     public String toString() { return String.valueOf(value - MIN);}
 }

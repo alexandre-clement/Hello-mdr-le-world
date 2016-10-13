@@ -14,38 +14,67 @@ import java.util.stream.Collectors;
  * @author SmartCoding
  */
 public class Language {
+    /**
+     * List with the instructions
+     */
     private static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(
             new Incr(),new Decr(),new Left(),new Right(),new Out(), new In(), new Jump(), new Back()));
 
+    /**
+     * List with the names of instructions
+     */
     private static final List<String> instructionsName = new ArrayList<>(
             instructions.stream().map(Instruction::toString).collect(Collectors.toList()));
 
+    /**
+     * List with the long syntax
+     */
     private static final List<String> longSyntax = new ArrayList<>(
             instructions.stream().map(Instruction::getLongSyntax).collect(Collectors.toList()));
 
+    /**
+     * List with the short syntax
+     */
     private static final List<Character> shortSyntax = new ArrayList<>(
             instructions.stream().map(Instruction::getShortSyntax).collect(Collectors.toList()));
 
+    /**
+     * list with the Loop instructions
+     */
     private final static List<Loop> loops = instructions.stream()
             .filter(instruction -> instruction instanceof Loop)
             .map(instruction -> (Loop) instruction)
             .collect(Collectors.toList());
 
+    /**
+     * Linking Jump instruction to the associated instruction Back
+     * @param jumpTo the jump instruction
+     * @param backTo the associated back instruction
+     */
     private static void linkLoopObject(String jumpTo, String backTo) {
         ((Loop) instructions.get(instructionsName.indexOf(jumpTo)))
                 .setAssociatedLoopObject((Loop) instructions.get(instructionsName.indexOf(backTo)));
+        // the controversy is not required
     }
 
     static {
+        // we can add another loop shape following the same scheme
         linkLoopObject("Jump", "Back");
     }
 
+    /**
+     *  List of the instructions in the running program
+     */
     private List<Instruction> inst;
 
     public Language() {
         inst = new ArrayList<>();
     }
 
+    /**
+     * Find and add the instructions in the running program to the list
+     * @param program the running program
+     */
     public void setInst(String program) {
         program = program.replaceAll(" ","");// delete blank spaces
         program = program.replaceAll("\t","");// delete indents
@@ -66,6 +95,10 @@ public class Language {
         }
     }
 
+    /**
+     * call the execute method of the instructions i.e executes the program on the system
+     * @param os the operating system of the running program
+     */
     public void execute(OperatingSystem os) {
         int instSize = inst.size();
         for (int i=os.getI(); i < instSize; i = os.getI()) {
@@ -73,6 +106,9 @@ public class Language {
         }
     }
 
+    /**
+     * @return the program in its shortest version
+     */
     public String rewrite() {
         StringBuilder stringBuilder = new StringBuilder();
         inst.forEach(instruction -> stringBuilder.append(instruction.getShortSyntax()));
@@ -83,6 +119,12 @@ public class Language {
 
     public void setOutput() {}
 
+    /**
+     * @param instructions a list of instructions
+     * @return true if the list of instructions is well-formed,
+     * i.e if every jump instruction have an associated back instruction.
+     * false otherwise
+     */
     public boolean check(List<Instruction> instructions) {
         List<Instruction> loopInstructions = instructions.stream()
                 .filter(instruction -> instruction instanceof Loop)
@@ -98,22 +140,40 @@ public class Language {
         return true;
     }
 
+    /**
+     * find the position of the associated back instruction
+     * @param i the position of the jump instruction
+     * @return the position of the back instruction
+     */
     public int jumpTo(int i) {
-        int j = i;
-        while (!check(inst.subList(i, ++j)));
+        int j = i + 1;
+        while (!check(inst.subList(i, j)))
+            j += 1;
         return j-1;
     }
 
+    /**
+     *find the position of the associated jump instruction
+     * @param i the position of the back instruction
+     * @return the position of the associated jump instruction
+     */
     public int backTo(int i) {
-        int j = i++;
-        while (!check(inst.subList(--j, i)));
+        int j = i++ - 1;
+        while (!check(inst.subList(j, i)))
+            j -= 1;
         return j;
     }
 
+    /**
+     * @return the list of instructions in the running program
+     */
     public List<Instruction> getInst() {
         return inst;
     }
 
+    /**
+     * @return a string with the name of the instructions separated by a coma
+     */
     @Override
     public String toString() {
         return inst.stream().map(Instruction::toString).collect(Collectors.joining(", "));

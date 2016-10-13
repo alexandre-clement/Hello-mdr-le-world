@@ -19,15 +19,19 @@ import java.util.*;
  */
 
 public class Interpreter {
+    /**
+     * a map with the options name and the associated class
+     */
     private final static Map<String, BrainfuckOption> options = new HashMap<>();
+    /**
+     * a map with the supported extensions and the associated class
+     */
     private final static Map<String, BrainfuckFile> extensions = new HashMap<>();
 
     static {
-        // Initialize a map with <extensions of supported files, name of the associated Class>
         extensions.put(".bf", new Bf());
         extensions.put(".bmp", new Bmp());
 
-        // Initialize a map with <name of options, name of the associated Class>
         options.put("-p", new Print());
         options.put("-i", new In());
         options.put("-o", new Out());
@@ -35,6 +39,9 @@ public class Interpreter {
         options.put("--check", new Check());
     }
 
+    /**
+     * the input command line
+     */
     private String[] commandline;
 
     public Interpreter(String... commandline) {
@@ -115,6 +122,8 @@ public class Interpreter {
      * Read the file just created
      * Call the options on the String version of the file
      *
+     * exit code 126 if no option were found
+     * exit code 127 if the filename were not found, if the file isn't supported or if the file doesn't exist
      */
     public void buildSystem() {
         List<BrainfuckOption> bfckOptions = findOption(commandline);
