@@ -100,13 +100,13 @@ public class Language {
 
     public int jumpTo(int i) {
         int j = i + 1;
-        for (inst.subList(i, j); check(inst.subList(i, j)); j++) {}
+        while (check(inst.subList(i, j++)));
         return j;
     }
 
     public int backTo(int i) {
         int j = i - 1;
-        for (inst.subList(j, i); check(inst.subList(j, i)); j--) {}
+        while (check(inst.subList(j--, i)));
         return j;
     }
 

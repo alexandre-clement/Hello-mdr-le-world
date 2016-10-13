@@ -22,14 +22,14 @@ class Memory {
     /**
      * Increment the cell
      */
-    public void incr() {
+    void incr() {
         M[p].incr();
     }
 
     /**
      * Decrement the cell
      */
-    public void decr() {
+    void decr() {
         M[p].decr();
     }
 
@@ -37,7 +37,7 @@ class Memory {
      * move the memory pointer to the right
      * exitCode 2 : moving the pointer to the extreme right
      */
-    public void right() {
+    void right() {
         if (p < M.length - 1) {
             p++;
         }else {
@@ -49,7 +49,7 @@ class Memory {
      * move the memory pointer to the left
      * exitCode 2 : moving the pointer left to the first cell
      */
-    public void left() {
+    void left() {
         if (p > 0) {
             p--;
         }else {
@@ -57,18 +57,18 @@ class Memory {
         }
     }
 
-    public void in() {
+    void in() {
         M[p].in();
     }
 
-    public void out() {
+    void out() {
         M[p].out();
     }
 
     /**
      * @return true if the value of the pointed cell is equal to 0
      */
-    public boolean dp() { return M[p].getValue() == 0; }
+    boolean dp() { return M[p].getValue() == 0; }
 
     @Override
     public String toString() {
