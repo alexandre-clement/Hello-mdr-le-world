@@ -3,9 +3,7 @@ package language;
 import language.instruction.*;
 import model.OperatingSystem;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,13 +15,30 @@ import java.util.stream.Collectors;
  */
 public class Language {
     private static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(
-            new Incr(),new Decr(),new Left(),new Right(),new Out(), new In()));
+            new Incr(),new Decr(),new Left(),new Right(),new Out(), new In(), new Jump(), new Back()));
+
+    private static final List<String> instructionsName = new ArrayList<>(
+            instructions.stream().map(Instruction::toString).collect(Collectors.toList()));
 
     private static final List<String> longSyntax = new ArrayList<>(
             instructions.stream().map(Instruction::getLongSyntax).collect(Collectors.toList()));
 
     private static final List<Character> shortSyntax = new ArrayList<>(
             instructions.stream().map(Instruction::getShortSyntax).collect(Collectors.toList()));
+
+    private final static List<Loop> loops = instructions.stream()
+            .filter(instruction -> instruction instanceof Loop)
+            .map(instruction -> (Loop) instruction)
+            .collect(Collectors.toList());
+
+    private static void linkLoopObject(String jumpTo, String backTo) {
+        ((Loop) instructions.get(instructionsName.indexOf(jumpTo)))
+                .setAssociatedLoopObject((Loop) instructions.get(instructionsName.indexOf(backTo)));
+    }
+
+    static {
+        linkLoopObject("Jump", "Back");
+    }
 
     private List<Instruction> inst;
 
@@ -54,7 +69,7 @@ public class Language {
     public void execute(OperatingSystem os) {
         int instSize = inst.size();
         for (int i=os.getI(); i < instSize; i = os.getI()) {
-            inst.get(i).exec(os);
+            inst.get(i).exec(os, this);
         }
     }
 
@@ -62,6 +77,37 @@ public class Language {
         StringBuilder stringBuilder = new StringBuilder();
         inst.forEach(instruction -> stringBuilder.append(instruction.getShortSyntax()));
         return stringBuilder.toString();
+    }
+
+    public void setInput() {}
+
+    public void setOutput() {}
+
+    public boolean check(List<Instruction> instructions) {
+        List<Instruction> loopInstructions = instructions.stream()
+                .filter(instruction -> instruction instanceof Loop)
+                .collect(Collectors.toList());
+
+        for (Loop loop: loops) {
+            if (loop.getAssociatedLoopObject() != null) {
+                int jump = Collections.frequency(loopInstructions, loop);
+                int back = Collections.frequency(loopInstructions, loop.getAssociatedLoopObject());
+                if (jump != back) return false;
+            }
+        }
+        return true;
+    }
+
+    public int jumpTo(int i) {
+        int j = i + 1;
+        for (inst.subList(i, j); check(inst.subList(i, j)); j++) {}
+        return j;
+    }
+
+    public int backTo(int i) {
+        int j = i - 1;
+        for (inst.subList(j, i); check(inst.subList(j, i)); j--) {}
+        return j;
     }
 
     public List<Instruction> getInst() {

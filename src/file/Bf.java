@@ -21,8 +21,8 @@ public class Bf extends BrainfuckFile {
      */
     @Override
     public String ReadFile() {
-        Read read = new Read(super.getFile());
-        return read.StandardTextFile();
+        StandardTextFile standardTextFile = new StandardTextFile(super.getFile());
+        return standardTextFile.read();
     }
 
     @Override

@@ -42,9 +42,9 @@ class Cell {
         else Display.exitCode(1);
     }
 
-    void in() {}
+    void in() { }
 
-    void out() {}
+    void out() { }
 
     @Override
     public String toString() { return String.valueOf(value - MIN);}

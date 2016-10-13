@@ -29,7 +29,10 @@ public class Interpreter {
 
         // Initialize a map with <name of options, name of the associated Class>
         options.put("-p", new Print());
+        options.put("-i", new In());
+        options.put("-o", new Out());
         options.put("--rewrite", new Rewrite());
+        options.put("--check", new Check());
     }
 
     private String[] commandline;

@@ -1,5 +1,7 @@
 package language.instruction;
 
+import language.Instruction;
+import language.Language;
 import model.OperatingSystem;
 
 /**
@@ -10,7 +12,7 @@ import model.OperatingSystem;
 public class Right implements Instruction {
 
     @Override
-    public void exec(OperatingSystem os) {
+    public void exec(OperatingSystem os, Language language) {
         os.right();
         os.nextI();
     }

@@ -65,6 +65,11 @@ class Memory {
         M[p].out();
     }
 
+    /**
+     * @return true if the value of the pointed cell is equal to 0
+     */
+    public boolean dp() { return M[p].getValue() == 0; }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

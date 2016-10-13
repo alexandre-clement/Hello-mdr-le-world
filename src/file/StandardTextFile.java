@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 /**
  * Brainfuck Project
- * Read Class
  *
  * Convert a file to a String
  *
@@ -15,17 +14,17 @@ import java.util.Scanner;
  * Created the 4 October 2016
  */
 
-class Read {
+class StandardTextFile {
     private File file;
 
-    Read(File file) { this.file = file; }
+    StandardTextFile(File file) { this.file = file; }
 
     /**
      * read the content of a file and return it as a String
      *
      * @return the content of the file
      */
-    String StandardTextFile() {
+    String read() {
         try {
             Scanner scanner = new Scanner(file);
             StringBuilder builder = new StringBuilder(Math.toIntExact(file.length()));

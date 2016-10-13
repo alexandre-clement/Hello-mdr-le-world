@@ -1,4 +1,4 @@
-package language.instruction;
+package language;
 
 import model.OperatingSystem;
 
@@ -14,7 +14,7 @@ public interface Instruction {
     /**
      * execute the instruction
      */
-    void exec(OperatingSystem os);
+    void exec(OperatingSystem os, Language language);
 
     String getLongSyntax();
 

@@ -46,4 +46,8 @@ public class OperatingSystem {
     public void in() { memory.in(); }
 
     public void out() { memory.out(); }
+
+    public boolean dp() { return memory.dp(); }
+
+    public void bound(int i) { this.i = i; }
 }

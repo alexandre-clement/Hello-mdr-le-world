@@ -2,33 +2,35 @@ package language.instruction;
 
 import language.Instruction;
 import language.Language;
+import language.*;
 import model.OperatingSystem;
 
 /**
- * Brainfuck Project
- *
  * @author SmartCoding
+ *         Created the 13 octobre 2016.
  */
-public class Incr implements Instruction {
+public class Back extends Loop implements Instruction {
 
     @Override
     public void exec(OperatingSystem os, Language language) {
-        os.incr();
+        if (!os.dp()) {
+            os.bound(language.backTo(os.getI()));
+        }
         os.nextI();
     }
 
     @Override
     public String getLongSyntax() {
-        return "INCR";
+        return "BACK";
     }
 
     @Override
     public Character getShortSyntax() {
-        return '+';
+        return ']';
     }
 
     @Override
     public String toString() {
-        return "Incr";
+        return "Back";
     }
 }

@@ -1,15 +1,17 @@
 package language.instruction;
 
+import language.Instruction;
+import language.Language;
 import model.OperatingSystem;
 
 /**
  * @author SmartCoding
  *         Created the 12 octobre 2016.
  */
-public class In implements Instruction{
+public class In implements Instruction {
 
     @Override
-    public void exec(OperatingSystem os) {
+    public void exec(OperatingSystem os, Language language) {
         os.in();
         os.nextI();
     }
