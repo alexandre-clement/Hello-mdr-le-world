@@ -2,6 +2,11 @@ package language.instruction;
 
 import model.OperatingSystem;
 
+/**
+ * Brainfuck Project
+ *
+ * @author SmartCoding
+ */
 public class Decr implements Instruction {
 
     @Override

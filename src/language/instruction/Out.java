@@ -3,7 +3,7 @@ package language.instruction;
 import model.OperatingSystem;
 
 /**
- * @author Alexandre Clement
+ * @author SmartCoding
  *         Created the 12 octobre 2016.
  */
 public class Out implements Instruction {
