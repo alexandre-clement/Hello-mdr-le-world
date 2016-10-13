@@ -16,6 +16,7 @@ public class Rewrite implements BrainfuckOption {
     @Override
     public void Call(String program) {
         if (language.getInst().size() == 0) language.setInst(program);
-        Display.display(language.rewrite(os));
+        // System.out.println(language);
+        Display.display(language.rewrite(), '\n');
     }
 }

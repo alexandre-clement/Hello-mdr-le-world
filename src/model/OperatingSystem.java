@@ -1,6 +1,4 @@
-package system;
-
-import model.Memory;
+package model;
 
 /**
  * Brainfuck Project
@@ -17,8 +15,8 @@ public class OperatingSystem {
         i = 0;
     }
 
-    public Memory getMemory() {
-        return memory;
+    public String getMemoryContent() {
+        return memory.toString();
     }
 
     public int getI() {

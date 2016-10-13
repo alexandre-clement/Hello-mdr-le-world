@@ -1,7 +1,7 @@
 package option;
 
 import language.Language;
-import system.OperatingSystem;
+import model.OperatingSystem;
 
 /**
  * Brainfuck Project

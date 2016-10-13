@@ -1,6 +1,6 @@
 package language.instruction;
 
-import system.OperatingSystem;
+import model.OperatingSystem;
 
 public class Decr implements Instruction {
 

@@ -1,6 +1,6 @@
 package language.instruction;
 
-import system.OperatingSystem;
+import model.OperatingSystem;
 
 /**
  * @author SmartCoding

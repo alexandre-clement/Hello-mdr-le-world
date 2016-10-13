@@ -1,7 +1,7 @@
 package language;
 
 import language.instruction.*;
-import system.OperatingSystem;
+import model.OperatingSystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +16,14 @@ import java.util.stream.Collectors;
  * @author SmartCoding
  */
 public class Language {
-    private static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(new Incr(),new Decr(),new Left(),new Right(),new Out(), new In()));
-    private static final List<String> longSyntax = new ArrayList<>(instructions.stream().map(Instruction::getLongSyntax).collect(Collectors.toList()));
-    private static final List<Character> shortSyntax = new ArrayList<>(instructions.stream().map(Instruction::getShortSyntax).collect(Collectors.toList()));
+    private static final List<Instruction> instructions  = new ArrayList<>(Arrays.asList(
+            new Incr(),new Decr(),new Left(),new Right(),new Out(), new In()));
+
+    private static final List<String> longSyntax = new ArrayList<>(
+            instructions.stream().map(Instruction::getLongSyntax).collect(Collectors.toList()));
+
+    private static final List<Character> shortSyntax = new ArrayList<>(
+            instructions.stream().map(Instruction::getShortSyntax).collect(Collectors.toList()));
 
     private List<Instruction> inst;
 
@@ -53,13 +58,9 @@ public class Language {
         }
     }
 
-    public String rewrite(OperatingSystem os) {
-        int instSize = inst.size();
+    public String rewrite() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i=os.getI(); i < instSize; i = os.getI()) {
-            stringBuilder.append(inst.get(i).getShortSyntax());
-            os.nextI();
-        }
+        inst.forEach(instruction -> stringBuilder.append(instruction.getShortSyntax()));
         return stringBuilder.toString();
     }
 
