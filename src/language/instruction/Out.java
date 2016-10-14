@@ -5,6 +5,8 @@ import language.Instruction;
 import language.Language;
 import model.OperatingSystem;
 
+import java.awt.*;
+
 /**
  * @author SmartCoding
  *         Created the 12 octobre 2016.
@@ -25,6 +27,11 @@ public class Out implements Instruction {
     @Override
     public Character getShortSyntax() {
         return '.';
+    }
+
+    @Override
+    public Color getColorCode() {
+        return new Color(0, 255, 0);
     }
 
     @Override

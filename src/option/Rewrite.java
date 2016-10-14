@@ -1,6 +1,9 @@
 package option;
 
 import interpreter.Display;
+import language.Instruction;
+
+import java.util.List;
 
 /**
  * @author SmartCoding
@@ -20,8 +23,18 @@ public class Rewrite extends StdoutOption {
      */
     @Override
     public void Call(String program) {
-        if (language.getInst().size() == 0) language.setInst(program);
-        // System.out.println(language);
-        Display.display(language.rewrite(), '\n');
+        List<Instruction> inst = language.getInst();
+        if (inst.size() == 0) language.setInst(program);
+        Display.display(rewrite(inst), '\n');
+    }
+
+    /**
+     * @return the program in its shortest version
+     */
+    private String rewrite(List<Instruction> inst) {
+        StringBuilder stringBuilder = new StringBuilder();
+        // for each instruction in the program, we add its short syntax to the string builder
+        inst.forEach(instruction -> stringBuilder.append(instruction.getShortSyntax()));
+        return stringBuilder.toString();
     }
 }

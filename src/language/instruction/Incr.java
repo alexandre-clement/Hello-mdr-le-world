@@ -4,6 +4,8 @@ import language.Instruction;
 import language.Language;
 import model.OperatingSystem;
 
+import java.awt.*;
+
 /**
  * Brainfuck Project
  *
@@ -25,6 +27,11 @@ public class Incr implements Instruction {
     @Override
     public Character getShortSyntax() {
         return '+';
+    }
+
+    @Override
+    public Color getColorCode() {
+        return new Color(255, 255, 255);
     }
 
     @Override

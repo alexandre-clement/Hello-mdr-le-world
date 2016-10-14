@@ -5,6 +5,8 @@ import language.Language;
 import language.*;
 import model.OperatingSystem;
 
+import java.awt.*;
+
 /**
  * @author SmartCoding
  *         Created the 13 octobre 2016.
@@ -27,6 +29,11 @@ public class Back extends Loop implements Instruction {
     @Override
     public Character getShortSyntax() {
         return ']';
+    }
+
+    @Override
+    public Color getColorCode() {
+        return new Color(255, 0, 0);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package language;
 
 import language.instruction.*;
-import model.OperatingSystem;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -95,27 +94,6 @@ public class Language {
                 }
             }
         }
-    }
-
-    /**
-     * call the execute method of the instructions i.e executes the program on the system
-     * @param os the operating system of the running program
-     */
-    public void execute(OperatingSystem os) {
-        int instSize = inst.size();
-        for (int i=os.getI(); i < instSize; i = os.getI()) {
-            inst.get(i).exec(os, this);
-        }
-    }
-
-    /**
-     * @return the program in its shortest version
-     */
-    public String rewrite() {
-        StringBuilder stringBuilder = new StringBuilder();
-        // for each instruction in the program, we add its short syntax to the string builder
-        inst.forEach(instruction -> stringBuilder.append(instruction.getShortSyntax()));
-        return stringBuilder.toString();
     }
 
     public void setInput() {}

@@ -2,6 +2,8 @@ package language;
 
 import model.OperatingSystem;
 
+import java.awt.*;
+
 /**
  * Brainfuck Project
  *
@@ -25,4 +27,7 @@ public interface Instruction {
      * @return the short syntax of the instruction
      */
     Character getShortSyntax();
+
+    Color getColorCode();
+
 }

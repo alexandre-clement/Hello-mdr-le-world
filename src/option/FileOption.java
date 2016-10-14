@@ -1,6 +1,5 @@
 package option;
 
-import file.BrainfuckFile;
 import interpreter.Display;
 import interpreter.Interpreter;
 
@@ -36,7 +35,7 @@ abstract class FileOption extends BrainfuckOption {
         return false;
     }
 
-    public String getFilename() {
+    String getFilename() {
         return filename;
     }
 }

@@ -5,6 +5,8 @@ import language.Language;
 import language.Loop;
 import model.OperatingSystem;
 
+import java.awt.*;
+
 /**
  * @author SmartCoding
  *         Created the 13 octobre 2016.
@@ -27,6 +29,11 @@ public class Jump extends Loop implements Instruction {
     @Override
     public Character getShortSyntax() {
         return '[';
+    }
+
+    @Override
+    public Color getColorCode() {
+        return new Color(255, 127, 0);
     }
 
     @Override

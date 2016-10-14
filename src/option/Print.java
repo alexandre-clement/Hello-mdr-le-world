@@ -1,6 +1,10 @@
 package option;
 
 import interpreter.Display;
+import language.Instruction;
+import model.OperatingSystem;
+
+import java.util.List;
 
 
 /**
@@ -30,9 +34,20 @@ public class Print extends StdoutOption {
      */
     @Override
     public void Call(String program) {
-        if (language.getInst().size() == 0) language.setInst(program);
-        // System.out.println(language);
-        language.execute(os);
+        List<Instruction> inst = language.getInst();
+        if (inst.size() == 0) language.setInst(program);
+        execute(os, inst);
         Display.display(os.getMemoryContent());
+    }
+
+    /**
+     * call the execute method of the instructions i.e executes the program on the system
+     * @param os the operating system of the running program
+     */
+    private void execute(OperatingSystem os, List<Instruction> inst) {
+        int instSize = inst.size();
+        for (int i=os.getI(); i < instSize; i = os.getI()) {
+            inst.get(i).exec(os, language);
+        }
     }
 }
