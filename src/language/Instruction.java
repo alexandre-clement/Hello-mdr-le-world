@@ -1,6 +1,6 @@
 package language;
 
-import model.OperatingSystem;
+import option.BrainfuckOption;
 
 import java.awt.*;
 
@@ -16,7 +16,7 @@ public interface Instruction {
     /**
      * execute the instruction
      */
-    void exec(OperatingSystem os, Language language);
+    void exec(BrainfuckOption master);
 
     /**
      * @return the long syntax of the instruction

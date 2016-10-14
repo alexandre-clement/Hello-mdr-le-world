@@ -1,9 +1,7 @@
 package language.instruction;
 
-import interpreter.Display;
 import language.Instruction;
-import language.Language;
-import model.OperatingSystem;
+import option.BrainfuckOption;
 
 import java.awt.*;
 
@@ -14,9 +12,9 @@ import java.awt.*;
 public class Out implements Instruction {
 
     @Override
-    public void exec(OperatingSystem os, Language language) {
-        Display.display(outASCII(os));
-        os.nextI();
+    public void exec(BrainfuckOption master) {
+        master.display.out(master.os.out());
+        master.os.nextI();
     }
 
     @Override
@@ -36,10 +34,6 @@ public class Out implements Instruction {
 
     @Override
     public String toString() {
-        return "Out";
-    }
-
-    private char outASCII(OperatingSystem os) {
-        return (char)os.out();
+        return "OutOption";
     }
 }

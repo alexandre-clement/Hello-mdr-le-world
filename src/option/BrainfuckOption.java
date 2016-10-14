@@ -1,5 +1,7 @@
 package option;
 
+import interpreter.Display;
+import interpreter.Input;
 import language.Language;
 import model.OperatingSystem;
 
@@ -16,8 +18,10 @@ import model.OperatingSystem;
  */
 
 public abstract class BrainfuckOption {
-    Language language = new Language();
-    OperatingSystem os = new OperatingSystem();
+    public Input input;
+    public Display display;
+    public Language language = new Language();
+    public OperatingSystem os = new OperatingSystem();
 
     /**
      * @return the name of the option
@@ -42,4 +46,12 @@ public abstract class BrainfuckOption {
      * @param program the String version of the file
      */
     public abstract void Call(String program);
+
+    public void setInput(Input input) {
+        this.input = input;
+    }
+
+    public void setDisplay(Display display) {
+        this.display = display;
+    }
 }

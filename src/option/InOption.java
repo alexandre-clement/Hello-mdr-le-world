@@ -1,10 +1,12 @@
 package option;
 
+import file.StandardTextFile;
+
 /**
  * @author SmartCoding
  *         Created the 13 octobre 2016.
  */
-public class In extends FileOption {
+public class InOption extends FileOption {
 
     @Override
     public String getName() {
@@ -13,6 +15,6 @@ public class In extends FileOption {
 
     @Override
     public void Call(String program) {
-        language.setInput();
+        input.setFile(new StandardTextFile(getFilename()));
     }
 }

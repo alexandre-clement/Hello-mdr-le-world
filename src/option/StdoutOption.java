@@ -2,7 +2,7 @@ package option;
 
 /**
  * Class for options contained display
- * One option of this type can be used on the program running
+ * Only one option of this type can be used on the program running
  *
  * @author SmartCoding
  *         Created the 14 octobre 2016.

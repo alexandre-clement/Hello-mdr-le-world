@@ -1,8 +1,7 @@
 package language.instruction;
 
 import language.Instruction;
-import language.Language;
-import model.OperatingSystem;
+import option.BrainfuckOption;
 
 import java.awt.*;
 
@@ -13,9 +12,9 @@ import java.awt.*;
 public class In implements Instruction {
 
     @Override
-    public void exec(OperatingSystem os, Language language) {
-        os.in();
-        os.nextI();
+    public void exec(BrainfuckOption master) {
+        master.os.in(master.input.input());
+        master.os.nextI();
     }
 
     @Override
@@ -35,6 +34,6 @@ public class In implements Instruction {
 
     @Override
     public String toString() {
-        return "In";
+        return "InOption";
     }
 }

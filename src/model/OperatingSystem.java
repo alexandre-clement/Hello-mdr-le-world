@@ -70,9 +70,9 @@ public class OperatingSystem {
         memory.right();
     }
 
-    public void in() { memory.in(); }
+    public void in(char character) { memory.in(character); }
 
-    public int out() { return memory.out(); }
+    public char out() { return memory.out(); }
 
     public boolean dp() { return memory.dp(); }
 

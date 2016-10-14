@@ -45,7 +45,9 @@ class Cell {
         else Display.exitCode(1);
     }
 
-    void in() { }
+    void in(char character) { value = (byte) ((int) character + MIN); }
+
+    char out() { return (char) getValue(); }
 
     /**
      * @return the value of the cell

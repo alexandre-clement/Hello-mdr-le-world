@@ -1,8 +1,7 @@
 package language.instruction;
 
 import language.Instruction;
-import language.Language;
-import model.OperatingSystem;
+import option.BrainfuckOption;
 
 import java.awt.*;
 
@@ -14,9 +13,9 @@ import java.awt.*;
 public class Left implements Instruction {
 
     @Override
-    public void exec(OperatingSystem os, Language language) {
-        os.left();
-        os.nextI();
+    public void exec(BrainfuckOption master) {
+        master.os.left();
+        master.os.nextI();
     }
 
     @Override

@@ -65,8 +65,6 @@ public class Language {
      *  List of the instructions in the running program
      */
     private List<Instruction> inst;
-    private String inputFile;
-    private String outputFile;
 
     public Language() {
         inst = new ArrayList<>();
@@ -94,12 +92,6 @@ public class Language {
                 }
             }
         }
-    }
-
-    public void setInput() {}
-
-    public void setOutput(String fileName) {
-        outputFile = fileName;
     }
 
     /**

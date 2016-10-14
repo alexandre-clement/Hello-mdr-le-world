@@ -66,12 +66,12 @@ class Memory {
         }
     }
 
-    void in() {
-        M[p].in();
+    void in(char character) {
+        M[p].in(character);
     }
 
-    int out() {
-        return M[p].getValue();
+    char out() {
+        return M[p].out();
     }
 
     /**

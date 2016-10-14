@@ -23,7 +23,7 @@ public class Interpreter {
      * a List with the options ordered by priority of the option (from the max to the min priority option)
      */
     public final static List<BrainfuckOption> options = new ArrayList<>(Arrays.asList(
-            new Check(), new In(), new Out(), new Rewrite(), new Translate(), new Print()));
+            new Check(), new InOption(), new OutOption(), new Rewrite(), new Translate(), new Print()));
     /**
      * a Map with the supported files
      */
@@ -37,6 +37,8 @@ public class Interpreter {
      * the input command line
      */
     private String[] commandline;
+    private Input input = new Input();
+    private Display display = new Display();
 
     public Interpreter(String... commandline) {
         this.commandline = commandline;
@@ -105,12 +107,14 @@ public class Interpreter {
         boolean StdoutOption = false;
         for (BrainfuckOption option: options) {
             if (option.isIn(args)) {
+                option.setInput(input);
+                option.setDisplay(display);
                 if (option instanceof StdoutOption) {
                     if (!StdoutOption) {
                         StdoutOption = true;
                         optionsInCommandline.add(option);
                     }
-                } else  optionsInCommandline.add(option);
+                } else optionsInCommandline.add(option);
             }
         }
         return optionsInCommandline;

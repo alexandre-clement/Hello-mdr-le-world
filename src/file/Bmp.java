@@ -13,6 +13,7 @@ public class Bmp extends BrainfuckFile {
 
     @Override
     public String ReadFile() {
+
         return null;
     }
 }

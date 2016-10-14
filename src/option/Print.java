@@ -37,7 +37,7 @@ public class Print extends StdoutOption {
         List<Instruction> inst = language.getInst();
         if (inst.size() == 0) language.setInst(program);
         execute(os, inst);
-        Display.display(os.getMemoryContent());
+        Display.display('\n', os.getMemoryContent());
     }
 
     /**
@@ -47,7 +47,7 @@ public class Print extends StdoutOption {
     private void execute(OperatingSystem os, List<Instruction> inst) {
         int instSize = inst.size();
         for (int i=os.getI(); i < instSize; i = os.getI()) {
-            inst.get(i).exec(os, language);
+            inst.get(i).exec(this);
         }
     }
 }

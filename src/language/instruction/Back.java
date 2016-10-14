@@ -1,9 +1,8 @@
 package language.instruction;
 
 import language.Instruction;
-import language.Language;
-import language.*;
-import model.OperatingSystem;
+import language.Loop;
+import option.BrainfuckOption;
 
 import java.awt.*;
 
@@ -14,11 +13,11 @@ import java.awt.*;
 public class Back extends Loop implements Instruction {
 
     @Override
-    public void exec(OperatingSystem os, Language language) {
-        if (!os.dp()) {
-            os.bound(language.backTo(os.getI()));
+    public void exec(BrainfuckOption master) {
+        if (!master.os.dp()) {
+            master.os.bound(master.language.backTo(master.os.getI()));
         }
-        os.nextI();
+        master.os.nextI();
     }
 
     @Override

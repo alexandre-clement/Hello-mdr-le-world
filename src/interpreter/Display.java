@@ -1,5 +1,7 @@
 package interpreter;
 
+import file.StandardTextFile;
+
 /**
  * Brainfuck Project
  * Display Static Class
@@ -14,6 +16,16 @@ package interpreter;
  */
 
 public class Display {
+    private StandardTextFile file;
+
+    public void setFile(StandardTextFile file) {
+        this.file = file;
+    }
+
+    public void out(char character) {
+        if (file == null) display(character);
+        else file.write(character);
+    }
 
     /**
      * @param output the content to display on the standard output
