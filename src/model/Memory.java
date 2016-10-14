@@ -70,8 +70,8 @@ class Memory {
         M[p].in();
     }
 
-    void out() {
-        M[p].out();
+    int out() {
+        return M[p].getValue();
     }
 
     /**

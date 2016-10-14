@@ -72,7 +72,7 @@ public class OperatingSystem {
 
     public void in() { memory.in(); }
 
-    public void out() { memory.out(); }
+    public int out() { return memory.out(); }
 
     public boolean dp() { return memory.dp(); }
 

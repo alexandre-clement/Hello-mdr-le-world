@@ -47,8 +47,6 @@ class Cell {
 
     void in() { }
 
-    void out() { }
-
     /**
      * @return the value of the cell
      */

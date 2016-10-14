@@ -13,6 +13,6 @@ public class Out extends FileOption {
 
     @Override
     public void Call(String program) {
-        language.setOutput();
+        language.setOutput(getFilename());
     }
 }

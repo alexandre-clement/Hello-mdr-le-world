@@ -1,5 +1,6 @@
 package language.instruction;
 
+import interpreter.Display;
 import language.Instruction;
 import language.Language;
 import model.OperatingSystem;
@@ -12,7 +13,7 @@ public class Out implements Instruction {
 
     @Override
     public void exec(OperatingSystem os, Language language) {
-        os.out();
+        Display.display(outASCII(os));
         os.nextI();
     }
 
@@ -29,5 +30,9 @@ public class Out implements Instruction {
     @Override
     public String toString() {
         return "Out";
+    }
+
+    private char outASCII(OperatingSystem os) {
+        return (char)os.out();
     }
 }

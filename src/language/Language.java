@@ -66,9 +66,41 @@ public class Language {
      *  List of the instructions in the running program
      */
     private List<Instruction> inst;
+    private boolean notExecute;
+    private boolean changeInput;
+    private boolean changeOutput;
+    private String inputFile;
+    private String outputFile;
 
     public Language() {
         inst = new ArrayList<>();
+        notExecute = false;
+        changeInput = false;
+        changeOutput = false;
+    }
+
+    public void setNotExecute(boolean notExecute) {
+        this.notExecute = notExecute;
+    }
+
+    public boolean isNotExecute() {
+        return notExecute;
+    }
+
+    public boolean hasInputFile() {
+        return changeInput;
+    }
+
+    public boolean hasOutputFile() {
+        return changeOutput;
+    }
+
+    public String getInputFile() {
+        return inputFile;
+    }
+
+    public String getOutputFile() {
+        return outputFile;
     }
 
     /**
@@ -118,7 +150,10 @@ public class Language {
 
     public void setInput() {}
 
-    public void setOutput() {}
+    public void setOutput(String fileName) {
+        changeOutput = true;
+        outputFile = fileName;
+    }
 
     /**
      * @param instructions a list of instructions
