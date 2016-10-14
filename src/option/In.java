@@ -15,6 +15,4 @@ public class In extends FileOption {
     public void Call(String program) {
         language.setInput();
     }
-
-
 }
