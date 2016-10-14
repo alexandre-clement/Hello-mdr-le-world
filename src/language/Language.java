@@ -111,6 +111,7 @@ public class Language {
      */
     public String rewrite() {
         StringBuilder stringBuilder = new StringBuilder();
+        // for each instruction in the program, we add its short syntax to the string builder
         inst.forEach(instruction -> stringBuilder.append(instruction.getShortSyntax()));
         return stringBuilder.toString();
     }
@@ -126,19 +127,26 @@ public class Language {
      * false otherwise
      */
     public boolean check(List<Instruction> instructions) {
+        // for each loop object used by the interpreter
         for (Loop loop: loops) {
+            // if the loop object got an associated object
             if (loop.getAssociatedLoopObject() != null) {
                 int wellFormed = 0;
+                // we add 1 to the value wellFormed for each opening loop
+                // and we subtract 1 for each closing loop
                 for (Instruction instruction: instructions) {
                     if (instruction.getClass() == loop.getClass()) {
                         wellFormed += 1;
                     } else if (instruction.getClass() == loop.getAssociatedLoopObject().getClass())
                         wellFormed -=1;
+                    // if the value is negative, there is a closing object but the loop was not open before
                     if (wellFormed < 0) return false;
                 }
+                // if the value is different from 0, there is at least one non-closed loop
                 if (wellFormed != 0) return false;
             }
         }
+        // the program is well formed
         return true;
     }
 
