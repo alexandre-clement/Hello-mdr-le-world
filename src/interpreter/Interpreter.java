@@ -4,7 +4,6 @@ import option.*;
 import file.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Brainfuck Project
@@ -24,7 +23,7 @@ public class Interpreter {
      * a List with the options ordered by priority of the option (from the max to the min priority option)
      */
     public final static List<BrainfuckOption> options = new ArrayList<>(Arrays.asList(
-            new Check(), new In(), new Out(), new Rewrite(), new Print()));
+            new Check(), new In(), new Out(), new Rewrite(), new Translate(), new Print()));
     /**
      * a Map with the supported files
      */
@@ -102,7 +101,19 @@ public class Interpreter {
      * @return a list of options
      */
     private List<BrainfuckOption> findOption(String... args) {
-        return options.stream().filter(option -> option.isIn(args)).collect(Collectors.toList());
+        List<BrainfuckOption> optionsInCommandline = new ArrayList<>();
+        boolean StdoutOption = false;
+        for (BrainfuckOption option: options) {
+            if (option.isIn(args)) {
+                if (option instanceof StdoutOption) {
+                    if (!StdoutOption) {
+                        StdoutOption = true;
+                        optionsInCommandline.add(option);
+                    }
+                } else  optionsInCommandline.add(option);
+            }
+        }
+        return optionsInCommandline;
     }
 
     /**

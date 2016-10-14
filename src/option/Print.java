@@ -16,7 +16,7 @@ import interpreter.Display;
  * Created the 4 October 2016
  */
 
-public class Print extends BrainfuckOption {
+public class Print extends StdoutOption {
 
     @Override
     public String getName() {
@@ -32,9 +32,6 @@ public class Print extends BrainfuckOption {
     public void Call(String program) {
         if (language.getInst().size() == 0) language.setInst(program);
         // System.out.println(language);
-        if (language.isNotExecute()) {
-            return;
-        }
         language.execute(os);
         Display.display(os.getMemoryContent());
     }
