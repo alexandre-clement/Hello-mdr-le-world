@@ -23,7 +23,7 @@ public class Interpreter {
     /**
      * a List with the options ordered by priority of the option (from the max to the min priority option)
      */
-    private final static List<BrainfuckOption> options = new ArrayList<>(Arrays.asList(
+    public final static List<BrainfuckOption> options = new ArrayList<>(Arrays.asList(
             new Check(), new In(), new Out(), new Rewrite(), new Print()));
     /**
      * a Map with the supported files

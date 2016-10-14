@@ -1,5 +1,11 @@
 package option;
 
+import file.BrainfuckFile;
+import interpreter.Display;
+import interpreter.Interpreter;
+
+import java.util.stream.Collectors;
+
 /**
  * @author SmartCoding
  *         Created the 13 octobre 2016.
@@ -18,11 +24,13 @@ abstract class FileOption extends BrainfuckOption {
     public boolean isIn(String... commandline) {
         for (int i=0; i < commandline.length; i++) {
             if (getName().equals(commandline[i])) {
-                if (i+1 < commandline.length) {
+                if (i+1 < commandline.length && !Interpreter.options.stream()
+                        .map(BrainfuckOption::getName).collect(Collectors.toList()).contains(commandline[i+1])) {
                     filename = commandline[i + 1];
                     commandline[i + 1] = null;
+                    return true;
                 }
-                return true;
+                Display.exitCode(3);
             }
         }
         return false;
