@@ -4,6 +4,7 @@ import option.*;
 import file.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Brainfuck Project
@@ -20,23 +21,17 @@ import java.util.*;
 
 public class Interpreter {
     /**
-     * a map with the options name and the associated class
+     * a List with the options ordered by priority of the option (from the max to the min priority option)
      */
-    private final static Map<String, BrainfuckOption> options = new HashMap<>();
+    private final static List<BrainfuckOption> options = new ArrayList<>(Arrays.asList(
+            new Check(), new In(), new Out(), new Rewrite(), new Print()));
     /**
-     * a map with the supported extensions and the associated class
+     * a Map with the supported files
      */
-    private final static Map<String, BrainfuckFile> extensions = new HashMap<>();
-
+    private final static Map<String, BrainfuckFile> files = new HashMap<>();
     static {
-        extensions.put(".bf", new Bf());
-        extensions.put(".bmp", new Bmp());
-
-        options.put("-p", new Print());
-        options.put("-i", new In());
-        options.put("-o", new Out());
-        options.put("--rewrite", new Rewrite());
-        options.put("--check", new Check());
+        files.put(".bf", new Bf());
+        files.put(".bmp", new Bmp());
     }
 
     /**
@@ -56,7 +51,7 @@ public class Interpreter {
      */
     private String findFileName(String... args) {
         for (String arg : args) {
-            if (extensions.containsKey(getExtension(arg))) {
+            if (files.containsKey(getExtension(arg))) {
                 return arg;
             }
         }
@@ -70,6 +65,7 @@ public class Interpreter {
      * @return the extension of the String
      */
     private String getExtension(String name) {
+        if (name == null) return null;
         int index = name.lastIndexOf(".");
         if (index > 0) return name.substring(index);
         return null;
@@ -82,9 +78,8 @@ public class Interpreter {
      * @return a new brainfuck file
      */
     private BrainfuckFile createFile(String name) {
-        if (name == null) return null;
-        if (extensions.containsKey(getExtension(name))) {
-            BrainfuckFile file = extensions.get(getExtension(name));
+        if (files.containsKey(getExtension(name))) {
+            BrainfuckFile file = files.get(getExtension(name));
             file.setFile(name);
             return file;
         }
@@ -107,13 +102,7 @@ public class Interpreter {
      * @return a list of options
      */
     private List<BrainfuckOption> findOption(String... args) {
-        List<BrainfuckOption> optionsList = new ArrayList<>();
-        for (String arg: args) {
-            if (options.containsKey(arg)) {
-                optionsList.add(options.get(arg));
-            }
-        }
-        return optionsList;
+        return options.stream().filter(option -> option.isIn(args)).collect(Collectors.toList());
     }
 
     /**

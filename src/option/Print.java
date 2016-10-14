@@ -16,8 +16,12 @@ import interpreter.Display;
  * Created the 4 October 2016
  */
 
-public class Print implements BrainfuckOption {
+public class Print extends BrainfuckOption {
 
+    @Override
+    public String getName() {
+        return "-p";
+    }
 
     /**
      * Print the content of the memory

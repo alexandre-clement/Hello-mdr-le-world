@@ -24,7 +24,4 @@ public class Bf extends BrainfuckFile {
         StandardTextFile standardTextFile = new StandardTextFile(super.getFile());
         return standardTextFile.read();
     }
-
-    @Override
-    public void setFile(String name) { super.setFile(name); }
 }

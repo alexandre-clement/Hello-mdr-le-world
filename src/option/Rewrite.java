@@ -6,7 +6,12 @@ import interpreter.Display;
  * @author SmartCoding
  *         Created the 12 octobre 2016.
  */
-public class Rewrite implements BrainfuckOption {
+public class Rewrite extends BrainfuckOption {
+
+    @Override
+    public String getName() {
+        return "--rewrite";
+    }
 
     /**
      * Display the program in its shorter version
