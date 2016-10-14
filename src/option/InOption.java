@@ -1,6 +1,6 @@
 package option;
 
-import file.StandardTextFile;
+import java.io.File;
 
 /**
  * @author SmartCoding
@@ -15,6 +15,6 @@ public class InOption extends FileOption {
 
     @Override
     public void Call(String program) {
-        input.setFile(new StandardTextFile(getFilename()));
+        input.setFile(new File(getFilename()));
     }
 }

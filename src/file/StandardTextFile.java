@@ -35,7 +35,7 @@ public class StandardTextFile {
      *
      * @return the content of the file
      */
-    public String read() {
+    String read() {
         try {
             Scanner scanner = new Scanner(file);
             StringBuilder builder = new StringBuilder(Math.toIntExact(file.length()));
@@ -52,7 +52,7 @@ public class StandardTextFile {
         try {
             Files.write(Paths.get(file.getPath()), String.valueOf(character).getBytes(), StandardOpenOption.APPEND);
         }catch (IOException e) {
-            Display.display(e);
+            Display.exitCode(3);
         }
     }
 

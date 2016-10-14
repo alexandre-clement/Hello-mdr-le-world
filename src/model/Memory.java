@@ -1,6 +1,8 @@
 package model;
 
 
+import interpreter.Display;
+
 /**
  * Brainfuck Project
  *
@@ -50,7 +52,7 @@ class Memory {
         if (p < M.length - 1) {
             p++;
         }else {
-            System.exit(2);
+            Display.exitCode(2);
         }
     }
 
@@ -62,7 +64,7 @@ class Memory {
         if (p > 0) {
             p--;
         }else {
-            System.exit(2);
+            Display.exitCode(2);
         }
     }
 
