@@ -126,15 +126,17 @@ public class Language {
      * false otherwise
      */
     public boolean check(List<Instruction> instructions) {
-        List<Instruction> loopInstructions = instructions.stream()
-                .filter(instruction -> instruction instanceof Loop)
-                .collect(Collectors.toList());
-
         for (Loop loop: loops) {
             if (loop.getAssociatedLoopObject() != null) {
-                int jump = Collections.frequency(loopInstructions, loop);
-                int back = Collections.frequency(loopInstructions, loop.getAssociatedLoopObject());
-                if (jump != back) return false;
+                int wellFormed = 0;
+                for (Instruction instruction: instructions) {
+                    if (instruction.getClass() == loop.getClass()) {
+                        wellFormed += 1;
+                    } else if (instruction.getClass() == loop.getAssociatedLoopObject().getClass())
+                        wellFormed -=1;
+                    if (wellFormed < 0) return false;
+                }
+                if (wellFormed != 0) return false;
             }
         }
         return true;

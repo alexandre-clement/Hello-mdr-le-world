@@ -15,6 +15,7 @@ public class Check implements BrainfuckOption {
      */
     @Override
     public void Call(String program) {
+        if (language.getInst().size() == 0) language.setInst(program);
         if (!language.check(language.getInst())) Display.exitCode(4);
     }
 }
