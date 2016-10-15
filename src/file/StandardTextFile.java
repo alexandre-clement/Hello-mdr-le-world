@@ -32,7 +32,6 @@ public class StandardTextFile {
 
     /**
      * read the content of a file and return it as a String
-     * the first line is the file name
      *
      * @return the content of the file
      */

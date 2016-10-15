@@ -58,20 +58,20 @@ public class Language {
      * Find and add the instructions in the running program to the list
      */
     public void setRunningInstructions(Object[] objects) {
-        for (Object object : objects) {
-            if (object instanceof String) {
+        if (objects instanceof Color[]) {
+            for (Object object : objects) {
+                runningInstructions.addAll(instructions.stream() // add instruction when Color match
+                        .filter(instruction -> instruction.getColorCode().equals(object)).collect(Collectors.toList()));
+            }
+        }
+        if (objects instanceof String[]) {
+            for (Object object : objects) {
                 for (Character character : ((String) object).toCharArray()) {
-                    for (Instruction instruction : instructions) { // add instruction when characters matches
-                        if (instruction.getShortSyntax().equals(character)) runningInstructions.add(instruction);
-                    }
+                    runningInstructions.addAll(instructions.stream() // add instruction when characters matches
+                            .filter(instruction -> instruction.getShortSyntax().equals(character)).collect(Collectors.toList()));
                 }
-                for (Instruction instruction : instructions) { // add instruction when String match
-                    if (instruction.getLongSyntax().equals(object)) runningInstructions.add(instruction);
-                }
-            } else if (object instanceof Color) {
-                for (Instruction instruction : instructions) { // add instruction when Color match
-                    if (instruction.getColorCode().equals(object)) runningInstructions.add(instruction);
-                }
+                runningInstructions.addAll(instructions.stream() // add instruction when String match
+                        .filter(instruction -> instruction.getLongSyntax().equals(object)).collect(Collectors.toList()));
             }
         }
     }
