@@ -19,8 +19,8 @@ public class Check extends BrainfuckOption {
      * @param program the String version of the file
      */
     @Override
-    public void Call(String program) {
-        if (language.getInst().size() == 0) language.setInst(program);
-        if (!language.check(language.getInst())) Display.exitCode(4);
+    public void Call(String filename, String program) {
+        if (language.getRunningInstructions().size() == 0) language.setRunningInstructions(program);
+        if (!language.check(language.getRunningInstructions())) Display.exitCode(4);
     }
 }

@@ -22,9 +22,9 @@ public class Rewrite extends StdoutOption {
      * @param program the String version of the file
      */
     @Override
-    public void Call(String program) {
-        List<Instruction> inst = language.getInst();
-        if (inst.size() == 0) language.setInst(program);
+    public void Call(String filename, String program) {
+        List<Instruction> inst = language.getRunningInstructions();
+        if (inst.size() == 0) language.setRunningInstructions(program);
         Display.display(rewrite(inst), '\n');
     }
 

@@ -11,7 +11,7 @@ import java.util.*;
  *
  * Take a commandline of the shell
  * Find and get the options and the brainfuck file
- * Applies macro to the file
+ * Applies options to the file
  *
  * @author SmartCoding
  *
@@ -142,7 +142,7 @@ public class Interpreter {
         String program = readFile(bfckFile);
         if (program == null) Display.exitCode(127);
 
-        for (BrainfuckOption option : bfckOptions) option.Call(program);
+        for (BrainfuckOption option : bfckOptions) option.Call(filename, program);
 
         Display.exitCode(0);
     }

@@ -64,30 +64,30 @@ public class Language {
     /**
      *  List of the instructions in the running program
      */
-    private List<Instruction> inst;
+    private List<Instruction> runningInstructions;
 
     public Language() {
-        inst = new ArrayList<>();
+        runningInstructions = new ArrayList<>();
     }
 
     /**
      * Find and add the instructions in the running program to the list
      * @param program the running program
      */
-    public void setInst(String program) {
-        program = program.replaceAll(" ","");// delete blank spaces
-        program = program.replaceAll("\t","");// delete indents
+    public void setRunningInstructions(String program) {
+        program = program.replaceAll(" ",""); // delete blank spaces
+        program = program.replaceAll("\t",""); // delete indents
         String[] lines = program.split("\n");
         for (String line:lines) {
             if (longSyntax.contains(line)) {
                 int i = longSyntax.indexOf(line);
-                inst.add(instructions.get(i));
+                runningInstructions.add(instructions.get(i));
             } else {
                 char[] characters = line.toCharArray();
                 for (char character : characters) {
                     if (shortSyntax.contains(character)) {
                         int i = shortSyntax.indexOf(character);
-                        inst.add(instructions.get(i));
+                        runningInstructions.add(instructions.get(i));
                     }
                 }
             }
@@ -131,7 +131,7 @@ public class Language {
      */
     public int jumpTo(int i) {
         int j = i + 1;
-        while (!check(inst.subList(i, j)))
+        while (!check(runningInstructions.subList(i, j)))
             j += 1;
         return j-1;
     }
@@ -143,7 +143,7 @@ public class Language {
      */
     public int backTo(int i) {
         int j = i++ - 1;
-        while (!check(inst.subList(j, i)))
+        while (!check(runningInstructions.subList(j, i)))
             j -= 1;
         return j;
     }
@@ -151,8 +151,8 @@ public class Language {
     /**
      * @return the list of instructions in the running program
      */
-    public List<Instruction> getInst() {
-        return inst;
+    public List<Instruction> getRunningInstructions() {
+        return runningInstructions;
     }
 
     /**
@@ -160,6 +160,6 @@ public class Language {
      */
     @Override
     public String toString() {
-        return inst.stream().map(Instruction::toString).collect(Collectors.joining(", "));
+        return runningInstructions.stream().map(Instruction::toString).collect(Collectors.joining(", "));
     }
 }

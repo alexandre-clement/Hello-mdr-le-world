@@ -45,7 +45,7 @@ public abstract class BrainfuckOption {
      *
      * @param program the String version of the file
      */
-    public abstract void Call(String program);
+    public abstract void Call(String filename, String program);
 
     public void setInput(Input input) {
         this.input = input;

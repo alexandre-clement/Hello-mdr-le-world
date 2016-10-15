@@ -18,5 +18,12 @@ public class Input {
             Display.exitCode(3);
         }
     }
-    public char input() { return (char) Integer.parseInt(scanner.nextLine()); }
+    public char input() {
+        try {
+             return (char) Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException exception) {
+            Display.exitCode(5);
+            return 0;
+        }
+    }
 }
