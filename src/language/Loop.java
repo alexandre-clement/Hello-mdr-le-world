@@ -2,7 +2,7 @@ package language;
 
 
 /**
- * @author Alexandre Clement
+ * @author SmartCoding
  *         Created the 13 octobre 2016.
  */
 public class Loop {

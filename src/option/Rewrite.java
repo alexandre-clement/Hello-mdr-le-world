@@ -23,8 +23,8 @@ public class Rewrite extends StdoutOption {
      */
     @Override
     public void Call(String program) {
-        if (language.getInst().size() == 0) language.setInst(program); // avoid reset the instructions
-        List<Instruction> inst = language.getInst();
+        if (language.getRunningInstructions().size() == 0) language.setRunningInstructions(program); // avoid reset the instructions
+        List<Instruction> inst = language.getRunningInstructions();
         Display.display(rewrite(inst), '\n');
     }
 

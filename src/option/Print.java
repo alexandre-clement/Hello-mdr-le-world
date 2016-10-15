@@ -2,7 +2,6 @@ package option;
 
 import interpreter.Display;
 import language.Instruction;
-import model.OperatingSystem;
 
 import java.util.List;
 
@@ -29,24 +28,18 @@ public class Print extends StdoutOption {
 
     /**
      * Print the content of the memory
+     * call the execute method of the instructions i.e executes the program on the system
      *
      * @param program the String version of the file
      */
     @Override
-    public void Call(String program) {
-        if (language.getInst().size() == 0) language.setInst(program); // avoid reset the instructions
-        List<Instruction> inst = language.getInst();
-        execute(os, inst);
-        Display.display('\n', os.getMemoryContent());
-    }
-
-    /**
-     * call the execute method of the instructions i.e executes the program on the system
-     * @param os the operating system of the running program
-     */
-    private void execute(OperatingSystem os, List<Instruction> inst) {
-        for (int i=os.getI(); i < inst.size(); i = os.getI()) {
+    public void Call(String filename, String program) {
+        List<Instruction> inst = language.getRunningInstructions();
+        if (inst.size() == 0) language.setRunningInstructions(program);
+        int instSize = inst.size();
+        for (int i=os.getI(); i < instSize; i = os.getI()) {
             inst.get(i).exec(this);
         }
+        Display.display('\n', os.getMemoryContent());
     }
 }

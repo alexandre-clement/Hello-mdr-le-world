@@ -1,7 +1,6 @@
 package language;
 
 import language.instruction.*;
-import option.BrainfuckOption;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +25,7 @@ public class Language {
     private static final List<String> instructionsName = new ArrayList<>(
             instructions.stream().map(Instruction::toString).collect(Collectors.toList()));
 
-    /**
+      /**
      * list with the Loop instructions
      */
     private final static List<Loop> loops = instructions.stream()
@@ -53,10 +52,10 @@ public class Language {
     /**
      *  List of the instructions in the running program
      */
-    private List<Instruction> inst;
+    private List<Instruction> runningInstructions;
 
     public Language() {
-        inst = new ArrayList<>();
+        runningInstructions = new ArrayList<>();
     }
 
     /**
@@ -69,12 +68,12 @@ public class Language {
         String[] lines = programeHandled.split("\n");
         for (String line:lines) {
             if (instructions.stream().filter(instruction -> instruction.getLongSyntax().equals(line)).findFirst().isPresent()) {
-                inst.add(instructions.stream().filter(instruction -> instruction.getLongSyntax().equals(line)).findFirst().get());
+                runningInstructions.add(instructions.stream().filter(instruction -> instruction.getLongSyntax().equals(line)).findFirst().get());
             } else {
                 char[] characters = line.toCharArray();
                 for (char character : characters) {
                     if (instructions.stream().filter(instruction -> instruction.getShortSyntax().equals(character)).findFirst().isPresent()) {
-                        inst.add(instructions.stream().filter(instruction -> instruction.getShortSyntax().equals(character)).findFirst().get());
+                        runningInstructions.add(instructions.stream().filter(instruction -> instruction.getShortSyntax().equals(character)).findFirst().get());
                     }
                 }
             }
@@ -118,7 +117,7 @@ public class Language {
      */
     public int jumpTo(int i) {
         int j = i + 1;
-        while (!check(inst.subList(i, j)))
+        while (!check(runningInstructions.subList(i, j)))
             j += 1;
         return j-1;
     }
@@ -130,7 +129,7 @@ public class Language {
      */
     public int backTo(int i) {
         int j = i++ - 1;
-        while (!check(inst.subList(j, i)))
+        while (!check(runningInstructions.subList(j, i)))
             j -= 1;
         return j;
     }
@@ -138,8 +137,8 @@ public class Language {
     /**
      * @return the list of instructions in the running program
      */
-    public List<Instruction> getInst() {
-        return inst;
+    public List<Instruction> getRunningInstructions() {
+        return runningInstructions;
     }
 
     /**
@@ -147,6 +146,6 @@ public class Language {
      */
     @Override
     public String toString() {
-        return inst.stream().map(Instruction::toString).collect(Collectors.joining(", "));
+        return runningInstructions.stream().map(Instruction::toString).collect(Collectors.joining(", "));
     }
 }
