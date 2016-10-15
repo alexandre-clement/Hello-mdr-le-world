@@ -87,7 +87,7 @@ public class Interpreter {
      * @param bfckFile the file just created
      * @return the file content
      */
-    private String readFile(BrainfuckFile bfckFile) {
+    private Object[] readFile(BrainfuckFile bfckFile) {
         return bfckFile.ReadFile();
     }
 
@@ -132,10 +132,10 @@ public class Interpreter {
         BrainfuckFile bfckFile = createFile(filename);
         if (bfckFile == null || !bfckFile.isFile()) Display.exitCode(127);
 
-        String program = readFile(bfckFile);
-        if (program == null) Display.exitCode(127);
+        Object[] objects = readFile(bfckFile);
+        if (objects == null) Display.exitCode(127);
 
-        for (BrainfuckOption option : bfckOptions) option.Call(filename, program);
+        for (BrainfuckOption option : bfckOptions) option.Call(filename, objects);
 
         Display.exitCode(0);
     }

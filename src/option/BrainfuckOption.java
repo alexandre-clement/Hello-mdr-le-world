@@ -50,9 +50,8 @@ public abstract class BrainfuckOption {
     /**
      * Execute the option on the program
      *
-     * @param program the String version of the file
      */
-    public abstract void Call(String filename, String program);
+    public abstract void Call(String filename, Object[] objects);
 
     public void setDisplay(Display display) {
         this.display = display;

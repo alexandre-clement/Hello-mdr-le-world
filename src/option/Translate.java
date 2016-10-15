@@ -1,11 +1,9 @@
 package option;
 
+import file.Bmp;
 import language.Instruction;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -13,7 +11,7 @@ import java.util.List;
  *         Created the 14 octobre 2016.
  */
 public class Translate extends StdoutOption {
-    private static final int SIDE = 3;
+
 
     @Override
     String getName() {
@@ -21,32 +19,26 @@ public class Translate extends StdoutOption {
     }
 
     @Override
-    public void Call(String filename, String program) {
+    public void Call(String filename, Object[] objects) {
+        if (language.getRunningInstructions().size() == 0) language.setRunningInstructions(objects); // avoid reset the instructions
         List<Instruction> inst = language.getRunningInstructions();
-        if (inst.size() == 0) language.setRunningInstructions(program);
         int programSize = inst.size();
-        int size = (int) Math.ceil(Math.sqrt(programSize)) * SIDE;
+        int size = (int) Math.ceil(Math.sqrt(programSize)) * Bmp.SIDE;
         int[] rbgArray = translate(inst, programSize, size);
-        try {
-            BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-            image.setRGB(0, 0, size, size, rbgArray, 0, size);
-            ImageIO.write(image, "BMP", new File(filename + ".bmp"));
-        } catch (java.io.IOException | IllegalArgumentException exception) {
-            System.out.println(exception);
-        }
+        Bmp.write(filename, rbgArray, size);
     }
 
     private int[] translate(List<Instruction> inst, int programSize, int size) {
         int[] rgbArray = new int[size * size];
         for (int i=0; i<programSize; i++) {
-            putColor(rgbArray, inst.get(i).getColorCode(), (SIDE*i)%size, (SIDE*i)/size, size);
+            putColor(rgbArray, inst.get(i).getColorCode(), (Bmp.SIDE*i)%size, (Bmp.SIDE*i)/size, size);
         }
         return rgbArray;
     }
 
     private void putColor(int[] rgbArray, Color color, int x, int y, int size) {
-        for (int i=SIDE*y; i<SIDE*y+SIDE; i++) {
-            for (int j=x; j<x+SIDE; j++) {
+        for (int i=Bmp.SIDE*y; i<Bmp.SIDE*y+Bmp.SIDE; i++) {
+            for (int j=x; j<x+Bmp.SIDE; j++) {
                 rgbArray[i*size + j] = color.getRGB();
             }
         }

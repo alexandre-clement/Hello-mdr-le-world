@@ -14,7 +14,7 @@ public class OutOption extends FileOption {
     }
 
     @Override
-    public void Call(String filename, String program) {
+    public void Call(String filename, Object[] objects) {
         display.setFile(new StandardTextFile(getFilename()));
     }
 }

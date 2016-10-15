@@ -14,7 +14,7 @@ public class InOption extends FileOption {
     }
 
     @Override
-    public void Call(String filename, String program) {
+    public void Call(String filename, Object[] objects) {
         input.setFile(new File(getFilename()));
     }
 }

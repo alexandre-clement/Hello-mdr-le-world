@@ -31,7 +31,7 @@ public abstract class BrainfuckFile {
     /**
      * Convert the file content to a String
      */
-    public abstract String ReadFile();
+    public abstract Object[] ReadFile();
 
     /**
      * Check if the file exists

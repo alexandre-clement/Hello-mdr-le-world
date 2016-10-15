@@ -1,7 +1,6 @@
 package option;
 
 import interpreter.Display;
-import interpreter.Input;
 import interpreter.Interpreter;
 
 import java.util.stream.Collectors;

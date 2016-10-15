@@ -2,7 +2,9 @@ package language;
 
 import language.instruction.*;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -60,21 +62,21 @@ public class Language {
 
     /**
      * Find and add the instructions in the running program to the list
-     * @param program the running program
      */
-    public void setRunningInstructions(String program) {
-        String programeHandled = program.replaceAll(" ","");// delete blank spaces
-        programeHandled = programeHandled.replaceAll("\t","");// delete indents
-        String[] lines = programeHandled.split("\n");
-        for (String line:lines) {
-            if (instructions.stream().filter(instruction -> instruction.getLongSyntax().equals(line)).findFirst().isPresent()) {
-                runningInstructions.add(instructions.stream().filter(instruction -> instruction.getLongSyntax().equals(line)).findFirst().get());
-            } else {
-                char[] characters = line.toCharArray();
-                for (char character : characters) {
-                    if (instructions.stream().filter(instruction -> instruction.getShortSyntax().equals(character)).findFirst().isPresent()) {
-                        runningInstructions.add(instructions.stream().filter(instruction -> instruction.getShortSyntax().equals(character)).findFirst().get());
+    public void setRunningInstructions(Object[] objects) {
+        for (Object object : objects) {
+            if (object instanceof String) {
+                for (Character character : ((String) object).toCharArray()) {
+                    for (Instruction instruction : instructions) {
+                        if (instruction.getShortSyntax().equals(character)) runningInstructions.add(instruction);
                     }
+                }
+                for (Instruction instruction : instructions) {
+                    if (instruction.getLongSyntax().equals(object)) runningInstructions.add(instruction);
+                }
+            } else if (object instanceof Color) {
+                for (Instruction instruction : instructions) {
+                    if (instruction.getColorCode().equals(object)) runningInstructions.add(instruction);
                 }
             }
         }

@@ -20,8 +20,8 @@ public class Bf extends BrainfuckFile {
      * @return the content of the file as a String
      */
     @Override
-    public String ReadFile() {
+    public Object[] ReadFile() {
         StandardTextFile standardTextFile = new StandardTextFile(super.getFile());
-        return standardTextFile.read();
+        return standardTextFile.read().split("\n");
     }
 }

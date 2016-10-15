@@ -5,7 +5,7 @@ package language;
  * @author SmartCoding
  *         Created the 13 octobre 2016.
  */
-public class Loop {
+public abstract class Loop implements Instruction {
     /**
      * The associated Loop object, null if it doesn't exist
      */

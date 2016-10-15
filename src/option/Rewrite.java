@@ -19,11 +19,10 @@ public class Rewrite extends StdoutOption {
     /**
      * Display the program in its shorter version
      *
-     * @param program the String version of the file
      */
     @Override
-    public void Call(String filename, String program) {
-        if (language.getRunningInstructions().size() == 0) language.setRunningInstructions(program); // avoid reset the instructions
+    public void Call(String filename, Object[] objects) {
+        if (language.getRunningInstructions().size() == 0) language.setRunningInstructions(objects); // avoid reset the instructions
         List<Instruction> inst = language.getRunningInstructions();
         Display.display(rewrite(inst), '\n');
     }

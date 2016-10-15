@@ -30,12 +30,11 @@ public class Print extends StdoutOption {
      * Print the content of the memory
      * call the execute method of the instructions i.e executes the program on the system
      *
-     * @param program the String version of the file
      */
     @Override
-    public void Call(String filename, String program) {
+    public void Call(String filename, Object[] objects) {
+        if (language.getRunningInstructions().size() == 0) language.setRunningInstructions(objects); // avoid reset the instructions
         List<Instruction> inst = language.getRunningInstructions();
-        if (inst.size() == 0) language.setRunningInstructions(program);
         int instSize = inst.size();
         for (int i=os.getI(); i < instSize; i = os.getI()) {
             inst.get(i).exec(this);
