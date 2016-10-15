@@ -33,12 +33,7 @@ public class Interpreter {
         files.put(".bmp", new Bmp());
     }
 
-    /**
-     * the input command line
-     */
-    private String[] commandline;
-    private Input input = new Input();
-    private Display display = new Display();
+    private String[] commandline; //the input command line
 
     public Interpreter(String... commandline) {
         this.commandline = commandline;
@@ -107,13 +102,11 @@ public class Interpreter {
         boolean StdoutOption = false;
         for (BrainfuckOption option: options) {
             if (option.isIn(args)) {
-                option.setInput(input);
-                option.setDisplay(display);
                 if (option instanceof StdoutOption) {
                     if (!StdoutOption) {
                         StdoutOption = true;
                         optionsInCommandline.add(option);
-                    }
+                    } //the second StdoutOption which is neglected to the execution will not be added into the option array
                 } else optionsInCommandline.add(option);
             }
         }

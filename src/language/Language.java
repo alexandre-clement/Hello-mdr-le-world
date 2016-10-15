@@ -1,6 +1,7 @@
 package language;
 
 import language.instruction.*;
+import option.BrainfuckOption;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,18 +25,6 @@ public class Language {
      */
     private static final List<String> instructionsName = new ArrayList<>(
             instructions.stream().map(Instruction::toString).collect(Collectors.toList()));
-
-    /**
-     * List with the long syntax
-     */
-    private static final List<String> longSyntax = new ArrayList<>(
-            instructions.stream().map(Instruction::getLongSyntax).collect(Collectors.toList()));
-
-    /**
-     * List with the short syntax
-     */
-    private static final List<Character> shortSyntax = new ArrayList<>(
-            instructions.stream().map(Instruction::getShortSyntax).collect(Collectors.toList()));
 
     /**
      * list with the Loop instructions
@@ -75,19 +64,17 @@ public class Language {
      * @param program the running program
      */
     public void setInst(String program) {
-        program = program.replaceAll(" ","");// delete blank spaces
-        program = program.replaceAll("\t","");// delete indents
-        String[] lines = program.split("\n");
+        String programeHandled = program.replaceAll(" ","");// delete blank spaces
+        programeHandled = programeHandled.replaceAll("\t","");// delete indents
+        String[] lines = programeHandled.split("\n");
         for (String line:lines) {
-            if (longSyntax.contains(line)) {
-                int i = longSyntax.indexOf(line);
-                inst.add(instructions.get(i));
+            if (instructions.stream().filter(instruction -> instruction.getLongSyntax().equals(line)).findFirst().isPresent()) {
+                inst.add(instructions.stream().filter(instruction -> instruction.getLongSyntax().equals(line)).findFirst().get());
             } else {
                 char[] characters = line.toCharArray();
                 for (char character : characters) {
-                    if (shortSyntax.contains(character)) {
-                        int i = shortSyntax.indexOf(character);
-                        inst.add(instructions.get(i));
+                    if (instructions.stream().filter(instruction -> instruction.getShortSyntax().equals(character)).findFirst().isPresent()) {
+                        inst.add(instructions.stream().filter(instruction -> instruction.getShortSyntax().equals(character)).findFirst().get());
                     }
                 }
             }

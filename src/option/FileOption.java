@@ -1,6 +1,7 @@
 package option;
 
 import interpreter.Display;
+import interpreter.Input;
 import interpreter.Interpreter;
 
 import java.util.stream.Collectors;
@@ -23,13 +24,15 @@ abstract class FileOption extends BrainfuckOption {
     public boolean isIn(String... commandline) {
         for (int i=0; i < commandline.length; i++) {
             if (getName().equals(commandline[i])) {
+                //if the next String exists and isn't an option
                 if (i+1 < commandline.length && !Interpreter.options.stream()
                         .map(BrainfuckOption::getName).collect(Collectors.toList()).contains(commandline[i+1])) {
-                    filename = commandline[i + 1];
-                    commandline[i + 1] = null;
+                    filename = commandline[i + 1]; //set the filename
+                    commandline[i + 1] = null; //set the String as null, to avoid disturbing finding the executable file
                     return true;
+                }else {
+                    Display.exitCode(3);
                 }
-                Display.exitCode(3);
             }
         }
         return false;

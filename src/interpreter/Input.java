@@ -9,7 +9,11 @@ import java.util.Scanner;
  *         Created the 14 octobre 2016.
  */
 public class Input {
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    public Input() {
+        scanner = new Scanner(System.in); //initialized with the standard input
+    }
 
     public void setFile(File file) {
         try {

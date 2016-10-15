@@ -34,8 +34,8 @@ public class Print extends StdoutOption {
      */
     @Override
     public void Call(String program) {
+        if (language.getInst().size() == 0) language.setInst(program); // avoid reset the instructions
         List<Instruction> inst = language.getInst();
-        if (inst.size() == 0) language.setInst(program);
         execute(os, inst);
         Display.display('\n', os.getMemoryContent());
     }
@@ -45,8 +45,7 @@ public class Print extends StdoutOption {
      * @param os the operating system of the running program
      */
     private void execute(OperatingSystem os, List<Instruction> inst) {
-        int instSize = inst.size();
-        for (int i=os.getI(); i < instSize; i = os.getI()) {
+        for (int i=os.getI(); i < inst.size(); i = os.getI()) {
             inst.get(i).exec(this);
         }
     }
