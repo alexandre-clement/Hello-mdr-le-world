@@ -22,12 +22,6 @@ public class Language {
             new Incr(),new Decr(),new Left(),new Right(),new Out(), new In(), new Jump(), new Back()));
 
     /**
-     * List with the names of instructions
-     */
-    private static final List<String> instructionsName = new ArrayList<>(
-            instructions.stream().map(Instruction::toString).collect(Collectors.toList()));
-
-      /**
      * list with the Loop instructions
      */
     private final static List<Loop> loops = instructions.stream()
@@ -41,8 +35,8 @@ public class Language {
      * @param backTo the associated back instruction
      */
     private static void linkLoopObject(String jumpTo, String backTo) {
-        ((Loop) instructions.get(instructionsName.indexOf(jumpTo)))
-                .setAssociatedLoopObject((Loop) instructions.get(instructionsName.indexOf(backTo)));
+        List<String> name = new ArrayList<>(loops.stream().map(Loop::toString).collect(Collectors.toList()));
+        (loops.get(name.indexOf(jumpTo))).setAssociatedLoopObject(loops.get(name.indexOf(backTo)));
         // the controversy is not required
     }
 
@@ -67,15 +61,15 @@ public class Language {
         for (Object object : objects) {
             if (object instanceof String) {
                 for (Character character : ((String) object).toCharArray()) {
-                    for (Instruction instruction : instructions) {
+                    for (Instruction instruction : instructions) { // add instruction when characters matches
                         if (instruction.getShortSyntax().equals(character)) runningInstructions.add(instruction);
                     }
                 }
-                for (Instruction instruction : instructions) {
+                for (Instruction instruction : instructions) { // add instruction when String match
                     if (instruction.getLongSyntax().equals(object)) runningInstructions.add(instruction);
                 }
             } else if (object instanceof Color) {
-                for (Instruction instruction : instructions) {
+                for (Instruction instruction : instructions) { // add instruction when Color match
                     if (instruction.getColorCode().equals(object)) runningInstructions.add(instruction);
                 }
             }
@@ -118,7 +112,7 @@ public class Language {
      * @return the position of the back instruction
      */
     public int jumpTo(int i) {
-        int j = i + 1;
+        int j = i + 1; // seeks the smallest sub-list such that it is well-formed
         while (!check(runningInstructions.subList(i, j)))
             j += 1;
         return j-1;
@@ -130,7 +124,7 @@ public class Language {
      * @return the position of the associated jump instruction
      */
     public int backTo(int i) {
-        int j = i++ - 1;
+        int j = i++ - 1; // seeks the smallest sub-list such that it is well-formed
         while (!check(runningInstructions.subList(j, i)))
             j -= 1;
         return j;

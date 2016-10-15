@@ -28,6 +28,9 @@ public interface Instruction {
      */
     Character getShortSyntax();
 
+    /**
+     * @return the color of the instruction
+     */
     Color getColorCode();
 
 }

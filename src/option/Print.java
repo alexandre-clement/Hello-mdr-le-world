@@ -29,7 +29,6 @@ public class Print extends StdoutOption {
     /**
      * Print the content of the memory
      * call the execute method of the instructions i.e executes the program on the system
-     *
      */
     @Override
     public void Call(String filename, Object[] objects) {

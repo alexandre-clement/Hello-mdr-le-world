@@ -12,6 +12,9 @@ import java.awt.*;
  */
 public class Jump extends Loop implements Instruction {
 
+    public Jump() {
+        super();
+    }
     @Override
     public void exec(BrainfuckOption master) {
         if (master.os.dp()) {

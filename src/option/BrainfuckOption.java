@@ -49,7 +49,9 @@ public abstract class BrainfuckOption {
 
     /**
      * Execute the option on the program
-     *
+     * @param filename the name of the file
+     * @param objects an array with the content of the file
+     *                instance depends on type of the file
      */
     public abstract void Call(String filename, Object[] objects);
 
