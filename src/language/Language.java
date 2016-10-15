@@ -62,7 +62,7 @@ public class Language {
      * Find and add the instructions in the running program to the list
      * @param program the running program
      */
-    public void setInst(String program) {
+    public void setRunningInstructions(String program) {
         String programeHandled = program.replaceAll(" ","");// delete blank spaces
         programeHandled = programeHandled.replaceAll("\t","");// delete indents
         String[] lines = programeHandled.split("\n");
