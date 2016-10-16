@@ -7,5 +7,5 @@ package option;
  * @author SmartCoding
  *         Created the 14 octobre 2016.
  */
-public abstract class StdoutOption extends BrainfuckOption {
+public abstract class StdoutOption extends ClassicOption {
 }

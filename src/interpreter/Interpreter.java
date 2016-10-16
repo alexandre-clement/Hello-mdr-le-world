@@ -22,8 +22,8 @@ public class Interpreter {
     /**
      * a List with the options ordered by priority of the option (from the max to the min priority option)
      */
-    public final static List<BrainfuckOption> options = new ArrayList<>(Arrays.asList(
-            new Check(), new InOption(), new OutOption(), new Rewrite(), new Translate(), new Print()));
+    public final static List<ClassicOption> options = new ArrayList<>(Arrays.asList(
+            /* new Check(), */ new InOption(), new OutOption(), new Rewrite(), new Translate(), new Print()));
     /**
      * a Map with the supported files
      */
@@ -98,9 +98,9 @@ public class Interpreter {
      * @return a list of options
      */
     private List<BrainfuckOption> findOption(String... args) {
-        List<BrainfuckOption> optionsInCommandline = new ArrayList<>();
+        List<BrainfuckOption> optionsInCommandline = new ArrayList<>(Collections.singletonList(new Check()));
         boolean StdoutOption = false;
-        for (BrainfuckOption option: options) {
+        for (ClassicOption option: options) {
             if (option.isIn(args)) {
                 if (option instanceof StdoutOption) {
                     if (!StdoutOption) {

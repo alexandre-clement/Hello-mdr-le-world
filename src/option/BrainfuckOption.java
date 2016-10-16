@@ -17,35 +17,11 @@ import model.OperatingSystem;
  * Created the 4 October 2016
  */
 
-public abstract class BrainfuckOption {
-    public Input input;
-    public Display display;
-    public Language language;
-    public OperatingSystem os;
-
-    public BrainfuckOption() {
-        input = new Input();
-        display = new Display();
-        language = new Language();
-        os = new OperatingSystem();
-    }
-
-    /**
-     * @return the name of the option
-     */
-    abstract String getName();
-
-    /**
-     * Check if the option is in the commandline
-     * @param commandline with the option and the file
-     * @return true if the option is in the commandline, false otherwise
-     */
-    public boolean isIn(String... commandline) {
-        for (String command: commandline) {
-            if (getName().equals(command)) return true;
-        }
-        return false;
-    }
+public interface BrainfuckOption {
+    Input input = new Input();
+    Display display = new Display();
+    Language language = new Language();
+    OperatingSystem os = new OperatingSystem();
 
     /**
      * Execute the option on the program
@@ -53,9 +29,5 @@ public abstract class BrainfuckOption {
      * @param objects an array with the content of the file
      *                instance depends on type of the file
      */
-    public abstract void Call(String filename, Object[] objects);
-
-    public void setDisplay(Display display) {
-        this.display = display;
-    }
+    void Call(String filename, Object[] objects);
 }

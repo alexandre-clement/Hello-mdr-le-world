@@ -19,7 +19,7 @@ import java.util.List;
  * Created the 4 October 2016
  */
 
-public class Print extends StdoutOption {
+public class Print extends StdoutOption{
 
     @Override
     public String getName() {

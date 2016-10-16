@@ -13,8 +13,8 @@ public class Out implements Instruction {
 
     @Override
     public void exec(BrainfuckOption master) {
-        master.display.out(master.os.out());
-        master.os.nextI();
+        BrainfuckOption.display.out(BrainfuckOption.os.out());
+        BrainfuckOption.os.nextI();
     }
 
     @Override
@@ -34,6 +34,6 @@ public class Out implements Instruction {
 
     @Override
     public String toString() {
-        return "OutOption";
+        return "Out";
     }
 }

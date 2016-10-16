@@ -25,7 +25,18 @@ public class StandardTextFile {
 
     public StandardTextFile(String name) {
         if (name == null) file=null;
-        else file = new File(name);
+        else {
+            file = new File(name);
+            if (file.isFile()) {
+                try { // if the file already exist, replace it by a new one
+                    Files.delete(Paths.get(file.getPath()));
+                    Files.createFile(Paths.get(file.getPath()));
+                } catch (IOException exception) {
+                    Display.display(exception);
+                }
+            }
+        }
+
     }
 
     StandardTextFile(File file) { this.file = file; }
@@ -49,9 +60,9 @@ public class StandardTextFile {
     }
 
     public void write(char character) {
-        try {
+        try { // add the character to the file
             Files.write(Paths.get(file.getPath()), String.valueOf(character).getBytes(), StandardOpenOption.APPEND);
-        }catch (IOException e) {
+        } catch (IOException exception) {
             Display.exitCode(3);
         }
     }

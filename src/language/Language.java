@@ -70,8 +70,12 @@ public class Language {
                     runningInstructions.addAll(instructions.stream() // add instruction when characters matches
                             .filter(instruction -> instruction.getShortSyntax().equals(character)).collect(Collectors.toList()));
                 }
-                runningInstructions.addAll(instructions.stream() // add instruction when String match
-                        .filter(instruction -> instruction.getLongSyntax().equals(object)).collect(Collectors.toList()));
+                for (Instruction instruction: instructions) { // add instructions when string matches
+                    if (((String) object).contains(instruction.getLongSyntax())) { // order of testing syntax is important
+                        runningInstructions.add(instruction); // i.e we need to test INCR before IN
+                        break; // if INCR is found, the loop is break
+                    }
+                }
             }
         }
     }

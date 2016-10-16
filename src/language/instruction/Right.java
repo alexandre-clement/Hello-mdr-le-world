@@ -14,8 +14,8 @@ public class Right implements Instruction {
 
     @Override
     public void exec(BrainfuckOption master) {
-        master.os.right();
-        master.os.nextI();
+        BrainfuckOption.os.right();
+        BrainfuckOption.os.nextI();
     }
 
     @Override

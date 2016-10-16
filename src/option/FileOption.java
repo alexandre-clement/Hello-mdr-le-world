@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * @author SmartCoding
  *         Created the 13 octobre 2016.
  */
-abstract class FileOption extends BrainfuckOption {
+abstract class FileOption extends ClassicOption {
     private String filename = null;
 
     /**
@@ -25,7 +25,7 @@ abstract class FileOption extends BrainfuckOption {
             if (getName().equals(commandline[i])) {
                 //if the next String exists and isn't an option
                 if (i+1 < commandline.length && !Interpreter.options.stream()
-                        .map(BrainfuckOption::getName).collect(Collectors.toList()).contains(commandline[i+1])) {
+                        .map(ClassicOption::getName).collect(Collectors.toList()).contains(commandline[i+1])) {
                     filename = commandline[i + 1]; //set the filename
                     commandline[i + 1] = null; //set the String as null, to avoid disturbing finding the executable file
                     return true;

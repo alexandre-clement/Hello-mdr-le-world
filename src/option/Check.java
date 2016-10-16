@@ -6,7 +6,7 @@ import interpreter.Display;
  * @author SmartCoding
  *         Created the 13 octobre 2016.
  */
-public class Check extends BrainfuckOption {
+public class Check extends ClassicOption {
 
     @Override
     public String getName() {

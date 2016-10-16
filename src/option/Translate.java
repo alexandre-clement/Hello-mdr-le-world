@@ -14,7 +14,7 @@ public class Translate extends StdoutOption {
 
 
     @Override
-    String getName() {
+    public String getName() {
         return "--translate";
     }
 

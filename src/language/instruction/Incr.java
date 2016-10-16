@@ -14,8 +14,8 @@ public class Incr implements Instruction {
 
     @Override
     public void exec(BrainfuckOption master) {
-        master.os.incr();
-        master.os.nextI();
+        BrainfuckOption.os.incr();
+        BrainfuckOption.os.nextI();
     }
 
     @Override

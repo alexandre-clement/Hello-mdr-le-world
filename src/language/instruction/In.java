@@ -13,8 +13,8 @@ public class In implements Instruction {
 
     @Override
     public void exec(BrainfuckOption master) {
-        master.os.in(master.input.input());
-        master.os.nextI();
+        BrainfuckOption.os.in(BrainfuckOption.input.input());
+        BrainfuckOption.os.nextI();
     }
 
     @Override
@@ -34,6 +34,6 @@ public class In implements Instruction {
 
     @Override
     public String toString() {
-        return "InOption";
+        return "In";
     }
 }

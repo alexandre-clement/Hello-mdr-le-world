@@ -17,10 +17,10 @@ public class Jump extends Loop implements Instruction {
     }
     @Override
     public void exec(BrainfuckOption master) {
-        if (master.os.dp()) {
-            master.os.bound(master.language.jumpTo(master.os.getI()));
+        if (BrainfuckOption.os.dp()) {
+            BrainfuckOption.os.bound(BrainfuckOption.language.jumpTo(BrainfuckOption.os.getI()));
         }
-        master.os.nextI();
+        BrainfuckOption.os.nextI();
     }
 
     @Override

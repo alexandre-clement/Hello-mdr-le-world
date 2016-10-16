@@ -14,8 +14,8 @@ public class Decr implements Instruction {
 
     @Override
     public void exec(BrainfuckOption master) {
-        master.os.decr();
-        master.os.nextI();
+        BrainfuckOption.os.decr();
+        BrainfuckOption.os.nextI();
     }
 
     @Override

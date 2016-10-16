@@ -14,8 +14,8 @@ public class Left implements Instruction {
 
     @Override
     public void exec(BrainfuckOption master) {
-        master.os.left();
-        master.os.nextI();
+        BrainfuckOption.os.left();
+        BrainfuckOption.os.nextI();
     }
 
     @Override
