@@ -23,11 +23,14 @@ public class Input {
         }
     }
     public char input() {
-        try {
-             return (char) Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException exception) {
-            Display.exitCode(5);
-            return 0;
+
+        if (scanner.hasNext()) {
+            String in = scanner.next();
+            if (in.length() > 0)
+                return in.charAt(0);
+            else return input();
         }
+        Display.exitCode(3);
+        return 0;
     }
 }
