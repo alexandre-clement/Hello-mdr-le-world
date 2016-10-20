@@ -1,2 +1,3 @@
 @echo off
-java -cp BfckProject.jar Main %*
+java -cp Projet-Brainfuck.jar main.Main %*
+echo %errorlevel%
