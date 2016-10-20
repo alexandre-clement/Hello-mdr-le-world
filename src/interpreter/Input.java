@@ -10,9 +10,11 @@ import java.util.Scanner;
  */
 public class Input {
     private Scanner scanner;
+    private String temp;
 
     public Input() {
         scanner = new Scanner(System.in); //initialized with the standard input
+        temp = "";
     }
 
     public void setFile(File file) {
@@ -23,12 +25,18 @@ public class Input {
         }
     }
     public char input() {
-
-        if (scanner.hasNext()) {
-            String in = scanner.next();
-            if (in.length() > 0)
+        if (temp.length() > 0) {
+            char input = temp.charAt(0);
+            temp = temp.substring(1);
+            return input;
+        }
+        if (scanner.hasNextLine()) {
+            String in = scanner.nextLine();
+            if (in.length() > 0) {
+                temp = in.substring(1);
                 return in.charAt(0);
-            else return input();
+            }
+            else return '\n';
         }
         Display.exitCode(3);
         return 0;
