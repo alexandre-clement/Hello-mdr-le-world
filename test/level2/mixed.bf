@@ -1,0 +1,6 @@
++>
+INCR
+>
+RIGHT
+<++
+DECR
