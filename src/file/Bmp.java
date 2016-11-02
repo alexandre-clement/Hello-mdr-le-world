@@ -34,7 +34,7 @@ public class Bmp extends BrainfuckFile {
             BufferedImage image = ImageIO.read(super.getFile());
             int width = image.getWidth();
             int height = image.getHeight();
-            if (width % SIDE != 0 || height%SIDE!=0 || width != height) return new Color[0];
+            if (width % SIDE != 0 || height%SIDE!=0) return new Color[0];
             Color[] colors = new Color[width * height / SIDE / SIDE];
             for (int y=0; y<height; y+=SIDE) {
                 for (int x=0; x<width; x+=SIDE) {

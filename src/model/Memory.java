@@ -9,6 +9,8 @@ import interpreter.Display;
  * @author SmartCoding
  */
 class Memory {
+    private final static int MIN = Byte.MIN_VALUE; // -128
+    private final static int MAX = Byte.MAX_VALUE; // 127
 
     /**
      * the total memory capacity
@@ -18,30 +20,38 @@ class Memory {
     /**
      * contain up to 8 bits of unsigned date (denoted as di)
      */
-    private Cell[] M;
+    private byte[] M;
     /**
      * the pointer to the memory cell currently used by used by the program
      */
     private int p;
 
     Memory() {
-        M = new Cell[MEMORY_CAPACITY];
-        for (int j=0; j<MEMORY_CAPACITY; j++) M[j] = new Cell();
+        M = new byte[MEMORY_CAPACITY];
+        for (int j=0; j<MEMORY_CAPACITY; j++) M[j] = (byte) MIN;
         p = 0;
+    }
+
+    private int getValue() { return M[p] - MIN; }
+
+    private int getValue(int p) {
+        return M[p] - MIN;
     }
 
     /**
      * Increment the cell
      */
     void incr() {
-        M[p].incr();
+        if (M[p] < MAX) M[p]++;
+        else Display.exitCode(1);
     }
 
     /**
      * Decrement the cell
      */
     void decr() {
-        M[p].decr();
+        if (M[p] > MIN) M[p]--;
+        else Display.exitCode(1);
     }
 
     /**
@@ -69,17 +79,17 @@ class Memory {
     }
 
     void in(char character) {
-        M[p].in(character);
+        M[p] = (byte) ((int) character + MIN);
     }
 
     char out() {
-        return M[p].out();
+        return (char) M[p];
     }
 
     /**
      * @return true if the value of the pointed cell is equal to 0
      */
-    boolean dp() { return M[p].getValue() == 0; }
+    boolean dp() { return getValue() == 0; }
 
     /**
      * @return a readable version of the memory such as : Ci: the value of the cell i
@@ -88,11 +98,11 @@ class Memory {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int j = 0; j < M.length; j++) {
-            if (M[j].getValue()!= 0) {
+            if (getValue(j)!= 0) {
                 stringBuilder.append('C');
                 stringBuilder.append(j);
                 stringBuilder.append(": ");
-                stringBuilder.append(M[j].toString());
+                stringBuilder.append(getValue(j));
                 stringBuilder.append('\n');
             }
         }

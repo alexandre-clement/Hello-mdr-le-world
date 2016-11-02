@@ -1,6 +1,5 @@
 package language.instruction;
 
-import language.Instruction;
 import language.Loop;
 import option.BrainfuckOption;
 
@@ -10,7 +9,7 @@ import java.awt.*;
  * @author SmartCoding
  *         Created the 13 octobre 2016.
  */
-public class Jump extends Loop implements Instruction {
+public class Jump extends Loop {
 
     public Jump() {
         super();
