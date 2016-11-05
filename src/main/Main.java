@@ -19,6 +19,6 @@ public class Main {
      * @param args: the arguments given in the commandline
      */
     public static void main(String... args) {
-        new Interpreter("-p", "test.bf", "--translate").buildSystem();
+        new Interpreter(args).buildSystem();
     }
 }
