@@ -1,7 +1,8 @@
-package model;
+package brainfuck;
 
 
-import interpreter.Display;
+import exception.OutOfMemoryException;
+import exception.OverflowException;
 
 /**
  * Brainfuck Project
@@ -26,10 +27,27 @@ class Memory {
      */
     private int p;
 
+    private long i;
+
     Memory() {
         M = new byte[MEMORY_CAPACITY];
         for (int j=0; j<MEMORY_CAPACITY; j++) M[j] = (byte) MIN;
         p = 0;
+        i = 0;
+    }
+
+    /**
+     * @return the instruction pointer i
+     */
+    public long getI() {
+        return i;
+    }
+
+    /**
+     * go to the next instruction
+     */
+    void nextI() {
+        i++;
     }
 
     private int getValue() { return M[p] - MIN; }
@@ -41,41 +59,43 @@ class Memory {
     /**
      * Increment the cell
      */
-    void incr() {
-        if (M[p] < MAX) M[p]++;
-        else Display.exitCode(1);
+    void incr() throws OverflowException {
+        if (M[p] < MAX)
+            M[p]++;
+        else
+            throw new OverflowException();
     }
 
     /**
      * Decrement the cell
      */
-    void decr() {
-        if (M[p] > MIN) M[p]--;
-        else Display.exitCode(1);
+    void decr() throws OverflowException {
+        if (M[p] > MIN)
+            M[p]--;
+        else
+            throw new OverflowException();
     }
 
     /**
      * move the memory pointer to the right
      * exitCode 2 : moving the pointer to the extreme right
      */
-    void right() {
-        if (p < M.length - 1) {
+    void right() throws OutOfMemoryException {
+        if (p < M.length - 1)
             p++;
-        }else {
-            Display.exitCode(2);
-        }
+        else
+            throw new OutOfMemoryException();
     }
 
     /**
      * move the memory pointer to the left
      * exitCode 2 : moving the pointer left to the first cell
      */
-    void left() {
-        if (p > 0) {
+    void left() throws OutOfMemoryException {
+        if (p > 0)
             p--;
-        }else {
-            Display.exitCode(2);
-        }
+        else
+            throw new OutOfMemoryException();
     }
 
     void in(char character) {
