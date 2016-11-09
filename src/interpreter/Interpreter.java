@@ -34,7 +34,7 @@ public class Interpreter {
         return this;
     }
 
-    public void resetFilenames() {
+    void resetFilenames() {
         for (Filenames filename: Filenames.values())
             filename.setName(null);
     }

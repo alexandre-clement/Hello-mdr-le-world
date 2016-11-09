@@ -15,7 +15,7 @@ public enum Filenames {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 }
