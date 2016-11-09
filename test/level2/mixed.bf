@@ -1,6 +1,0 @@
-+>
-INCR
->
-RIGHT
-<++
-DECR
