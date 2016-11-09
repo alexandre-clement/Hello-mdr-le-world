@@ -9,16 +9,14 @@ import java.util.Deque;
 abstract class Argument implements Option {
     private String name;
 
-    Argument(String name) {
+    Argument(String  name) {
+    }
+
+    protected void setName(String name) {
         this.name = name;
     }
 
     String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
         return name;
     }
 

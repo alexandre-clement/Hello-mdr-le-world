@@ -1,6 +1,6 @@
 package interpreter;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
@@ -10,10 +10,21 @@ import org.junit.Test;
 public class InterpreterTest {
 
     @Test
+    public void buildNothingTest() {
+        Interpreter interpreter = new Interpreter().build("");
+        assertNotNull(interpreter);
+    }
+
+    @Test
     public void buildTest() {
-        String[] commandline = new String[] {"-p", "src/test.bf"};
-        Interpreter interpreter = new Interpreter().build(commandline);
-        // do some test
+        Interpreter interpreter = new Interpreter().build("-i");
+        assertEquals("-p", interpreter.getOptionSnapshot());
+    }
+
+    @Test
+    public void noUniqueOptionTest() {
+        assertTrue(new Interpreter().build("-p", "src/test.bf").noUniqueOption());
+        assertFalse(new Interpreter().build("-p", "src/test.bf", "--rewrite", "--check").noUniqueOption());
     }
 
     @Test
@@ -25,6 +36,6 @@ public class InterpreterTest {
     public void resetFilenamesTest() {
         Filenames.source.setName("source");
         new Interpreter().resetFilenames();
-        Assert.assertNull(Filenames.source.getName());
+        assertNull(Filenames.source.getName());
     }
 }

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
  *         Created the 04 novembre 2016.
  */
 public class Interpreter {
-    private boolean hasUniqueOption;
     private Deque<Argument> options;
 
     public Interpreter build(final String... args) {
@@ -34,13 +33,16 @@ public class Interpreter {
         return this;
     }
 
+    public String getOptionSnapshot() {
+        return options.stream().map(Argument::getName).collect(Collectors.joining(", "));
+    }
+
     void resetFilenames() {
         for (Filenames filename: Filenames.values())
             filename.setName(null);
     }
 
     public void run() {
-        hasUniqueOption = !noUniqueOption(options);
         options.forEach(this::callOption);
     }
 
@@ -70,8 +72,14 @@ public class Interpreter {
         }
     }
 
-    private boolean noUniqueOption(Deque<Argument> options) {
-        return options.stream().filter(option -> option instanceof UniqueOption).collect(Collectors.counting()) == 0;
+    public boolean noUniqueOption() {
+        return options.stream().filter(option -> option instanceof UniqueOption).count() == 0;
+    }
+
+    public void removeOption(Option type) {
+        type.getClass().getName();
+        if (!noUniqueOption())
+            options.removeAll(options.stream().filter(option -> type.getClass().isInstance(option)).collect(Collectors.toList()));
     }
 
     private List<Argument> getNewArgument() {
@@ -80,93 +88,5 @@ public class Interpreter {
 
     private static void exit(int code) {
         System.exit(code);
-    }
-
-
-    private class Print extends Argument {
-        private Print() {
-            super("-p");
-        }
-
-        @Override
-        public boolean match(Deque<String> commandline) {
-            if (!super.match(commandline))
-                return false;
-            Filenames.source.setName(commandline.pollFirst());
-            return true;
-        }
-
-        @Override
-        public void call() throws IOException, OverflowException, OutOfMemoryException, InvalidFile, MalFormedException {
-            if (!hasUniqueOption) {
-                // run
-            }
-        }
-    }
-
-    private class Rewrite extends UniqueOption {
-        private Rewrite() {
-            super("--rewrite");
-        }
-
-        @Override
-        public void call() throws IOException, OverflowException, OutOfMemoryException, MalFormedException {
-        }
-    }
-
-    private class Translate extends UniqueOption {
-        private Translate() {
-            super("--translate");
-        }
-
-        @Override
-        public void call() throws IOException {
-        }
-    }
-
-    private class InFile extends Argument {
-        private InFile() {
-            super("-i");
-        }
-
-        @Override
-        public boolean match(Deque<String> commandline) {
-            if (!super.match(commandline))
-                return false;
-            Filenames.input.setName(commandline.pollFirst());
-            return true;
-        }
-
-        @Override
-        public void call() throws InvalidFile {
-        }
-    }
-
-    private class OutFile extends Argument {
-        private OutFile() {
-            super("-o");
-        }
-
-        @Override
-        public boolean match(Deque<String> commandline) {
-            if (!super.match(commandline))
-                return false;
-            Filenames.output.setName(commandline.pollFirst());
-            return true;
-        }
-
-        @Override
-        public void call() throws IOException, OverflowException, OutOfMemoryException, InvalidFile, MalFormedException {
-        }
-    }
-
-    private class Check extends UniqueOption {
-        private Check() {
-            super("--check");
-        }
-
-        @Override
-        public void call() throws IOException, OverflowException, OutOfMemoryException, InvalidFile, MalFormedException {
-        }
     }
 }

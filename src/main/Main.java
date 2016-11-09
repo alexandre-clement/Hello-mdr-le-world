@@ -8,6 +8,6 @@ import interpreter.Interpreter;
  */
 public class Main {
     public static void main(String[] args) {
-        new Interpreter().build(args).run();
+        System.out.println(new Interpreter().build(args).getOptionSnapshot());
     }
 }

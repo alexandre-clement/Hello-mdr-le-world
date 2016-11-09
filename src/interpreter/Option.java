@@ -11,6 +11,6 @@ import java.io.IOException;
  * @author Alexandre Clement
  *         Created the 07 novembre 2016.
  */
-public interface Option {
+interface Option {
     void call() throws IOException, OverflowException, OutOfMemoryException, InvalidFile, MalFormedException;
 }
