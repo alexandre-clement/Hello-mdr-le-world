@@ -1,5 +1,6 @@
 package main;
 
+import exception.ExitException;
 import interpreter.Interpreter;
 
 /**
@@ -8,6 +9,13 @@ import interpreter.Interpreter;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println(new Interpreter().build(args).getOptionSnapshot());
+        int exit = 0;
+        try {
+            new Interpreter().build(args).;
+        } catch (ExitException exception) {
+            System.err.println(exception.getMessage());
+            exit = exception.getExit();
+        }
+        System.exit(exit);
     }
 }

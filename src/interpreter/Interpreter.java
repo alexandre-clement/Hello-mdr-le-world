@@ -1,92 +1,53 @@
 package interpreter;
 
-import exception.*;
+import exception.ExitException;
+import org.apache.commons.cli.*;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
 
 /**
  * @author Alexandre Clement
  *         Created the 04 novembre 2016.
  */
 public class Interpreter {
-    private Deque<Argument> options;
+    private CommandLine commandLine;
+    private Options options;
 
-    public Interpreter build(final String... args) {
-        Deque<String> commandline = new ArrayDeque<>();
-        commandline.addAll(Arrays.asList(args));
+    public Interpreter() {
+        options = new Options();
+        Arrays.stream(Flag.values()).forEach(flag -> options.addOption(Option.builder(flag.getOpt())
+                .required(flag.isRequired())
+                .longOpt(flag.getLongOpt())
+                .hasArg(flag.hasArg())
+                .desc(flag.getDescription())
+                .build()));
+    }
 
-        List<Argument> arguments = new ArrayList<>();
-        arguments.addAll(getNewArgument());
-
-        resetFilenames();
-
-        options = new ArrayDeque<>();
-
+    public Interpreter build(String... args) throws ExitException {
+        CommandLineParser commandLineParser = new DefaultParser();
         try {
-            while (!commandline.isEmpty())
-                options.add(getOptionFromCommand(arguments, commandline));
-        } catch (UnknownOption exception) {
-            exit(126);
+            commandLine = commandLineParser.parse(options, args);
+        } catch (ParseException exception) {
+            throw new ExitException(126, exception);
         }
         return this;
     }
 
-    public String getOptionSnapshot() {
-        return options.stream().map(Argument::getName).collect(Collectors.joining(", "));
+    public String getOptionValue(Flag flag) {
+        return commandLine.getOptionValue(flag.name());
     }
 
-    void resetFilenames() {
-        for (Filenames filename: Filenames.values())
-            filename.setName(null);
+    public boolean hasOption(Flag flag) {
+        return commandLine.hasOption(flag.name());
     }
 
-    public void run() {
-        options.forEach(this::callOption);
-    }
-
-    private Argument getOptionFromCommand(List<Argument> arguments, Deque<String> commandline) throws UnknownOption {
-        for (Argument argument: arguments) {
-            if (argument.match(commandline)) {
-                arguments.remove(argument);
-                return argument;
-            }
-        }
-        throw new UnknownOption();
-    }
-
-    private void callOption(Option option) {
-        try {
-            option.call();
-        } catch (IOException exception) {
-            exit(127);
-        } catch (OverflowException exception) {
-            exit(1);
-        } catch (OutOfMemoryException exception) {
-            exit(2);
-        } catch (InvalidFile exception) {
-            exit(3);
-        } catch (MalFormedException exception) {
-            exit(4);
-        }
-    }
-
-    public boolean noUniqueOption() {
-        return options.stream().filter(option -> option instanceof UniqueOption).count() == 0;
-    }
-
-    public void removeOption(Option type) {
-        type.getClass().getName();
-        if (!noUniqueOption())
-            options.removeAll(options.stream().filter(option -> type.getClass().isInstance(option)).collect(Collectors.toList()));
-    }
-
-    private List<Argument> getNewArgument() {
-        return new ArrayList<>(Arrays.asList(new InFile(), new OutFile(), new Print(), new Check(), new Rewrite(), new Translate()));
-    }
-
-    private static void exit(int code) {
-        System.exit(code);
+    public boolean hasStandardOutputOption() throws ExitException {
+        long numberOfStandardOutputOption = Arrays.stream(Flag.values())
+                .filter(flag -> flag.isStandardOutputOption() && hasOption(flag)).count();
+        if (numberOfStandardOutputOption == 0)
+            return false;
+        if (numberOfStandardOutputOption == 1)
+            return true;
+        throw new ExitException(127, "Multiple standard output options.");
     }
 }
