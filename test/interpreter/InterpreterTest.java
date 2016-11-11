@@ -42,13 +42,13 @@ public class InterpreterTest {
 
     @Test
     public void getArgTest() throws IllegalCommandlineOptionsException {
-        assertEquals("test.bf", new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
-        assertEquals("input.txt", new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
+        assertEquals(   "test.bf",      new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
+        assertEquals(   "input.txt",    new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
 
-        assertNotSame("test.b", new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
-        assertNotSame("i.txt", new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
+        assertNotSame(  "test.b",       new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
+        assertNotSame(  "i.txt",        new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
 
-        assertNull(new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.o));
+        assertNull(                     new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.o));
     }
 
     @Test
