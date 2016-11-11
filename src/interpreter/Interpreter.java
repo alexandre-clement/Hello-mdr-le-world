@@ -1,7 +1,7 @@
 package interpreter;
 
-import exception.IllegalCommandlineOptionsException;
-import exception.MultipleStandardOutputOptionsException;
+import exception.IllegalCommandlineException;
+import main.Main;
 import org.apache.commons.cli.*;
 
 import java.util.Arrays;
@@ -11,28 +11,50 @@ import java.util.Arrays;
  *         Created the 04 novembre 2016.
  */
 public class Interpreter {
+
     private CommandLine commandLine;
     private Options options;
+    private Options helps;
+    private OptionGroup standardOutputOption;
     private boolean hasStandardOutputOption;
 
     public Interpreter() {
         options = new Options();
-        Arrays.stream(Flag.values()).forEach(flag -> options.addOption(Option.builder(flag.getOpt())
-                .required(flag.isRequired())
-                .longOpt(flag.getLongOpt())
-                .hasArg(flag.hasArg())
-                .desc(flag.getDescription())
-                .build()));
+        helps = new Options();
+
+        standardOutputOption = new OptionGroup();
+
+        for (Flag flag: Flag.values()) {
+            if (flag.isHelp())
+                    helps.addOption(optionBuilder(flag));
+            else if (flag.isStandardOutputOption())
+                standardOutputOption.addOption(optionBuilder(flag));
+            else
+                options.addOption(optionBuilder(flag));
+        }
     }
 
-    public Interpreter build(String... args) throws IllegalCommandlineOptionsException {
-        CommandLineParser commandLineParser = new DefaultParser();
+    public Interpreter build(String... args) throws IllegalCommandlineException {
         try {
-            commandLine = commandLineParser.parse(options, args);
+            commandLine = new DefaultParser().parse(helps, args, true);
         } catch (ParseException exception) {
-            throw new IllegalCommandlineOptionsException(exception);
+            System.err.println(exception.getMessage());
         }
-        hasStandardOutputOption = checkStandardOutputOption();
+
+        options.addOptionGroup(standardOutputOption);
+
+        if (hasOption(Flag.h))
+            return help();
+        if (hasOption(Flag.v))
+            return version();
+
+        try {
+            commandLine = new DefaultParser().parse(options, args);
+        } catch (ParseException exception) {
+            help();
+            throw new IllegalCommandlineException(exception);
+        }
+        hasStandardOutputOption = countStandardOutputOption();
         return this;
     }
 
@@ -48,13 +70,32 @@ public class Interpreter {
         return hasStandardOutputOption;
     }
 
-    private boolean checkStandardOutputOption() throws MultipleStandardOutputOptionsException {
-        long numberOfStandardOutputOption = Arrays.stream(Flag.values())
-                .filter(flag -> flag.isStandardOutputOption() && hasOption(flag)).count();
-        if (numberOfStandardOutputOption == 0)
-            return false;
-        if (numberOfStandardOutputOption == 1)
-            return true;
-        throw new MultipleStandardOutputOptionsException();
+    public Interpreter help() {
+        for (Option help: helps.getOptions())
+            options.addOption(help);
+        HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.setWidth(100);
+        helpFormatter.printHelp("bfck -p <FILE> [-i] <INPUT> [-o] <OUTPUT> (--rewrite | --translate | --check)",
+                "Brainfuck interpreter in Java\n\n", options, "\nVersion " + Main.VERSION);
+        return this;
+    }
+
+    public Interpreter version() {
+        System.out.println("Version " + Main.VERSION);
+        return this;
+    }
+
+    private boolean countStandardOutputOption() {
+        return Arrays.stream(Flag.values()).filter(flag -> flag.isStandardOutputOption() && hasOption(flag)).count() == 1;
+    }
+
+    private Option optionBuilder(Flag flag) {
+        return Option.builder(flag.getOpt())
+                .required(flag.isRequired())
+                .longOpt(flag.getLongOpt())
+                .hasArg(flag.hasArg())
+                .argName(flag.getArgName())
+                .desc(flag.getDescription())
+                .build();
     }
 }

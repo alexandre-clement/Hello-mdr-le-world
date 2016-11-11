@@ -8,6 +8,8 @@ import interpreter.Interpreter;
  *         Created the 09/11/2016.
  */
 public class Main {
+    public final static double VERSION = 1.0;
+
     public static void main(String[] args) {
         int exit = 0;
 

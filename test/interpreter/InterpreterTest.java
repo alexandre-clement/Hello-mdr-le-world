@@ -2,8 +2,13 @@ package interpreter;
 
 import static org.junit.Assert.*;
 
-import exception.IllegalCommandlineOptionsException;
+import exception.IllegalCommandlineException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 /**
  * @author Alexandre Clement
@@ -11,11 +16,28 @@ import org.junit.Test;
  */
 public class InterpreterTest {
 
+    private Interpreter interpreter;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+
+    @Before
+    public void setUpStreams() {
+        interpreter = new Interpreter();
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
+    }
+
+    @After
+    public void cleanUpStreams() {
+        System.setOut(null);
+        System.setErr(null);
+    }
+
     @Test
     public void missingPrintOption() {
         try {
-            new Interpreter().build("");
-        } catch (IllegalCommandlineOptionsException exception) {
+            interpreter.build("");
+        } catch (IllegalCommandlineException exception) {
             assertEquals("Missing required option: p", exception.getMessage());
             assertEquals(126, exception.getExit());
         }
@@ -24,46 +46,61 @@ public class InterpreterTest {
     @Test
     public void missingPrintArgument() {
         try {
-            new Interpreter().build("-p");
-        } catch (IllegalCommandlineOptionsException exception) {
+            interpreter.build("-p");
+        } catch (IllegalCommandlineException exception) {
             assertEquals("Missing argument for option: p", exception.getMessage());
             assertEquals(126, exception.getExit());
         }
     }
 
     @Test
-    public void getOptTest() throws IllegalCommandlineOptionsException {
-        assertTrue(new Interpreter().build("--rewrite", "-p", "test.bf").hasOption(Flag.p));
-        assertTrue(new Interpreter().build("--rewrite", "-p", "test.bf").hasOption(Flag.rewrite));
+    public void getOptTest() throws IllegalCommandlineException {
+        assertTrue(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.p));
+        assertTrue(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.rewrite));
 
-        assertFalse(new Interpreter().build("--rewrite", "-p", "test.bf").hasOption(Flag.check));
-        assertFalse(new Interpreter().build("--rewrite", "-p", "test.bf").hasOption(Flag.i));
+        assertFalse(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.check));
+        assertFalse(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.i));
     }
 
     @Test
-    public void getArgTest() throws IllegalCommandlineOptionsException {
-        assertEquals(   "test.bf",      new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
-        assertEquals(   "input.txt",    new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
+    public void getArgTest() throws IllegalCommandlineException {
+        assertEquals(   "test.bf",      interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
+        assertEquals(   "input.txt",    interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
 
-        assertNotSame(  "test.b",       new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
-        assertNotSame(  "i.txt",        new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
+        assertNotSame(  "test.b",       interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
+        assertNotSame(  "i.txt",        interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
 
-        assertNull(                     new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.o));
+        assertNull(                     interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.o));
     }
 
     @Test
-    public void hasStandardOutputOption() throws IllegalCommandlineOptionsException {
-        assertFalse(new Interpreter().build("-p", "test.bf").hasStandardOutputOption());
-        assertTrue(new Interpreter().build("-p", "test.bf", "--rewrite").hasStandardOutputOption());
+    public void hasStandardOutputOption() throws IllegalCommandlineException {
+        assertFalse(interpreter.build("-p", "test.bf").hasStandardOutputOption());
+        assertTrue(interpreter.build("-p", "test.bf", "--rewrite").hasStandardOutputOption());
     }
 
     @Test
     public void hasMultipleStandardOutputOption() {
         try {
-            new Interpreter().build("-p", "test.bf", "--rewrite", "--check").hasStandardOutputOption();
-        } catch (IllegalCommandlineOptionsException exception) {
-            assertEquals("Multiple standard output options", exception.getMessage());
-            assertEquals(127, exception.getExit());
+            interpreter.build("-p", "test.bf", "--rewrite", "--check").hasStandardOutputOption();
+        } catch (IllegalCommandlineException exception) {
+            assertEquals("The option 'check' was specified but an option from this group has already been selected: 'rewrite'", exception.getMessage());
+            assertEquals(126, exception.getExit());
         }
+    }
+
+    @Test
+    public void hasMultipleOption() throws IllegalCommandlineException {
+        interpreter.build("-p", "test.bf", "-i", "input.txt", "-o", "output.txt", "--rewrite");
+    }
+
+    @Test
+    public void helpTest() throws IllegalCommandlineException {
+        interpreter.build("-h");
+    }
+
+    @Test
+    public void versionTest() throws IllegalCommandlineException {
+        interpreter.build("-v");
     }
 }
