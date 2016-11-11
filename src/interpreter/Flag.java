@@ -7,13 +7,13 @@ package interpreter;
 public enum Flag {
     // Flag     opt     longOpt         help        required    hasArg  argName     isStandardOutputOption  description
     HELP(       "h",    "help",         true,       false,      false,  null,       false,                  "Print the help"),
-    VERSION(    "v",    "version",      true,       false,      false,  null,       false,                  "Print the VERSION"),
-    PRINT(      "p",    null,           false,      true,       true,   "FILE",     false,                  "Specify the file name of program to execute. If no print on the standard output option are selected, it will execute the program and print the memory content."),
-    REWRITE(    null,   "rewrite",      false,      false,      false,  null,       true,                   "Print on the standard output the shortened VERSION of the program given as input (and not execute it)."),
-    TRANSLATE(  null,   "translate",    false,      false,      false,  null,       true,                   "Create a square bitmap image with the content of the program (and not execute it)."),
+    VERSION(    "v",    "version",      true,       false,      false,  null,       false,                  "Print the version"),
+    PRINT(      "p",    null,           false,      true,       true,   "FILE",     false,                  "Specify the file name of program to execute. If no print on the standard output option are selected, it will execute the program and print the memory content"),
+    REWRITE(    null,   "rewrite",      false,      false,      false,  null,       true,                   "Print on the standard output the shortened VERSION of the program given as input (and not execute it)"),
+    TRANSLATE(  null,   "translate",    false,      false,      false,  null,       true,                   "Create a square bitmap image with the content of the program (and not execute it)"),
     INPUT(      "i",    null,           false,      false,      true,   "INPUT",    false,                  "Specify the file name of the input file (the file given must exists)"),
     OUTPUT(     "o",    null,           false,      false,      true,   "OUTPUT",   false,                  "Specify the file name of the output file (the file given must exists)"),
-    CHECK(      null,   "check",        false,      false,      false,  null,       true,                   "Verify if the program is well-formed i.e each JUMP instruction is bound to a Back one, and exit silently (without executing the program).");
+    CHECK(      null,   "check",        false,      false,      false,  null,       true,                   "Verify if the program is well-formed i.e each JUMP instruction is bound to a Back one, and exit silently (without executing the program)");
 
     private String opt;
     private String longOpt;
