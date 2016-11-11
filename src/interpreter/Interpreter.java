@@ -1,6 +1,7 @@
 package interpreter;
 
-import exception.ExitException;
+import exception.IllegalCommandlineOptionsException;
+import exception.MultipleStandardOutputOptionsException;
 import org.apache.commons.cli.*;
 
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 public class Interpreter {
     private CommandLine commandLine;
     private Options options;
+    private boolean hasStandardOutputOption;
 
     public Interpreter() {
         options = new Options();
@@ -23,12 +25,17 @@ public class Interpreter {
                 .build()));
     }
 
-    public Interpreter build(String... args) throws ExitException {
+    public Interpreter build(String... args) throws IllegalCommandlineOptionsException {
         CommandLineParser commandLineParser = new DefaultParser();
         try {
             commandLine = commandLineParser.parse(options, args);
         } catch (ParseException exception) {
-            throw new ExitException(126, exception);
+            throw new IllegalCommandlineOptionsException(exception);
+        }
+        try {
+            hasStandardOutputOption = checkStandardOutputOption();
+        } catch (MultipleStandardOutputOptionsException exception) {
+            throw new IllegalCommandlineOptionsException(exception);
         }
         return this;
     }
@@ -41,13 +48,17 @@ public class Interpreter {
         return commandLine.hasOption(flag.name());
     }
 
-    public boolean hasStandardOutputOption() throws ExitException {
+    public boolean hasStandardOutputOption() {
+        return hasStandardOutputOption;
+    }
+
+    private boolean checkStandardOutputOption() throws MultipleStandardOutputOptionsException {
         long numberOfStandardOutputOption = Arrays.stream(Flag.values())
                 .filter(flag -> flag.isStandardOutputOption() && hasOption(flag)).count();
         if (numberOfStandardOutputOption == 0)
             return false;
         if (numberOfStandardOutputOption == 1)
             return true;
-        throw new ExitException(127, "Multiple standard output options.");
+        throw new MultipleStandardOutputOptionsException();
     }
 }

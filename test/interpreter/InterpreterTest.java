@@ -2,8 +2,8 @@ package interpreter;
 
 import static org.junit.Assert.*;
 
-import exception.ExitException;
-import org.junit.Before;
+import exception.IllegalCommandlineOptionsException;
+import exception.MultipleStandardOutputOptionsException;
 import org.junit.Test;
 
 /**
@@ -13,7 +13,7 @@ import org.junit.Test;
 public class InterpreterTest {
 
     @Test
-    public void getOptTest() throws ExitException {
+    public void getOptTest() throws IllegalCommandlineOptionsException {
         assertTrue(new Interpreter().build("--rewrite", "-p", "test.bf").hasOption(Flag.p));
         assertTrue(new Interpreter().build("--rewrite", "-p", "test.bf").hasOption(Flag.rewrite));
 
@@ -22,7 +22,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void getArgTest() throws ExitException {
+    public void getArgTest() throws IllegalCommandlineOptionsException {
         assertEquals("test.bf", new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
         assertEquals("input.txt", new Interpreter().build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
 
@@ -33,25 +33,24 @@ public class InterpreterTest {
     }
 
     @Test
-    public void hasStandardOutputOption() throws ExitException {
+    public void hasStandardOutputOption() throws IllegalCommandlineOptionsException, MultipleStandardOutputOptionsException {
         assertFalse(new Interpreter().build("-p", "test.bf").hasStandardOutputOption());
         assertTrue(new Interpreter().build("-p", "test.bf", "--rewrite").hasStandardOutputOption());
     }
 
-    @Test(expected = ExitException.class)
-    public void hasMultipleStandardOutputOption() throws ExitException {
+    @Test(expected = IllegalCommandlineOptionsException.class)
+    public void hasMultipleStandardOutputOption() throws IllegalCommandlineOptionsException {
         new Interpreter().build("-p", "test.bf", "--rewrite", "--check").hasStandardOutputOption();
     }
 
 
-    @Test(expected = ExitException.class)
-    public void missingPrintOption() throws ExitException {
+    @Test(expected = IllegalCommandlineOptionsException.class)
+    public void missingPrintOption() throws IllegalCommandlineOptionsException {
         new Interpreter().build("--rewrite").hasOption(Flag.rewrite);
     }
 
-    @Test(expected = ExitException.class)
-    public void missingPrintArgument() throws ExitException {
+    @Test(expected = IllegalCommandlineOptionsException.class)
+    public void missingPrintArgument() throws IllegalCommandlineOptionsException {
         new Interpreter().build("-p").hasOption(Flag.p);
     }
-
 }
