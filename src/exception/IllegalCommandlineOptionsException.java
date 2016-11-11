@@ -10,11 +10,11 @@ public class IllegalCommandlineOptionsException extends ExitException {
         this(exception.getMessage());
     }
 
-    public IllegalCommandlineOptionsException(ExitException exception) {
-        super(exception.getExit(), exception.getMessage());
+    public IllegalCommandlineOptionsException(String message) {
+        this(126, message);
     }
 
-    public IllegalCommandlineOptionsException(String message) {
-        super(126, message);
+    public IllegalCommandlineOptionsException(int exit, String message) {
+        super(exit, message);
     }
 }

@@ -32,11 +32,7 @@ public class Interpreter {
         } catch (ParseException exception) {
             throw new IllegalCommandlineOptionsException(exception);
         }
-        try {
-            hasStandardOutputOption = checkStandardOutputOption();
-        } catch (MultipleStandardOutputOptionsException exception) {
-            throw new IllegalCommandlineOptionsException(exception);
-        }
+        hasStandardOutputOption = checkStandardOutputOption();
         return this;
     }
 

@@ -44,6 +44,7 @@ public class InterpreterTest {
             new Interpreter().build("-p", "test.bf", "--rewrite", "--check").hasStandardOutputOption();
         } catch (IllegalCommandlineOptionsException exception) {
             assertEquals("Multiple standard output options", exception.getMessage());
+            assertEquals(127, exception.getExit());
         }
     }
 
@@ -54,6 +55,7 @@ public class InterpreterTest {
             new Interpreter().build("--rewrite").hasOption(Flag.rewrite);
         } catch (IllegalCommandlineOptionsException exception) {
             assertEquals("Missing required option: p", exception.getMessage());
+            assertEquals(126, exception.getExit());
         }
     }
 
@@ -63,6 +65,7 @@ public class InterpreterTest {
             new Interpreter().build("-p").hasOption(Flag.p);
         } catch (IllegalCommandlineOptionsException exception) {
             assertEquals("Missing argument for option: p", exception.getMessage());
+            assertEquals(126, exception.getExit());
         }
     }
 }
