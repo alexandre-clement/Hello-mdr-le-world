@@ -51,7 +51,7 @@ public class InterpreterTest {
     @Test
     public void missingPrintOption() {
         try {
-            new Interpreter().build("--rewrite").hasOption(Flag.rewrite);
+            new Interpreter().build("");
         } catch (IllegalCommandlineOptionsException exception) {
             assertEquals("Missing required option: p", exception.getMessage());
             assertEquals(126, exception.getExit());
@@ -61,7 +61,7 @@ public class InterpreterTest {
     @Test
     public void missingPrintArgument() {
         try {
-            new Interpreter().build("-p").hasOption(Flag.p);
+            new Interpreter().build("-p");
         } catch (IllegalCommandlineOptionsException exception) {
             assertEquals("Missing argument for option: p", exception.getMessage());
             assertEquals(126, exception.getExit());
