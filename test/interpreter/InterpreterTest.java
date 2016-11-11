@@ -3,7 +3,6 @@ package interpreter;
 import static org.junit.Assert.*;
 
 import exception.IllegalCommandlineOptionsException;
-import exception.MultipleStandardOutputOptionsException;
 import org.junit.Test;
 
 /**
@@ -33,7 +32,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void hasStandardOutputOption() throws IllegalCommandlineOptionsException, MultipleStandardOutputOptionsException {
+    public void hasStandardOutputOption() throws IllegalCommandlineOptionsException {
         assertFalse(new Interpreter().build("-p", "test.bf").hasStandardOutputOption());
         assertTrue(new Interpreter().build("-p", "test.bf", "--rewrite").hasStandardOutputOption());
     }
