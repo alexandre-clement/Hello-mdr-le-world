@@ -7,6 +7,6 @@ package exception;
 public class MultipleStandardOutputOptionsException extends ExitException {
 
     public MultipleStandardOutputOptionsException() {
-        super(127, "Multiple standard output options.");
+        super(127, "Multiple standard output options");
     }
 }
