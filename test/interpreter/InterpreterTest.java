@@ -55,22 +55,22 @@ public class InterpreterTest {
 
     @Test
     public void getOptTest() throws IllegalCommandlineException {
-        assertTrue(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.p));
-        assertTrue(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.rewrite));
+        assertTrue(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.PRINT));
+        assertTrue(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.REWRITE));
 
-        assertFalse(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.check));
-        assertFalse(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.i));
+        assertFalse(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.CHECK));
+        assertFalse(interpreter.build("--rewrite", "-p", "test.bf").hasOption(Flag.INPUT));
     }
 
     @Test
     public void getArgTest() throws IllegalCommandlineException {
-        assertEquals(   "test.bf",      interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
-        assertEquals(   "input.txt",    interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
+        assertEquals(   "test.bf",      interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.PRINT));
+        assertEquals(   "input.txt",    interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.INPUT));
 
-        assertNotSame(  "test.b",       interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.p));
-        assertNotSame(  "i.txt",        interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.i));
+        assertNotSame(  "test.b",       interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.PRINT));
+        assertNotSame(  "i.txt",        interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.INPUT));
 
-        assertNull(                     interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.o));
+        assertNull(                     interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.OUTPUT));
     }
 
     @Test

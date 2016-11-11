@@ -43,9 +43,9 @@ public class Interpreter {
 
         options.addOptionGroup(standardOutputOption);
 
-        if (hasOption(Flag.h))
+        if (hasOption(Flag.HELP))
             return help();
-        if (hasOption(Flag.v))
+        if (hasOption(Flag.VERSION))
             return version();
 
         try {
@@ -59,11 +59,11 @@ public class Interpreter {
     }
 
     public String getOptionValue(Flag flag) {
-        return commandLine.getOptionValue(flag.name());
+        return flag.getOpt() == null ? commandLine.getOptionValue(flag.getLongOpt()) : commandLine.getOptionValue(flag.getOpt());
     }
 
     public boolean hasOption(Flag flag) {
-        return commandLine.hasOption(flag.name());
+        return flag.getOpt() == null ? commandLine.hasOption(flag.getLongOpt()) : commandLine.hasOption(flag.getOpt());
     }
 
     public boolean hasStandardOutputOption() {
@@ -75,7 +75,7 @@ public class Interpreter {
             options.addOption(help);
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setWidth(100);
-        helpFormatter.printHelp("bfck -p <FILE> [-i] <INPUT> [-o] <OUTPUT> (--rewrite | --translate | --check)",
+        helpFormatter.printHelp("bfck -p <FILE> [-h] [-v] [-i] <INPUT> [-o] <OUTPUT> (--rewrite | --translate | --check)",
                 "Brainfuck interpreter in Java\n\n", options, "\nVersion " + Main.VERSION);
         return this;
     }
