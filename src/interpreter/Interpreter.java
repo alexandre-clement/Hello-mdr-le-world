@@ -24,15 +24,16 @@ public class Interpreter
     private boolean hasStandardOutputOption;
 
     /**
-     * Default constructor
-     *
-     * Fill the options with the data contained in Flag
-     * options are filtered in two categories :
-     *      helps display some help about usage of the program (and stop the program execution)
-     *      options contains all options
+     * Initializes a new Interpreter object.
      */
     public Interpreter()
     {
+        /*
+        Fill the options with the data contained in Flag
+        options are filtered in two categories :
+            helps display some help about usage of the program (and stop the program execution)
+            options contains all options
+         */
         options = new Options();
         helps = new Options();
 
@@ -50,9 +51,9 @@ public class Interpreter
     }
 
     /**
-     * Initializes the current instance with the given command line
+     * Initializes the CommandLine with the given command line.
      *
-     * @param args the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check ]
+     * @param args the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check]
      * @return the current instance
      * @throws IllegalCommandlineException  if the commandline given is incorrect i.e
      *                                      the p options is not given or without argument,
@@ -87,7 +88,12 @@ public class Interpreter
     }
 
     /**
-     * return the argument in the commandline of the flag
+     * Return the argument in the commandline of the flag.
+     *
+     * For example, if the commandline is {"-p", "filename"}, getOptionValue(Flag.PRINT) will return "filename".
+     *
+     * If the option is not in the commandline, getOptionValue return null.
+     * For example, if the commandline is {"-p", "filename"}, getOptionValue(Flag.INPUT) will return null.
      *
      * @param flag The flag of the option
      * @return the argument of the option
@@ -98,7 +104,10 @@ public class Interpreter
     }
 
     /**
-     * return true if the option is in the commandline, false otherwise
+     * Return true if the option is in the commandline, false otherwise.
+     *
+     * For example, if the commandline is {"-p", "filename"}, hasOption(Flag.PRINT) will return true,
+     * and hasOption(Flag.REWRITE) will return false.
      *
      * @param flag the flag of the option
      * @return true if the option is in the commandline, false otherwise
@@ -109,7 +118,10 @@ public class Interpreter
     }
 
     /**
-     * return true if the commandline have standard output option, false otherwise
+     * Return true if the commandline have standard output option, false otherwise.
+     *
+     * For the commandline {"-p", "filename"}, hasStandardOutputOption() will return false,
+     * For the commandline {"-p", "filename", "--rewrite"}, hasStandardOutputOption() will return true.
      *
      * @return true if the commandline have standard output option, false otherwise
      */
