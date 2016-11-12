@@ -10,8 +10,6 @@ import java.util.Arrays;
  * @author Alexandre Clement
  *         Created the 04 novembre 2016.
  *
- * @version 1.0
- *
  * Interpret the input commandline with Flag as key for options.
  */
 public class Interpreter
@@ -79,7 +77,9 @@ public class Interpreter
         try
         {
             commandLine = new DefaultParser().parse(options, args);
-        } catch (ParseException exception) {
+        }
+        catch (ParseException exception)
+        {
             help();
             throw new IllegalCommandlineException(exception);
         }
@@ -131,7 +131,7 @@ public class Interpreter
     }
 
     /**
-     * display the help
+     * Display the help
      *
      * @return the current instance
      */
@@ -145,7 +145,7 @@ public class Interpreter
     }
 
     /**
-     * display the version
+     * Display the version
      *
      * @return the current instance
      */
