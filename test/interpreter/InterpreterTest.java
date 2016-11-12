@@ -71,6 +71,7 @@ public class InterpreterTest {
         assertNotSame(  "i.txt",        interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.INPUT));
 
         assertNull(                     interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.OUTPUT));
+        assertNull(                     interpreter.build("-p", "test.bf", "-i", "input.txt").getOptionValue(Flag.REWRITE));
     }
 
     @Test
