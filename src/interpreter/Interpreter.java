@@ -9,6 +9,10 @@ import java.util.Arrays;
 /**
  * @author Alexandre Clement
  *         Created the 04 novembre 2016.
+ *
+ * @version 1.0
+ *
+ * Interpret the input commandline with Flag as key for options.
  */
 public class Interpreter
 {
@@ -20,6 +24,8 @@ public class Interpreter
     private boolean hasStandardOutputOption;
 
     /**
+     * Default constructor
+     *
      * Fill the options with the data contained in Flag
      * options are filtered in two categories :
      *      helps display some help about usage of the program (and stop the program execution)
@@ -35,7 +41,7 @@ public class Interpreter
         for (Flag flag: Flag.values())
         {
             if (flag.isHelp())
-                    helps.addOption(optionBuilder(flag));
+                helps.addOption(optionBuilder(flag));
             else if (flag.isStandardOutputOption())
                 standardOutputOption.addOption(optionBuilder(flag));
             else
@@ -44,8 +50,9 @@ public class Interpreter
     }
 
     /**
+     * Initializes the current instance with the given command line
      *
-     * @param args the commandline i.e [-i <input>] [-o <output>] -p <file> [--rewrite | --translate | --check ]
+     * @param args the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check ]
      * @return the current instance
      * @throws IllegalCommandlineException  if the commandline given is incorrect i.e
      *                                      the p options is not given or without argument,
@@ -80,6 +87,7 @@ public class Interpreter
     }
 
     /**
+     * return the argument in the commandline of the flag
      *
      * @param flag The flag of the option
      * @return the argument of the option
@@ -90,6 +98,7 @@ public class Interpreter
     }
 
     /**
+     * return true if the option is in the commandline, false otherwise
      *
      * @param flag the flag of the option
      * @return true if the option is in the commandline, false otherwise
@@ -100,6 +109,7 @@ public class Interpreter
     }
 
     /**
+     * return true if the commandline have standard output option, false otherwise
      *
      * @return true if the commandline have standard output option, false otherwise
      */
@@ -110,6 +120,7 @@ public class Interpreter
 
     /**
      * display the help
+     *
      * @return the current instance
      */
     public Interpreter help()
@@ -123,6 +134,7 @@ public class Interpreter
 
     /**
      * display the version
+     *
      * @return the current instance
      */
     public Interpreter version()
