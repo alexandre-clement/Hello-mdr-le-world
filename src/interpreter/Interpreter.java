@@ -75,8 +75,7 @@ public class Interpreter {
             options.addOption(help);
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setWidth(100);
-        helpFormatter.printHelp("bfck -p <FILE> [-h] [-v] [-i] <INPUT> [-o] <OUTPUT> (--rewrite | --translate | --check)",
-                "Brainfuck interpreter in Java\n\n", options, "\nVersion " + Main.VERSION);
+        helpFormatter.printHelp("bfck", "Brainfuck interpreter in Java\n\n", options, "\nVersion " + Main.VERSION, true);
         return this;
     }
 
