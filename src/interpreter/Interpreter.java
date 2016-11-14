@@ -63,7 +63,9 @@ public class Interpreter
         try
         {
             commandLine = new DefaultParser().parse(helps, args, true);
-        } catch (ParseException exception) {
+        }
+        catch (ParseException exception)
+        {
             System.err.println(exception.getMessage()); // this should not happen
         }
 
