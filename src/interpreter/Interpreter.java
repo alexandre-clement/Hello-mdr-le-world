@@ -4,7 +4,7 @@ import exception.IllegalCommandlineException;
 import main.Main;
 import org.apache.commons.cli.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * @author Alexandre Clement
@@ -20,6 +20,10 @@ public class Interpreter
     private final Options helps;
     private final OptionGroup standardOutputOption;
     private boolean hasStandardOutputOption;
+
+    public static Interpreter buildInterpreter(String... commandline) throws IllegalCommandlineException {
+        return new Interpreter().build(commandline);
+    }
 
     /**
      * Initializes a new Interpreter object.
@@ -130,6 +134,15 @@ public class Interpreter
     public boolean hasStandardOutputOption()
     {
         return hasStandardOutputOption;
+    }
+
+    public Deque<Flag> getOptions() {
+        Deque<Flag> flags = new ArrayDeque<>();
+        for (Flag flag : Flag.values()) {
+            if (hasOption(flag))
+                flags.add(flag);
+        }
+        return flags;
     }
 
     /**

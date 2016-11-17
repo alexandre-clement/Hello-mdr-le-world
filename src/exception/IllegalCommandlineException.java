@@ -1,6 +1,5 @@
 package exception;
 
-import interpreter.Interpreter;
 
 /**
  * @author Alexandre Clement

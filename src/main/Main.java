@@ -1,5 +1,7 @@
 package main;
 
+import Language.Language;
+import core.Core;
 import exception.ExitException;
 import interpreter.Interpreter;
 
@@ -14,7 +16,10 @@ public class Main {
         int exit = 0;
 
         try {
-            new Interpreter().build(args);
+            Interpreter interpreter = Interpreter.buildInterpreter(args);
+            Language language = new Language(interpreter);
+            Core core = new Core(language);
+            core.run();
         } catch (ExitException exception) {
             System.err.println(exception.getMessage());
             exit = exception.getExit();
