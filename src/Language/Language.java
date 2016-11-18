@@ -40,6 +40,7 @@ public class Language {
                     file = new BrainfuckFile(filename);
                     break;
                 case Bmp:
+                    file = new BitmapImage(filename);
                     break;
             }
 
@@ -55,6 +56,8 @@ public class Language {
 
         } catch (IOException exception) {
             throw new LanguageException(127, exception.getMessage());
+        } catch (NoSuchElementException exception) {
+            throw new LanguageException(127, "Not a Brainfuck file");
         }
     }
 

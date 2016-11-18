@@ -4,7 +4,6 @@ import Language.Language;
 import exception.*;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 /**
@@ -42,7 +41,6 @@ public class Core {
         }
         program = language.compile(instructions, patterns);
         language.call(this);
-        language.standardOutput(getMemorySnapshot());
         language.standardOutput(System.currentTimeMillis() - start + " ms");
         language.close();
     }
@@ -50,16 +48,18 @@ public class Core {
     public void print() throws LanguageException, CoreException {
         for (instruction=0; instruction < program.length; instruction++)
             program[instruction].execute();
+        language.standardOutput(getMemorySnapshot());
     }
 
     public void rewrite() {
         for (instruction=0; instruction < program.length; instruction++)
             language.standardOutput(program[instruction].getShortSyntax());
+        language.standardOutput("\n");
     }
 
     public void translate() {
         for (instruction=0; instruction < program.length; instruction++)
-            program[instruction].getShortSyntax();
+            program[instruction].getColorSyntax();
     }
 
     public void check() throws NotWellFormedException {
@@ -113,7 +113,7 @@ public class Core {
 
     private class Increment extends Instructions {
         Increment() {
-            super(Pattern.compile("\\+|\\bINCR\\b"), "INCR", '+', new Color(255, 255, 255));
+            super(Pattern.compile("(\\+(?![0-9])|\\bINCR\\b|-1(?![0-9]))"), "INCR", '+', new Color(255, 255, 255));
         }
 
         @Override
@@ -126,7 +126,7 @@ public class Core {
 
     private class Decrement extends Instructions {
         Decrement() {
-            super(Pattern.compile("-|\\bDECR\\b"), "DECR", '-', new Color(75, 0, 130));
+            super(Pattern.compile("-(?![0-9])|\\bDECR\\b|-11861886"), "DECR", '-', new Color(75, 0, 130));
         }
 
         @Override
@@ -139,7 +139,7 @@ public class Core {
 
     private class Left extends Instructions {
         private Left() {
-            super(Pattern.compile("<|\\bLEFT\\b"), "LEFT", '<', new Color(148, 0, 211));
+            super(Pattern.compile("<|\\bLEFT\\b|-7077677"), "LEFT", '<', new Color(148, 0, 211));
         }
 
         @Override
@@ -152,7 +152,7 @@ public class Core {
 
     private class Right extends Instructions {
         private Right() {
-            super(Pattern.compile(">|\\bRIGHT\\b"), "RIGHT", '>', new Color(0, 0, 255));
+            super(Pattern.compile(">|\\bRIGHT\\b|-16776961"), "RIGHT", '>', new Color(0, 0, 255));
         }
 
         @Override
@@ -165,7 +165,7 @@ public class Core {
 
     private class Out extends Instructions {
         private Out() {
-            super(Pattern.compile("\\.|\\bOUT\\b"), "OUT", '.', new Color(0, 255, 0));
+            super(Pattern.compile("\\.|\\bOUT\\b|-16711936"), "OUT", '.', new Color(0, 255, 0));
         }
 
         @Override
@@ -187,7 +187,7 @@ public class Core {
 
     private class Jump extends Instructions {
         private Jump() {
-            super(Pattern.compile("\\[|\\bJUMP\\b"), "JUMP", '[', new Color(255, 127, 0));
+            super(Pattern.compile("\\[|\\bJUMP\\b|-33024"), "JUMP", '[', new Color(255, 127, 0));
         }
 
         @Override
@@ -207,7 +207,7 @@ public class Core {
 
     private class Back extends Instructions {
         private Back() {
-            super(Pattern.compile("\\]|\\bBACK\\b"), "BACK", ']', new Color(255, 0, 0));
+            super(Pattern.compile("\\]|\\bBACK\\b|-65536"), "BACK", ']', new Color(255, 0, 0));
         }
 
         @Override
