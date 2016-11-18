@@ -22,6 +22,7 @@ public class Language {
 
     private final OutputStreamWriter stream = new OutputStreamWriter(System.out);
     private Interpreter interpreter;
+    private String filename;
     private ReadFile file;
     private Writer output;
     private Reader input;
@@ -31,7 +32,7 @@ public class Language {
         this.interpreter = interpreter;
 
         try {
-            String filename = interpreter.getOptionValue(Flag.PRINT);
+            filename = interpreter.getOptionValue(Flag.PRINT);
             String extension = filename.substring(filename.lastIndexOf('.'));
             FileType type = Arrays.stream(FileType.values()).filter(fileType -> fileType.getExtension().equals(extension)).findFirst().get();
 
@@ -102,6 +103,14 @@ public class Language {
         }
     }
 
+    public void imageOutput(int[] colorArray, int size) {
+        try {
+            BitmapImage.createImage(filename.substring(0, filename.indexOf(".")), colorArray, size);
+        } catch (IOException exception) {
+            System.err.println("this should never happen");
+        }
+    }
+
     public void standardOutput(String string) {
         try {
             stream.write(string);
@@ -112,24 +121,27 @@ public class Language {
 
     public Instructions[] compile(Instructions[] instructions, Pattern[] patterns) throws LanguageException {
         Deque<Instructions> instructionsDeque = new ArrayDeque<>();
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder("#");
         for (int i=0; i<patterns.length; i++) {
+            stringBuilder.append("|");
             stringBuilder.append(patterns[i].pattern());
-            if (i != patterns.length - 1)
-                stringBuilder.append("|");
         }
+
         Pattern pattern = Pattern.compile(stringBuilder.toString());
         int length = 0;
         try {
             String line = file.next();
             Matcher matcher;
-            Matcher instructionsMatcher;
             while (line != null) {
                 matcher = pattern.matcher(line);
                 while (matcher.find()) {
+                    if ("#".equals(matcher.group())) {
+                        line = file.next();
+                        break;
+                    }
+
                     for (int i=0; i<instructions.length; i++) {
-                        instructionsMatcher = patterns[i].matcher(matcher.group(0));
-                        if (instructionsMatcher.find()) {
+                        if (matcher.group(i+1) != null) {
                             length += 1;
                             instructionsDeque.add(instructions[i]);
                         }

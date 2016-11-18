@@ -1,10 +1,12 @@
 package core;
 
+import Language.BitmapImage;
 import exception.LanguageException;
 import exception.OutOfMemoryException;
 import exception.OverflowException;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -36,8 +38,8 @@ public abstract class Instructions {
         return shortSyntax.toString();
     }
 
-    public String getColorSyntax() {
-        return colorSyntax.toString();
+    public int getColorSyntax() {
+        return colorSyntax.getRGB();
     }
 
     public abstract void execute() throws OverflowException, OutOfMemoryException, LanguageException;

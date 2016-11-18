@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  */
 public class BitmapImage implements ReadFile {
 
-    private static final int SIZE = 3;
+    public static final int SIZE = 3;
     private ImageInputStream stream;
     private ImageReadParam param;
     private Rectangle rectangle;
@@ -28,6 +28,12 @@ public class BitmapImage implements ReadFile {
     private BufferedImage image;
     private int height;
     private int width;
+
+    public static void createImage(String filename, int[] colorArray, int size) throws IOException {
+        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, size, size, colorArray, 0, size);
+        ImageIO.write(image, "BMP", new File(filename + ".bmp"));
+    }
 
     public BitmapImage(String filename) throws IOException {
         stream = ImageIO.createImageInputStream(new File(filename));
