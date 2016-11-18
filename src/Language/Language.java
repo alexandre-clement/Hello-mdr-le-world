@@ -3,11 +3,13 @@ package Language;
 import core.Core;
 import core.Instructions;
 import exception.CoreException;
+import exception.ExitException;
 import exception.LanguageException;
 import interpreter.Flag;
 import interpreter.Interpreter;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,23 +58,16 @@ public class Language {
         }
     }
 
-    public void call(Core core) throws CoreException, LanguageException {
+    public void call(Core core) throws ExitException {
         boolean hasStandardOutputOption = interpreter.hasStandardOutputOption();
         Deque<Flag> flags = interpreter.getOptions();
         while (!flags.isEmpty()) {
-            switch (flags.poll()) {
-                case PRINT:
-                    if (!hasStandardOutputOption)
-                        core.execute();
-                    break;
-                case REWRITE:
-                    core.rewrite();
-                    break;
-                case TRANSLATE:
-                    core.translate();
-                    break;
-                case CHECK:
-                    break;
+            try {
+                core.getClass().getMethod(flags.poll().name().toLowerCase()).invoke(core);
+            } catch (IllegalAccessException | NoSuchMethodException exception) {
+                throw new UnsupportedOperationException("Option not implemented yet");
+            } catch (InvocationTargetException exception) {
+                throw (ExitException) exception.getCause();
             }
         }
     }
@@ -81,7 +76,7 @@ public class Language {
         try {
             return input.read();
         } catch (IOException exception) {
-            throw new LanguageException(3, "input file not found");
+            throw new LanguageException(3, "Input file not found");
         }
     }
 
@@ -89,7 +84,7 @@ public class Language {
         try {
             output.write(value);
         } catch (IOException exception) {
-            throw new LanguageException(3, "output file not found");
+            throw new LanguageException(3, "Output file not found");
         }
     }
 
@@ -134,7 +129,6 @@ public class Language {
                         if (instructionsMatcher.find()) {
                             length += 1;
                             instructionsDeque.add(instructions[i]);
-                            // instructions[i].execute();
                         }
                     }
                 }

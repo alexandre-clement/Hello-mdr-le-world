@@ -1,10 +1,7 @@
 package core;
 
 import Language.Language;
-import exception.CoreException;
-import exception.LanguageException;
-import exception.OutOfMemoryException;
-import exception.OverflowException;
+import exception.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -36,7 +33,7 @@ public class Core {
         instructions = setInstructions();
     }
 
-    public void run() throws LanguageException, CoreException {
+    public void run() throws ExitException {
         long start = System.currentTimeMillis();
 
         Pattern[] patterns = new Pattern[instructions.length];
@@ -50,7 +47,7 @@ public class Core {
         language.close();
     }
 
-    public void execute() throws LanguageException, CoreException {
+    public void print() throws LanguageException, CoreException {
         for (instruction=0; instruction < program.length; instruction++)
             program[instruction].execute();
     }
@@ -63,6 +60,20 @@ public class Core {
     public void translate() {
         for (instruction=0; instruction < program.length; instruction++)
             program[instruction].getShortSyntax();
+    }
+
+    public void check() throws NotWellFormedException {
+        int check = 0;
+        for (instruction=0; instruction<program.length; instruction++) {
+            if (check < 0)
+                throw new NotWellFormedException();
+            if (program[instruction] instanceof Jump)
+                check += 1;
+            if (program[instruction] instanceof Back)
+                check -= 1;
+        }
+        if (check != 0)
+            throw new NotWellFormedException();
     }
 
     public int getValue() {

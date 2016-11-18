@@ -139,7 +139,7 @@ public class Interpreter
     public Deque<Flag> getOptions() {
         Deque<Flag> flags = new ArrayDeque<>();
         for (Flag flag : Flag.values()) {
-            if (hasOption(flag))
+            if (hasOption(flag) && (flag != Flag.PRINT || !hasStandardOutputOption))
                 flags.add(flag);
         }
         return flags;
