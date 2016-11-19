@@ -25,6 +25,12 @@ public class Core {
     private Instructions[] program;
     private Language language;
 
+    private long start;
+    private int exec_move;
+    private int data_move;
+    private int data_write;
+    private int data_read;
+
 
     public Core(Language language) {
         this.language = language;
@@ -33,7 +39,11 @@ public class Core {
     }
 
     public void run() throws ExitException {
-        long start = System.currentTimeMillis();
+        start = System.currentTimeMillis();
+        exec_move = 0;
+        data_move = 0;
+        data_write = 0;
+        data_read = 0;
 
         Pattern[] patterns = new Pattern[instructions.length];
         for (int i = 0; i < instructions.length; i++) {
@@ -41,13 +51,20 @@ public class Core {
         }
         program = language.compile(instructions, patterns);
         language.call(this);
-        language.standardOutput(System.currentTimeMillis() - start + " ms");
+        language.standardOutput("PROG_SIZE: " + program.length);
+        language.standardOutput("EXEC_TIME: " + (System.currentTimeMillis() - start) + " ms");
+        language.standardOutput("EXEC_MOVE: " + exec_move);
+        language.standardOutput("DATA_MOVE: " + data_move);
+        language.standardOutput("DATA_WRITE: " + data_write);
+        language.standardOutput("DATA_READ: " + data_read);
         language.close();
     }
 
     public void print() throws LanguageException, CoreException {
-        for (instruction=0; instruction < program.length; instruction++)
+        for (instruction=0; instruction < program.length; instruction++) {
             program[instruction].execute();
+            exec_move += 1;
+        }
         language.standardOutput(getMemorySnapshot());
     }
 
@@ -131,6 +148,7 @@ public class Core {
             if (memory[pointer] == MAX)
                 throw new OverflowException(instruction, pointer);
             memory[pointer]++;
+            data_write += 1;
         }
     }
 
@@ -144,6 +162,7 @@ public class Core {
             if (memory[pointer] == MIN)
                 throw new OverflowException(instruction, pointer);
             memory[pointer]--;
+            data_write += 1;
         }
     }
 
@@ -156,6 +175,7 @@ public class Core {
         public void execute() throws OutOfMemoryException {
             if (pointer <= START)
                 throw new OutOfMemoryException(instruction, pointer);
+            data_move += 1;
             pointer -= 1;
         }
     }
@@ -169,6 +189,7 @@ public class Core {
         public void execute() throws OutOfMemoryException {
             if (pointer >= CAPACITY)
                 throw new OutOfMemoryException(instruction, pointer);
+            data_move += 1;
             pointer += 1;
         }
     }
@@ -181,6 +202,7 @@ public class Core {
         @Override
         public void execute() throws LanguageException {
             language.write(getValue());
+            data_read += 1;
         }
     }
 
@@ -192,6 +214,7 @@ public class Core {
         @Override
         public void execute() throws LanguageException {
             setValue(language.read());
+            data_write += 1;
         }
     }
 
@@ -201,17 +224,21 @@ public class Core {
         }
 
         @Override
-        public void execute() {
+        public void execute() throws NotWellFormedException {
             if (memory[pointer] != 0)
                 return;
             int close = 1;
+            int brace = instruction;
             while (close != 0) {
                 instruction += 1;
+                if (instruction >= program.length)
+                    throw new NotWellFormedException(brace);
                 if (program[instruction] instanceof Back)
                     close -= 1;
                 if (program[instruction] instanceof Jump)
                     close += 1;
             }
+            data_read += 1;
         }
     }
 
@@ -221,17 +248,21 @@ public class Core {
         }
 
         @Override
-        public void execute() {
+        public void execute() throws NotWellFormedException {
             if (memory[pointer] == 0)
                 return;
             int close = -1;
+            int brace = instruction;
             while (close != 0) {
                 instruction -= 1;
+                if (instruction < 0)
+                    throw new NotWellFormedException(brace);
                 if (program[instruction] instanceof Back)
                     close -= 1;
                 if (program[instruction] instanceof Jump)
                     close += 1;
             }
+            data_read += 1;
         }
     }
 }

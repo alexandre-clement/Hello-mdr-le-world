@@ -20,6 +20,8 @@ import java.util.regex.Pattern;
  */
 public class Language {
 
+    private static final String COMMENT = "#";
+
     private final OutputStreamWriter stream = new OutputStreamWriter(System.out);
     private Interpreter interpreter;
     private String filename;
@@ -113,7 +115,7 @@ public class Language {
 
     public void standardOutput(String string) {
         try {
-            stream.write(string);
+            stream.write(string + '\n');
         } catch (IOException exception) {
             throw new RuntimeException("System.out failure");
         }
@@ -121,37 +123,39 @@ public class Language {
 
     public Instructions[] compile(Instructions[] instructions, Pattern[] patterns) throws LanguageException {
         Deque<Instructions> instructionsDeque = new ArrayDeque<>();
-        StringBuilder stringBuilder = new StringBuilder("#");
+        StringBuilder stringBuilder = new StringBuilder(COMMENT);
         for (int i=0; i<patterns.length; i++) {
             stringBuilder.append("|");
             stringBuilder.append(patterns[i].pattern());
         }
 
         Pattern pattern = Pattern.compile(stringBuilder.toString());
+        Matcher matcher;
         int length = 0;
+
         try {
-            String line = file.next();
-            Matcher matcher;
-            while (line != null) {
+            for (String line = file.next(); line != null; line = file.next())
+            {
                 matcher = pattern.matcher(line);
-                while (matcher.find()) {
-                    if ("#".equals(matcher.group())) {
+                while (matcher.find())
+                {
+                    if ("#".equals(matcher.group()))
+                    {
                         line = file.next();
                         break;
                     }
 
-                    for (int i=0; i<instructions.length; i++) {
-                        if (matcher.group(i+1) != null) {
+                    for (int i = 0; i < instructions.length; i++)
+                        if (matcher.group(i + 1) != null)
+                        {
                             length += 1;
                             instructionsDeque.add(instructions[i]);
                         }
-                    }
                 }
-                line = file.next();
-                }
+            }
             file.close();
         } catch (IOException exception) {
-            throw new LanguageException(127, "file not found");
+            throw new LanguageException(127, "File not found");
         }
         return instructionsDeque.toArray(new Instructions[length]);
     }

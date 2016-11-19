@@ -1,9 +1,7 @@
 package core;
 
 import Language.BitmapImage;
-import exception.LanguageException;
-import exception.OutOfMemoryException;
-import exception.OverflowException;
+import exception.*;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -42,5 +40,5 @@ public abstract class Instructions {
         return colorSyntax.getRGB();
     }
 
-    public abstract void execute() throws OverflowException, OutOfMemoryException, LanguageException;
+    public abstract void execute() throws CoreException, LanguageException;
 }
