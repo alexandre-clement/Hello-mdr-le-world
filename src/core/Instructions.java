@@ -1,10 +1,8 @@
 package core;
 
-import Language.BitmapImage;
 import exception.*;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -17,26 +15,26 @@ public abstract class Instructions {
     private Character shortSyntax;
     private Color colorSyntax;
 
-    public Instructions(Pattern pattern, String instruction, Character shortcut, Color color) {
+    Instructions(Pattern pattern, String instruction, Character shortcut, Color color) {
         this.pattern = pattern;
         this.longSyntax = instruction;
         this.shortSyntax = shortcut;
         this.colorSyntax = color;
     }
 
-    public Pattern getPattern() {
+    Pattern getPattern() {
         return pattern;
     }
 
-    public String getLongSyntax() {
+    String getLongSyntax() {
         return longSyntax;
     }
 
-    public String getShortSyntax() {
+    String getShortSyntax() {
         return shortSyntax.toString();
     }
 
-    public int getColorSyntax() {
+    int getColorSyntax() {
         return colorSyntax.getRGB();
     }
 

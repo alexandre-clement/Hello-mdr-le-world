@@ -6,8 +6,8 @@ package Language;
  *         Created the 17/11/2016.
  */
 public enum FileType {
-    Bf(".bf"),
-    Bmp(".bmp");
+    BF(".bf"),
+    BMP(".bmp");
 
     private String extension;
 

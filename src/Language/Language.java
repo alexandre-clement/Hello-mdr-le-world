@@ -2,14 +2,12 @@ package Language;
 
 import core.Core;
 import core.Instructions;
-import exception.CoreException;
 import exception.ExitException;
 import exception.LanguageException;
 import interpreter.Flag;
 import interpreter.Interpreter;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +26,7 @@ public class Language {
     private ReadFile file;
     private Writer output;
     private Reader input;
+    private boolean deleteBackLineChar;
 
 
     public Language(Interpreter interpreter) throws LanguageException {
@@ -39,18 +38,20 @@ public class Language {
             FileType type = Arrays.stream(FileType.values()).filter(fileType -> fileType.getExtension().equals(extension)).findFirst().get();
 
             switch (type) {
-                case Bf:
+                case BF:
                     file = new BrainfuckFile(filename);
                     break;
-                case Bmp:
+                case BMP:
                     file = new BitmapImage(filename);
                     break;
             }
 
             if (interpreter.hasOption(Flag.INPUT))
                 input = new FileReader(interpreter.getOptionValue(Flag.INPUT));
-            else
+            else {
                 input = new InputStreamReader(System.in);
+                deleteBackLineChar = true;
+            }
 
             if (interpreter.hasOption(Flag.OUTPUT))
                 output = new FileWriter(interpreter.getOptionValue(Flag.OUTPUT));
@@ -65,22 +66,30 @@ public class Language {
     }
 
     public void call(Core core) throws ExitException {
-        boolean hasStandardOutputOption = interpreter.hasStandardOutputOption();
         Deque<Flag> flags = interpreter.getOptions();
-        while (!flags.isEmpty()) {
-            try {
-                core.getClass().getMethod(flags.poll().name().toLowerCase()).invoke(core);
-            } catch (IllegalAccessException | NoSuchMethodException exception) {
-                throw new UnsupportedOperationException("Option not implemented yet");
-            } catch (InvocationTargetException exception) {
-                throw (ExitException) exception.getCause();
+        do {
+            switch (flags.poll()) {
+                case PRINT:
+                    core.print();
+                    break;
+                case REWRITE:
+                    core.rewrite();
+                    break;
+                case TRANSLATE:
+                    core.translate();
+                    break;
+                case CHECK:
+                    core.check();
             }
-        }
+        } while (!flags.isEmpty());
     }
 
     public int read() throws  LanguageException {
         try {
-            return input.read();
+            int value = input.read();
+            if (deleteBackLineChar && value != 10)
+                input.read();
+            return value;
         } catch (IOException exception) {
             throw new LanguageException(3, "Input file not found");
         }
@@ -89,6 +98,7 @@ public class Language {
     public void write(int value) throws LanguageException {
         try {
             output.write(value);
+            output.flush();
         } catch (IOException exception) {
             throw new LanguageException(3, "Output file not found");
         }
@@ -115,7 +125,7 @@ public class Language {
 
     public void standardOutput(String string) {
         try {
-            stream.write(string + '\n');
+            stream.write(string);
         } catch (IOException exception) {
             throw new RuntimeException("System.out failure");
         }
@@ -124,9 +134,9 @@ public class Language {
     public Instructions[] compile(Instructions[] instructions, Pattern[] patterns) throws LanguageException {
         Deque<Instructions> instructionsDeque = new ArrayDeque<>();
         StringBuilder stringBuilder = new StringBuilder(COMMENT);
-        for (int i=0; i<patterns.length; i++) {
+        for (Pattern pattern : patterns) {
             stringBuilder.append("|");
-            stringBuilder.append(patterns[i].pattern());
+            stringBuilder.append(pattern.pattern());
         }
 
         Pattern pattern = Pattern.compile(stringBuilder.toString());
@@ -140,10 +150,7 @@ public class Language {
                 while (matcher.find())
                 {
                     if ("#".equals(matcher.group()))
-                    {
-                        line = file.next();
                         break;
-                    }
 
                     for (int i = 0; i < instructions.length; i++)
                         if (matcher.group(i + 1) != null)

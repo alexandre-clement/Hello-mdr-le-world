@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
  */
 public class Core {
 
-    public static int START = 0;
-    public static int CAPACITY = 30000;
-    public static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
-    public static int MIN = 0;
+    private final static int START = 0;
+    private final static int CAPACITY = 30000;
+    private final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
+    private final static int MIN = 0;
 
     private byte[] memory;
     private int pointer;
@@ -26,10 +26,10 @@ public class Core {
     private Language language;
 
     private long start;
-    private int exec_move;
-    private int data_move;
-    private int data_write;
-    private int data_read;
+    private long exec_move;
+    private long data_move;
+    private long data_write;
+    private long data_read;
 
 
     public Core(Language language) {
@@ -51,12 +51,6 @@ public class Core {
         }
         program = language.compile(instructions, patterns);
         language.call(this);
-        language.standardOutput("PROG_SIZE: " + program.length);
-        language.standardOutput("EXEC_TIME: " + (System.currentTimeMillis() - start) + " ms");
-        language.standardOutput("EXEC_MOVE: " + exec_move);
-        language.standardOutput("DATA_MOVE: " + data_move);
-        language.standardOutput("DATA_WRITE: " + data_write);
-        language.standardOutput("DATA_READ: " + data_read);
         language.close();
     }
 
@@ -65,7 +59,9 @@ public class Core {
             program[instruction].execute();
             exec_move += 1;
         }
+
         language.standardOutput(getMemorySnapshot());
+        language.standardOutput(getMetrics());
     }
 
     public void rewrite() {
@@ -111,16 +107,17 @@ public class Core {
         memory[pointer] = (byte) (value > Byte.MAX_VALUE ? Byte.MAX_VALUE - Byte.MIN_VALUE - value : value);
     }
 
-    public String getProgramSnapshot() {
-        StringBuilder string = new StringBuilder();
-        for (Instructions instruction : program) {
-            string.append(instruction.getClass().getSimpleName());
-            string.append(", ");
-        }
-        return string.toString();
+    private String getMetrics() {
+        String metrics = "PROG_SIZE: " + program.length + '\n';
+        metrics += "EXEC_TIME: " + (System.currentTimeMillis() - start) + " ms\n";
+        metrics += "EXEC_MOVE: " + exec_move + '\n';
+        metrics += "DATA_MOVE: " + data_move + '\n';
+        metrics += "DATA_WRITE: " + data_write + '\n';
+        metrics += "DATA_READ: " + data_read + '\n';
+        return metrics;
     }
 
-    public String getMemorySnapshot() {
+    private String getMemorySnapshot() {
         StringBuilder stringbuilder = new StringBuilder("\n");
         for (pointer=0; pointer<CAPACITY; pointer++) {
             if (memory[pointer] != 0) {
