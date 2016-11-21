@@ -60,7 +60,7 @@ public class Language {
 
         } catch (IOException exception) {
             throw new LanguageException(127, exception.getMessage());
-        } catch (NoSuchElementException exception) {
+        } catch (NoSuchElementException | StringIndexOutOfBoundsException exception) {
             throw new LanguageException(127, "Not a Brainfuck file");
         }
     }

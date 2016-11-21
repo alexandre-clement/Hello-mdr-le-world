@@ -3,6 +3,7 @@ package main;
 import Language.Language;
 import core.Core;
 import exception.ExitException;
+import interpreter.Flag;
 import interpreter.Interpreter;
 
 /**
@@ -18,6 +19,8 @@ public class Main {
 
         try {
             Interpreter interpreter = Interpreter.buildInterpreter(args);
+            if (interpreter == null)
+                System.exit(exit);
             Language language = new Language(interpreter);
             Core core = new Core(language);
             core.run();

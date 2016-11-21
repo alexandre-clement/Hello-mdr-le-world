@@ -100,7 +100,7 @@ public class Core {
     }
 
     public int getValue() {
-        return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] : memory[pointer];
+        return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX: memory[pointer];
     }
 
     public void setValue(int value) {

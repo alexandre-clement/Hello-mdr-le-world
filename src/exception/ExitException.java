@@ -4,7 +4,7 @@ package exception;
  * @author Alexandre Clement
  *         Created the 11/11/2016.
  */
-public abstract class ExitException extends Exception {
+public class ExitException extends Exception {
     private int exit;
 
     public ExitException(int exit, String message) {

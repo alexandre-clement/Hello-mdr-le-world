@@ -154,9 +154,9 @@ public class Interpreter
     {
         helps.getOptions().forEach(options::addOption);
         HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.setWidth(100);
+        helpFormatter.setWidth(120);
         helpFormatter.printHelp("bfck", "Brainfuck interpreter in Java\n\n", options, "\nVersion " + Main.VERSION, true);
-        return this;
+        return null;
     }
 
     /**
@@ -167,7 +167,7 @@ public class Interpreter
     public Interpreter version()
     {
         System.out.println("Version " + Main.VERSION);
-        return this;
+        return null;
     }
 
     private boolean countStandardOutputOption()
