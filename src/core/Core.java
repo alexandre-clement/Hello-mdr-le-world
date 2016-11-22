@@ -104,7 +104,7 @@ public class Core {
     }
 
     public void setValue(int value) {
-        memory[pointer] = (byte) (value > Byte.MAX_VALUE ? Byte.MAX_VALUE - Byte.MIN_VALUE - value : value);
+        memory[pointer] = (byte) (value > Byte.MAX_VALUE ? Byte.MIN_VALUE - Byte.MAX_VALUE + MAX + value : value);
     }
 
     private String getMetrics() {
@@ -137,7 +137,7 @@ public class Core {
 
     private class Increment extends Instructions {
         Increment() {
-            super(Pattern.compile("(\\+(?![0-9])|\\bINCR\\b|-1(?![0-9]))"), "INCR", '+', new Color(255, 255, 255));
+            super("INCR", '+', new Color(255, 255, 255));
         }
 
         @Override
@@ -151,7 +151,7 @@ public class Core {
 
     private class Decrement extends Instructions {
         Decrement() {
-            super(Pattern.compile("(-(?![0-9])|\\bDECR\\b|-11861886)"), "DECR", '-', new Color(75, 0, 130));
+            super("DECR", '-', new Color(75, 0, 130));
         }
 
         @Override
@@ -165,7 +165,7 @@ public class Core {
 
     private class Left extends Instructions {
         private Left() {
-            super(Pattern.compile("(<|\\bLEFT\\b|-7077677)"), "LEFT", '<', new Color(148, 0, 211));
+            super("LEFT", '<', new Color(148, 0, 211));
         }
 
         @Override
@@ -179,7 +179,7 @@ public class Core {
 
     private class Right extends Instructions {
         private Right() {
-            super(Pattern.compile("(>|\\bRIGHT\\b|-16776961)"), "RIGHT", '>', new Color(0, 0, 255));
+            super("RIGHT", '>', new Color(0, 0, 255));
         }
 
         @Override
@@ -193,7 +193,7 @@ public class Core {
 
     private class Out extends Instructions {
         private Out() {
-            super(Pattern.compile("(\\.|\\bOUT\\b|-16711936)"), "OUT", '.', new Color(0, 255, 0));
+            super("OUT", '.', new Color(0, 255, 0));
         }
 
         @Override
@@ -205,7 +205,7 @@ public class Core {
 
     private class In extends Instructions {
         private In() {
-            super(Pattern.compile("(,|\\bIN\\b)"), "In", ',', new Color(255, 255, 0));
+            super("IN", ',', new Color(255, 255, 0));
         }
 
         @Override
@@ -217,7 +217,7 @@ public class Core {
 
     private class Jump extends Instructions {
         private Jump() {
-            super(Pattern.compile("(\\[|\\bJUMP\\b|-33024)"), "JUMP", '[', new Color(255, 127, 0));
+            super("JUMP", '[', new Color(255, 127, 0));
         }
 
         @Override
@@ -241,7 +241,7 @@ public class Core {
 
     private class Back extends Instructions {
         private Back() {
-            super(Pattern.compile("(\\]|\\bBACK\\b|-65536)"), "BACK", ']', new Color(255, 0, 0));
+            super("BACK", ']', new Color(255, 0, 0));
         }
 
         @Override

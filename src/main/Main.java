@@ -3,7 +3,6 @@ package main;
 import Language.Language;
 import core.Core;
 import exception.ExitException;
-import interpreter.Flag;
 import interpreter.Interpreter;
 
 /**

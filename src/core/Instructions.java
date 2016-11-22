@@ -15,8 +15,11 @@ public abstract class Instructions {
     private Character shortSyntax;
     private Color colorSyntax;
 
-    Instructions(Pattern pattern, String instruction, Character shortcut, Color color) {
-        this.pattern = pattern;
+    Instructions(String instruction, Character shortcut, Color color) {
+        String sh = shortcut.toString();
+        if ("+.[]".contains(sh))
+            sh = "\\" + sh;
+        this.pattern = Pattern.compile("(" + sh + "(?![0-9])|\\b" + instruction + "\\b|" + color.getRGB() + "(?![0-9]))");
         this.longSyntax = instruction;
         this.shortSyntax = shortcut;
         this.colorSyntax = color;
