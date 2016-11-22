@@ -184,7 +184,7 @@ public class Core {
 
         @Override
         public void execute() throws OutOfMemoryException {
-            if (pointer >= CAPACITY)
+            if (pointer >= CAPACITY - 1)
                 throw new OutOfMemoryException(instruction, pointer);
             data_move += 1;
             pointer += 1;

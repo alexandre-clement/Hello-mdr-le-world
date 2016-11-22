@@ -8,7 +8,6 @@ import interpreter.Interpreter;
 /**
  * @author Alexandre Clement
  *         Created the 09/11/2016.
- * speed test: 77200 ms
  */
 public class Main {
     public final static double VERSION = 1.0;
