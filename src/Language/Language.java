@@ -45,23 +45,25 @@ public class Language {
                     file = new BitmapImage(filename);
                     break;
             }
+        } catch (IOException exception) {
+            throw new LanguageException(127, exception.getMessage());
+        } catch (NoSuchElementException | StringIndexOutOfBoundsException exception) {
+            throw new LanguageException(127, "Not a Brainfuck file");
+        }
 
+        try {
             if (interpreter.hasOption(Flag.INPUT))
                 input = new FileReader(interpreter.getOptionValue(Flag.INPUT));
             else {
                 input = new InputStreamReader(System.in);
                 deleteBackLineChar = true;
             }
-
             if (interpreter.hasOption(Flag.OUTPUT))
                 output = new FileWriter(interpreter.getOptionValue(Flag.OUTPUT));
             else
                 output = stream;
-
         } catch (IOException exception) {
-            throw new LanguageException(127, exception.getMessage());
-        } catch (NoSuchElementException | StringIndexOutOfBoundsException exception) {
-            throw new LanguageException(127, "Not a Brainfuck file");
+            throw new LanguageException(3, exception.getMessage());
         }
     }
 
