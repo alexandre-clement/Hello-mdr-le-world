@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class Core {
 
     private final static int START = 0;
-    private final static int CAPACITY = 30000;
+    public final static int CAPACITY = 30000;
     private final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
     private final static int MIN = 0;
 
@@ -35,7 +35,7 @@ public class Core {
     public Core(Language language) {
         this.language = language;
         this.memory = new byte[CAPACITY];
-        instructions = setInstructions();
+        instructions = getInstructions();
     }
 
     public void run() throws ExitException {
@@ -107,6 +107,10 @@ public class Core {
         memory[pointer] = (byte) (value > Byte.MAX_VALUE ? Byte.MIN_VALUE - Byte.MAX_VALUE + MAX + value : value);
     }
 
+    public int getPointer() {
+        return pointer;
+    }
+
     private String getMetrics() {
         String metrics = "PROG_SIZE: " + program.length + '\n';
         metrics += "EXEC_TIME: " + (System.currentTimeMillis() - start) + " ms\n";
@@ -131,7 +135,7 @@ public class Core {
         return stringbuilder.toString();
     }
 
-    private Instructions[] setInstructions() {
+    public Instructions[] getInstructions() {
         return new Instructions[]{new Increment(), new Decrement(), new Left(), new Right(), new Out(), new In(), new Jump(), new Back()};
     }
 

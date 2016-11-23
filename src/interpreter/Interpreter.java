@@ -86,7 +86,6 @@ public class Interpreter
         }
         catch (ParseException exception)
         {
-            help();
             throw new IllegalCommandlineException(exception);
         }
         hasStandardOutputOption = countStandardOutputOption();

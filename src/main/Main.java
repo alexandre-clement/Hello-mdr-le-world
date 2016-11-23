@@ -12,7 +12,7 @@ import interpreter.Interpreter;
 public class Main {
     public final static double VERSION = 1.0;
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         int exit = 0;
 
         try {

@@ -33,7 +33,7 @@ public abstract class Instructions {
         return longSyntax;
     }
 
-    String getShortSyntax() {
+    public String getShortSyntax() {
         return shortSyntax.toString();
     }
 
