@@ -14,7 +14,7 @@ public enum Flag {
     INPUT(      "i",    null,           false,      false,      true,   "INPUT",    false,                  "Specify the file name of the input file (the file given must exists)"),
     OUTPUT(     "o",    null,           false,      false,      true,   "OUTPUT",   false,                  "Specify the file name of the output file (the file given must exists)"),
     CHECK(      null,   "check",        false,      false,      false,  null,       true,                   "Verify if the program is well-formed i.e each JUMP instruction is bound to a Back one, and exit silently (without executing the program)"),
-    TRACE(      null,   "trace",        false,      false,      false,  null,       true,                  "Create a log file with execution data named filename.log (for -p filename.bf)");
+    TRACE(      null,   "trace",        false,      false,      false,  null,       false,                  "Create a log file with execution data named filename.log (for -p filename.bf)");
 
     private String opt;
     private String longOpt;

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author Alexandre Clement
+ * @author TANG Yi
  *         Created the 16/11/2016.
  */
 public class Core {
@@ -55,9 +56,20 @@ public class Core {
     }
 
     public void print() throws LanguageException, CoreException {
-        for (instruction=0; instruction < program.length; instruction++) {
+        for (int stepNumber=1, instruction=0; instruction < program.length; stepNumber++, instruction++) {
             program[instruction].execute();
             exec_move += 1;
+            /*
+             * write the execution step number,
+             * the location of the execution pointer after the execution of this step,
+             * the location of the data pointer and
+             * a snapshot of the memory in the logfile.
+             * */
+            if (language.isTraceable()){
+                String nextExecutionStep = instruction+1 < program.length?Integer.toString(instruction+1):"-";
+                String s = stepNumber+" NEP:"+nextExecutionStep+" DP:"+pointer+" "+getMemorySnapshot()+"\n";//;
+                language.log(s);
+            }
         }
 
         language.standardOutput(getMemorySnapshot());
@@ -99,7 +111,7 @@ public class Core {
             throw new NotWellFormedException();
     }
 
-    public int getValue() {
+    public int getValue(int pointer) {
         return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX: memory[pointer];
     }
 
@@ -119,12 +131,12 @@ public class Core {
 
     private String getMemorySnapshot() {
         StringBuilder stringbuilder = new StringBuilder("\n");
-        for (pointer=0; pointer<CAPACITY; pointer++) {
+        for (int pointer=0; pointer<CAPACITY; pointer++) {
             if (memory[pointer] != 0) {
                 stringbuilder.append("C");
                 stringbuilder.append(pointer);
                 stringbuilder.append(": ");
-                stringbuilder.append(getValue());
+                stringbuilder.append(getValue(pointer));
                 stringbuilder.append("\n");
             }
         }
@@ -198,7 +210,7 @@ public class Core {
 
         @Override
         public void execute() throws LanguageException {
-            language.write(getValue());
+            language.write(getValue(pointer));
             data_read += 1;
         }
     }
