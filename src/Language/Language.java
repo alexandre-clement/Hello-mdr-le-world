@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author Alexandre Clement
+ * @author TANG Yi
  *         Created the 16/11/2016.
  */
 public class Language {
@@ -25,6 +26,7 @@ public class Language {
     private String filename;
     private ReadFile file;
     private Writer output;
+    private Writer logFile;
     private Reader input;
     private boolean deleteBackLineChar;
 
@@ -64,6 +66,17 @@ public class Language {
                 output = stream;
         } catch (IOException exception) {
             throw new LanguageException(3, exception.getMessage());
+        }
+        // initialization of the logFile
+        try  {
+            if (interpreter.hasOption(Flag.TRACE)) {
+                logFile = new FileWriter(filename.substring(0, filename.lastIndexOf('.'))+".log");
+            }
+            else {
+                logFile = null;
+            }
+        } catch (IOException e) {
+            System.err.println("this should never happen");
         }
     }
 
@@ -106,6 +119,15 @@ public class Language {
         }
     }
 
+    public void log(String logContent) throws LanguageException {
+        try {
+            logFile.write(logContent);
+            logFile.flush();
+        } catch (IOException exception) {
+            throw new LanguageException(3, "Logfile not found");
+        }
+    }
+
     public void close() throws LanguageException {
         try {
             file.close();
@@ -131,6 +153,10 @@ public class Language {
         } catch (IOException exception) {
             throw new RuntimeException("System.out failure");
         }
+    }
+
+    public boolean isTraceable() {
+        return logFile != null;
     }
 
     public Instructions[] compile(Instructions[] instructions, Pattern[] patterns) throws LanguageException {
