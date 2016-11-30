@@ -21,14 +21,25 @@ public class Interpreter
     private final OptionGroup standardOutputOption;
     private boolean hasStandardOutputOption;
 
-    public static Interpreter buildInterpreter(String... commandline) throws IllegalCommandlineException {
+    /**
+     * Initializes the CommandLine with the given command line.
+     *
+     * @param commandline the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check]
+     * @return a new Interpreter object initialized with the command line given
+     * @throws IllegalCommandlineException  if the commandline given is incorrect i.e
+     *                                      the p options is not given or without argument,
+     *                                      the i/o options are given without argument,
+     *                                      multiple standard output option are given (--rewrite, --translate, --check)
+     */
+    public static Interpreter buildInterpreter(String... commandline) throws IllegalCommandlineException
+    {
         return new Interpreter().build(commandline);
     }
 
     /**
      * Initializes a new Interpreter object.
      */
-    public Interpreter()
+    private Interpreter()
     {
         /*
         Fill the options with the data contained in Flag
@@ -62,7 +73,7 @@ public class Interpreter
      *                                      the i/o options are given without argument,
      *                                      multiple standard output option are given (--rewrite, --translate, --check)
      */
-    public Interpreter build(String... args) throws IllegalCommandlineException
+    private Interpreter build(String... args) throws IllegalCommandlineException
     {
         try
         {
@@ -130,15 +141,23 @@ public class Interpreter
      *
      * @return true if the commandline have standard output option, false otherwise
      */
-    public boolean hasStandardOutputOption()
+    private boolean hasStandardOutputOption()
     {
         return hasStandardOutputOption;
     }
 
-    public Deque<Flag> getOptions() {
+    /**
+     * Create a Deque object which contains the flags present in the commandline.
+     * (Print is removed if a standard option is also present in the commandline)
+     *
+     * @return the flags present in the commandline
+     */
+    public Deque<Flag> getOptions()
+    {
         Deque<Flag> flags = new ArrayDeque<>();
-        for (Flag flag : Flag.values()) {
-            if (hasOption(flag) && (flag != Flag.PRINT || !hasStandardOutputOption))
+        for (Flag flag : Flag.values())
+        {
+            if (hasOption(flag) && (flag != Flag.PRINT || !hasStandardOutputOption()))
                 flags.add(flag);
         }
         return flags;

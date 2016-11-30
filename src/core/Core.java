@@ -1,131 +1,207 @@
 package core;
 
-import Language.*;
 import exception.*;
+import interpreter.Flag;
+import language.BitmapImage;
 
-import java.awt.*;
-import java.util.regex.Pattern;
+import java.io.*;
+import java.util.Deque;
 
 /**
  * @author Alexandre Clement
  * @author TANG Yi
  *         Created the 16/11/2016.
  */
-public class Core {
+public class Core
+{
 
-    private final static int START = 0;
-    public final static int CAPACITY = 30000;
-    private final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
-    private final static int MIN = 0;
+    private final static int CAPACITY = 30000;
+    public final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
+    public final static int MIN = 0;
 
-    private byte[] memory;
-    private int pointer;
-    private int instruction;
+    public Instructions[] program;
 
-    private Instructions[] instructions;
-    private Instructions[] program;
-    private Language language;
+    public int instruction;
+    public byte[] memory;
+    public int pointer;
 
-    private long start;
-    private long exec_move;
-    private long data_move;
-    private long data_write;
-    private long data_read;
+    public InputStreamReader in;
+    public PrintStream out;
 
+    private String filename;
 
-    public Core(Language language) {
-        this.language = language;
-        this.memory = new byte[CAPACITY];
-        instructions = getInstructions();
+    public Core(String filename, InputStreamReader in, PrintStream out)
+    {
+        this(filename, in, out, 0, new byte[CAPACITY], 0);
     }
 
-    public void run() throws ExitException {
-        start = System.currentTimeMillis();
-        exec_move = 0;
-        data_move = 0;
-        data_write = 0;
-        data_read = 0;
-
-        Pattern[] patterns = new Pattern[instructions.length];
-        for (int i = 0; i < instructions.length; i++) {
-            patterns[i] = instructions[i].getPattern();
-        }
-        program = language.compile(instructions, patterns);
-        language.call(this);
-        language.close();
+    public Core(String filename, InputStreamReader in, PrintStream out, int instruction, byte[] memory, int pointer)
+    {
+        this.filename = filename;
+        this.instruction = instruction;
+        this.memory = memory;
+        this.pointer = pointer;
+        this.in = in;
+        this.out = out;
     }
 
-    public void print() throws LanguageException, CoreException {
-        for (int stepNumber=1, instruction=0; instruction < program.length; stepNumber++, instruction++) {
-            program[instruction].execute();
-            exec_move += 1;
-            /*
-             * write the execution step number,
-             * the location of the execution pointer after the execution of this step,
-             * the location of the data pointer and
-             * a snapshot of the memory in the logfile.
-             * */
-            if (language.isTraceable()){
-                String nextExecutionStep = instruction+1 < program.length?Integer.toString(instruction+1):"-";
-                String s = stepNumber+" NEP:"+nextExecutionStep+" DP:"+pointer+" "+getMemorySnapshot()+"\n";//;
-                language.log(s);
-            }
-        }
-
-        language.standardOutput(getMemorySnapshot());
-        language.standardOutput(getMetrics());
+    public int printValue()
+    {
+        return printValue(pointer);
     }
 
-    public void rewrite() {
-        for (instruction=0; instruction < program.length; instruction++)
-            language.standardOutput(program[instruction].getShortSyntax());
-        language.standardOutput("\n");
-    }
-
-    public void translate() {
-        int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(program.length));
-        int[] colorArray = new int[size * size];
-        int div, mod;
-        for (instruction=0; instruction < program.length; instruction++) {
-            div = (instruction * BitmapImage.SIZE) / size * BitmapImage.SIZE;
-            for (int line = div * size; line < (div + BitmapImage.SIZE) * size; line += size) {
-                mod = (instruction * BitmapImage.SIZE) % size;
-                for (int column = mod; column < mod + BitmapImage.SIZE; column++)
-                    colorArray[line + column] = program[instruction].getColorSyntax();
-            }
-        }
-        language.imageOutput(colorArray, size);
-    }
-
-    public void check() throws NotWellFormedException {
-        int check = 0;
-        for (instruction=0; instruction<program.length; instruction++) {
-            if (check < 0)
-                throw new NotWellFormedException();
-            if (program[instruction] instanceof Jump)
-                check += 1;
-            if (program[instruction] instanceof Back)
-                check -= 1;
-        }
-        if (check != 0)
-            throw new NotWellFormedException();
-    }
-
-    public int getValue(int pointer) {
+    private int printValue(int pointer)
+    {
         return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX: memory[pointer];
     }
 
-    public void setValue(int value) {
-        memory[pointer] = (byte) (value > Byte.MAX_VALUE ? Byte.MIN_VALUE - Byte.MAX_VALUE + MAX + value : value);
+    public void run(Deque<Flag> flags, Instructions... program) throws ExitException
+    {
+        this.program = program;
+        do {
+            switch (flags.pop()) {
+                case PRINT:
+                    print();
+                    break;
+                case REWRITE:
+                    rewrite();
+                    break;
+                case TRANSLATE:
+                    translate();
+                    break;
+                case CHECK:
+                    check();
+                    break;
+                case METRICS:
+                    metrics();
+                    break;
+                case TRACE:
+                    trace();
+                    break;
+            }
+        } while (!flags.isEmpty());
     }
 
-    public int getPointer() {
-        return pointer;
+    private void print() throws LanguageException, CoreException
+    {
+        for (; instruction<program.length; instruction++)
+            program[instruction].execute(this);
+        standardOutput("\n" + getMemorySnapshot());
     }
 
-    private String getMetrics() {
-        String metrics = "PROG_SIZE: " + program.length + '\n';
-        metrics += "EXEC_TIME: " + (System.currentTimeMillis() - start) + " ms\n";
+    private void rewrite()
+    {
+        for (; instruction<program.length; instruction++)
+            standardOutput(program[instruction].getShortcut());
+        standardOutput('\n');
+    }
+
+    private void translate()
+    {
+
+        int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(program.length));
+        int[] colorArray = new int[size * size];
+        int div, mod;
+        for (instruction=0; instruction < program.length; instruction++)
+        {
+            div = (instruction * BitmapImage.SIZE) / size * BitmapImage.SIZE;
+            for (int line = div * size; line < (div + BitmapImage.SIZE) * size; line += size)
+            {
+                mod = (instruction * BitmapImage.SIZE) % size;
+                for (int column = mod; column < mod + BitmapImage.SIZE; column++)
+                    colorArray[line + column] = program[instruction].getColor().getRGB();
+            }
+        }
+        try
+        {
+            BitmapImage.createImage(filename + "_out.bmp", colorArray, size);
+        }
+        catch (IOException exception)
+        {
+            System.err.println("Error with translated image");
+        }
+    }
+
+    private void check() throws NotWellFormedException
+    {
+        int close = 0;
+        for (Instructions instructions : program)
+        {
+            if (close < 0)
+                throw new NotWellFormedException();
+            if (instructions == Instructions.JUMP)
+                close += 1;
+            else if (instructions == Instructions.BACK)
+                close -= 1;
+        }
+        if (close != 0)
+            throw new NotWellFormedException();
+    }
+
+    private void metrics() throws LanguageException, CoreException
+    {
+        long exec_move = 0;
+        long data_move = 0;
+        long data_write = 0;
+        long data_read = 0;
+        long start = System.currentTimeMillis();
+
+        for (; instruction<program.length; instruction++)
+        {
+            program[instruction].execute(this);
+            switch (program[instruction].getType())
+            {
+                case DATA_WRITE:
+                    data_write += 1;
+                    break;
+                case DATA_READ:
+                    data_read += 1;
+                    break;
+                case DATA_MOVE:
+                    data_move += 1;
+                    break;
+            }
+            exec_move += 1;
+        }
+        standardOutput(getMetrics(System.currentTimeMillis() - start, exec_move, data_move, data_write, data_read));
+    }
+
+    private void trace() throws CoreException, LanguageException
+    {
+        String log;
+        try {
+            Writer logFile = new FileWriter(filename + ".log");
+            for (int stepNumber = 1; instruction < program.length; stepNumber++, instruction++) {
+                program[instruction].execute(this);
+                log = String.format("Execution step: %10d | Execution pointer: %10d | Data pointer: %10d | %s%n", stepNumber, instruction, pointer, getMemorySnapshot());
+                logFile.write(log);
+                logFile.flush();
+            }
+            logFile.close();
+        }
+        catch (IOException exception)
+        {
+            System.err.println("Error with logfile");
+        }
+    }
+
+    private String getMemorySnapshot()
+    {
+        StringBuilder stringbuilder = new StringBuilder();
+        for (int cell=0; cell<CAPACITY; cell++)
+        {
+            if (memory[cell] != 0)
+            {
+                stringbuilder.append(String.format("C%d:%4d   ", cell, printValue(cell)));
+            }
+        }
+        return stringbuilder.toString();
+    }
+
+    private String getMetrics(long time, long exec_move, long data_move, long data_write, long data_read)
+    {
+        String metrics = "\nPROG_SIZE: " + program.length + '\n';
+        metrics += "EXEC_TIME: " + time + " ms\n";
         metrics += "EXEC_MOVE: " + exec_move + '\n';
         metrics += "DATA_MOVE: " + data_move + '\n';
         metrics += "DATA_WRITE: " + data_write + '\n';
@@ -133,149 +209,8 @@ public class Core {
         return metrics;
     }
 
-    private String getMemorySnapshot() {
-        StringBuilder stringbuilder = new StringBuilder("\n");
-        for (int pointer=0; pointer<CAPACITY; pointer++) {
-            if (memory[pointer] != 0) {
-                stringbuilder.append("C");
-                stringbuilder.append(pointer);
-                stringbuilder.append(": ");
-                stringbuilder.append(getValue(pointer));
-                stringbuilder.append("\n");
-            }
-        }
-        return stringbuilder.toString();
-    }
-
-    public Instructions[] getInstructions() {
-        return new Instructions[]{new Increment(), new Decrement(), new Left(), new Right(), new Out(), new In(), new Jump(), new Back()};
-    }
-
-    private class Increment extends Instructions {
-        Increment() {
-            super("INCR", '+', new Color(255, 255, 255));
-        }
-
-        @Override
-        public void execute() throws OverflowException {
-            if (memory[pointer] == MAX)
-                throw new OverflowException(instruction, pointer);
-            memory[pointer]++;
-            data_write += 1;
-        }
-    }
-
-    private class Decrement extends Instructions {
-        Decrement() {
-            super("DECR", '-', new Color(75, 0, 130));
-        }
-
-        @Override
-        public void execute() throws OverflowException {
-            if (memory[pointer] == MIN)
-                throw new OverflowException(instruction, pointer);
-            memory[pointer]--;
-            data_write += 1;
-        }
-    }
-
-    private class Left extends Instructions {
-        private Left() {
-            super("LEFT", '<', new Color(148, 0, 211));
-        }
-
-        @Override
-        public void execute() throws OutOfMemoryException {
-            if (pointer <= START)
-                throw new OutOfMemoryException(instruction, pointer);
-            data_move += 1;
-            pointer -= 1;
-        }
-    }
-
-    private class Right extends Instructions {
-        private Right() {
-            super("RIGHT", '>', new Color(0, 0, 255));
-        }
-
-        @Override
-        public void execute() throws OutOfMemoryException {
-            if (pointer >= CAPACITY - 1)
-                throw new OutOfMemoryException(instruction, pointer);
-            data_move += 1;
-            pointer += 1;
-        }
-    }
-
-    private class Out extends Instructions {
-        private Out() {
-            super("OUT", '.', new Color(0, 255, 0));
-        }
-
-        @Override
-        public void execute() throws LanguageException {
-            language.write(getValue(pointer));
-            data_read += 1;
-        }
-    }
-
-    private class In extends Instructions {
-        private In() {
-            super("IN", ',', new Color(255, 255, 0));
-        }
-
-        @Override
-        public void execute() throws LanguageException {
-            setValue(language.read());
-            data_write += 1;
-        }
-    }
-
-    private class Jump extends Instructions {
-        private Jump() {
-            super("JUMP", '[', new Color(255, 127, 0));
-        }
-
-        @Override
-        public void execute() throws NotWellFormedException {
-            if (memory[pointer] != 0)
-                return;
-            int close = 1;
-            int brace = instruction;
-            while (close != 0) {
-                instruction += 1;
-                if (instruction >= program.length)
-                    throw new NotWellFormedException(brace);
-                if (program[instruction] instanceof Back)
-                    close -= 1;
-                if (program[instruction] instanceof Jump)
-                    close += 1;
-            }
-            data_read += 1;
-        }
-    }
-
-    private class Back extends Instructions {
-        private Back() {
-            super("BACK", ']', new Color(255, 0, 0));
-        }
-
-        @Override
-        public void execute() throws NotWellFormedException {
-            if (memory[pointer] == 0)
-                return;
-            int close = -1;
-            int brace = instruction;
-            while (close != 0) {
-                instruction -= 1;
-                if (instruction < 0)
-                    throw new NotWellFormedException(brace);
-                if (program[instruction] instanceof Back)
-                    close -= 1;
-                if (program[instruction] instanceof Jump)
-                    close += 1;
-            }
-            data_read += 1;
-        }
+    private static void standardOutput(Object object)
+    {
+        System.out.print(object);
     }
 }

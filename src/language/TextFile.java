@@ -1,4 +1,4 @@
-package Language;
+package language;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,20 +8,24 @@ import java.io.RandomAccessFile;
  * @author Alexandre Clement
  *         Created the 17/11/2016.
  */
-public class BrainfuckFile implements ReadFile {
+public class TextFile implements ReadFile
+{
     private RandomAccessFile source;
 
-    public BrainfuckFile(String filename) throws FileNotFoundException {
+    TextFile(String filename) throws FileNotFoundException
+    {
         source = new RandomAccessFile(filename, "r");
     }
 
     @Override
-    public String next() throws IOException {
+    public String next() throws IOException
+    {
         return source.readLine();
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() throws IOException
+    {
         source.close();
     }
 }

@@ -1,4 +1,6 @@
-package Language;
+package language;
+
+import exception.LanguageException;
 
 import java.io.IOException;
 
@@ -7,6 +9,6 @@ import java.io.IOException;
  *         Created the 17/11/2016.
  */
 public interface ReadFile {
-    String next() throws IOException;
+    String next() throws IOException, LanguageException;
     void close() throws IOException;
 }
