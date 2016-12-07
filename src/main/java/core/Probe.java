@@ -104,29 +104,34 @@ public class Probe
     public static class Trace implements Meter
     {
         private String log;
-        private String filename;
         private long step;
+        private Writer writer;
 
         public Trace(String filename)
         {
-            this.filename = filename;
-            log = "";
             step = 0;
+
+            try
+            {
+                writer = new FileWriter(filename + ".log");
+            }
+            catch (IOException e)
+            {
+                System.err.println("This should never happen");
+            }
         }
 
         /**
-         * Create the file and put log into it
+         * Close the logfile
          */
         @Override
         public void getResult()
         {
             try
             {
-                Writer logFile = new FileWriter(filename + ".log");
-                logFile.write(log);
-                logFile.close();
+                writer.close();
             }
-            catch (IOException exception)
+            catch (IOException e)
             {
                 System.err.println("This should never happen");
             }
@@ -134,12 +139,22 @@ public class Probe
 
         /**
          * Add the context in log
+         *
          * @param core the current instance of core
          */
         @Override
         public void acknowledge(Core core)
         {
-            log += String.format("Execution step: %10d | Execution pointer: %10d | Data pointer: %10d | %s%n", ++step, core.instruction, core.pointer, core.getMemorySnapshot());
+            log = String.format("Execution step: %10d | Execution pointer: %10d | Data pointer: %10d | %s%n", ++step, core.instruction, core.pointer, core.getMemorySnapshot());
+            try
+            {
+                writer.write(log);
+                writer.flush();
+            }
+            catch (IOException e)
+            {
+                System.err.println("This should never happen");
+            }
         }
     }
 }
