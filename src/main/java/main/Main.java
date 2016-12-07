@@ -16,7 +16,6 @@ public class Main
     public static void main(String... args)
     {
         int exit = 0;
-        long start = System.currentTimeMillis();
 
         try
         {
@@ -32,8 +31,6 @@ public class Main
             System.err.println(exception.getMessage());
             exit = exception.getExit();
         }
-
-        System.out.println("\n" + (System.currentTimeMillis() - start));
 
         System.exit(exit);
     }

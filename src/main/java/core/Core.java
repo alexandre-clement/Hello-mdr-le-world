@@ -20,6 +20,7 @@ public class Core
     public final static int MIN = 0;
     //the table of all instructions of the program in the file
     public Instructions[] program;
+    private Probe probe;
 
     public int instruction;
     public byte[] memory;
@@ -70,9 +71,23 @@ public class Core
      */
     public void run(Deque<Flag> flags, Instructions... program) throws ExitException
     {
+        probe = new Probe();
+        for (Flag flag : flags)
+        {
+            switch (flag)
+            {
+                case METRICS:
+                    probe.addMeter(new Probe.Metrics(program.length));
+                    break;
+                case TRACE:
+                    probe.addMeter(new Probe.Trace(filename));
+                    break;
+            }
+        }
         this.program = program;
         do {
-            switch (flags.pop()) {
+            switch (flags.pop())
+            {
                 case PRINT:
                     print();
                     break;
@@ -94,8 +109,12 @@ public class Core
      */
     private void print() throws LanguageException, CoreException
     {
-        for (; instruction<program.length; instruction++)
+        for (instruction=0; instruction<program.length; instruction++)
+        {
             program[instruction].execute(this);
+            probe.acknowledge(this);
+        }
+        probe.getResult();
         standardOutput("\n" + getMemorySnapshot());
     }
 
@@ -104,7 +123,7 @@ public class Core
      */
     private void rewrite()
     {
-        for (; instruction<program.length; instruction++)
+        for (instruction=0; instruction<program.length; instruction++)
             standardOutput(program[instruction].getShortcut());
         standardOutput('\n');
     }
@@ -159,56 +178,6 @@ public class Core
     }
 
     /**
-     * calculate the metrics with the program and print them out using the method getMetrics
-     */
-    private void metrics() throws LanguageException, CoreException
-    {
-        long exec_move = 0;
-        long data_move = 0;
-        long data_write = 0;
-        long data_read = 0;
-        long start = System.currentTimeMillis();
-
-        for (; instruction<program.length; instruction++)
-        {
-            program[instruction].execute(this);
-            switch (program[instruction].getType())
-            {
-                case DATA_WRITE:
-                    data_write += 1;
-                    break;
-                case DATA_READ:
-                    data_read += 1;
-                    break;
-                case DATA_MOVE:
-                    data_move += 1;
-                    break;
-            }
-            exec_move += 1;
-        }
-        standardOutput(getMetrics(System.currentTimeMillis() - start, exec_move, data_move, data_write, data_read));
-    }
-
-    private void trace() throws CoreException, LanguageException
-    {
-        String log;
-        try {
-            Writer logFile = new FileWriter(filename + ".log");
-            for (int stepNumber = 1; instruction < program.length; stepNumber++, instruction++) {
-                program[instruction].execute(this);
-                log = String.format("Execution step: %10d | Execution pointer: %10d | Data pointer: %10d | %s%n", stepNumber, instruction, pointer, getMemorySnapshot());
-                logFile.write(log);
-                logFile.flush();
-            }
-            logFile.close();
-        }
-        catch (IOException exception)
-        {
-            System.err.println("Error with logfile");
-        }
-    }
-
-    /**
      * @return the memory snapshot
      */
     String getMemorySnapshot()
@@ -224,19 +193,7 @@ public class Core
         return stringbuilder.toString();
     }
 
-    /**
-     * @return the string of the metrics to be printed out
-     */
-    private String getMetrics(long time, long exec_move, long data_move, long data_write, long data_read)
-    {
-        String metrics = "\nPROG_SIZE: " + program.length + '\n';
-        metrics += "EXEC_TIME: " + time + " ms\n";
-        metrics += "EXEC_MOVE: " + exec_move + '\n';
-        metrics += "DATA_MOVE: " + data_move + '\n';
-        metrics += "DATA_WRITE: " + data_write + '\n';
-        metrics += "DATA_READ: " + data_read + '\n';
-        return metrics;
-    }
+
 
     /**
      * print out the parameter
