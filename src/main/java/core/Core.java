@@ -18,13 +18,13 @@ public class Core
     private final static int CAPACITY = 30000;
     public final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
     public final static int MIN = 0;
-
+    //the table of all instructions of the program in the file
     public Instructions[] program;
 
     public int instruction;
     public byte[] memory;
     public int pointer;
-
+    //the input stream and output stream
     public InputStreamReader in;
     public PrintStream out;
 
@@ -45,16 +45,29 @@ public class Core
         this.out = out;
     }
 
+    /**
+     * @return the value of the cell that the pointer points
+     */
     public int printValue()
     {
         return printValue(pointer);
     }
 
+    /**
+     *
+     * @param pointer which cell of the memory to return
+     * @return the value the pointer points
+     */
     private int printValue(int pointer)
     {
         return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX: memory[pointer];
     }
 
+    /**
+     * run the options of the user
+     * @param flags options the user puts in
+     * @param program the instructions
+     */
     public void run(Deque<Flag> flags, Instructions... program) throws ExitException
     {
         this.program = program;
@@ -76,6 +89,9 @@ public class Core
         } while (!flags.isEmpty());
     }
 
+    /**
+     * the '-p' option: execution of the program and print out the memory snapshot
+     */
     private void print() throws LanguageException, CoreException
     {
         for (; instruction<program.length; instruction++)
@@ -83,6 +99,9 @@ public class Core
         standardOutput("\n" + getMemorySnapshot());
     }
 
+    /**
+     * the '--rewrite' option: print out the short syntax of the program
+     */
     private void rewrite()
     {
         for (; instruction<program.length; instruction++)
@@ -90,6 +109,9 @@ public class Core
         standardOutput('\n');
     }
 
+    /**
+     * the '--translate' option: translate the program to the color syntax and create a image file
+     */
     private void translate()
     {
 
@@ -116,6 +138,10 @@ public class Core
         }
     }
 
+    /**
+     * the '--check' option: check JUMP and BACK in the program are well formed
+     * @throws NotWellFormedException if the program is not well formed
+     */
     private void check() throws NotWellFormedException
     {
         int close = 0;
@@ -132,6 +158,9 @@ public class Core
             throw new NotWellFormedException();
     }
 
+    /**
+     * calculate the metrics with the program and print them out using the method getMetrics
+     */
     private void metrics() throws LanguageException, CoreException
     {
         long exec_move = 0;
@@ -179,7 +208,10 @@ public class Core
         }
     }
 
-    private String getMemorySnapshot()
+    /**
+     * @return the memory snapshot
+     */
+    String getMemorySnapshot()
     {
         StringBuilder stringbuilder = new StringBuilder();
         for (int cell=0; cell<CAPACITY; cell++)
@@ -192,6 +224,9 @@ public class Core
         return stringbuilder.toString();
     }
 
+    /**
+     * @return the string of the metrics to be printed out
+     */
     private String getMetrics(long time, long exec_move, long data_move, long data_write, long data_read)
     {
         String metrics = "\nPROG_SIZE: " + program.length + '\n';
@@ -203,6 +238,10 @@ public class Core
         return metrics;
     }
 
+    /**
+     * print out the parameter
+     * @param object to be print out
+     */
     private static void standardOutput(Object object)
     {
         System.out.print(object);
