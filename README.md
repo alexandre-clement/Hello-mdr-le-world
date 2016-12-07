@@ -15,5 +15,8 @@
   * Unzip Projet-Brainfuck-master.zip
   * Open a commandline in the unzipped directory
     * `mvn package`
+    ###### Windows
     * `bfck [-i input file] [-o output file] -p program [--rewrite | --translate | --check]`
+    ###### Unix-like
+    * `./bfck [-i input file] [-o output file] -p program [--rewrite | --translate | --check]`
       
