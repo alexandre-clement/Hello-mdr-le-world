@@ -72,12 +72,6 @@ public class Core
                 case CHECK:
                     check();
                     break;
-                case METRICS:
-                    metrics();
-                    break;
-                case TRACE:
-                    trace();
-                    break;
             }
         } while (!flags.isEmpty());
     }

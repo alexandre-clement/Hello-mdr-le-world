@@ -11,7 +11,6 @@ import exception.OverflowException;
  */
 public class Decrement implements Executable
 {
-
     @Override
     public void execute(Core core) throws CoreException, LanguageException
     {
