@@ -19,9 +19,9 @@ public class Probe
         probes.add(meter);
     }
 
-    public void acknowledge(Core core)
+    public void acknowledge(ExecutionContext executionContext)
     {
-        probes.forEach(probe -> probe.acknowledge(core));
+        probes.forEach(probe -> probe.acknowledge(executionContext));
     }
 
     public void getResult()
@@ -34,9 +34,9 @@ public class Probe
         void getResult();
 
         /**
-         * @param core the current instance of core
+         * @param executionContext the current execution context of the program
          */
-        void acknowledge(Core core);
+        void acknowledge(ExecutionContext executionContext);
     }
 
     /**
@@ -78,12 +78,13 @@ public class Probe
 
         /**
          * calculate the metrics with the current instance
+         * @param executionContext the current execution context of the program
          */
         @Override
-        public void acknowledge(Core core)
+        public void acknowledge(ExecutionContext executionContext)
         {
             exec_move += 1;
-            switch (core.program[core.instruction].getType())
+            switch (executionContext.program[executionContext.instruction].getType())
             {
                 case DATA_WRITE:
                     data_write += 1;
@@ -140,12 +141,12 @@ public class Probe
         /**
          * Add the context in log
          *
-         * @param core the current instance of core
+         * @param executionContext the current execution context of the program
          */
         @Override
-        public void acknowledge(Core core)
+        public void acknowledge(ExecutionContext executionContext)
         {
-            log = String.format("Execution step: %10d | Execution pointer: %10d | Data pointer: %10d | %s%n", ++step, core.instruction, core.pointer, core.getMemorySnapshot());
+            log = String.format("Execution step: %10d | Execution pointer: %10d | Data pointer: %10d | %s%n", ++step, executionContext.instruction, executionContext.pointer, executionContext.getMemorySnapshot());
             try
             {
                 writer.write(log);

@@ -2,8 +2,13 @@ package instructions;
 
 import static org.junit.Assert.*;
 import core.Core;
+import core.ExecutionContext;
+import core.Instructions;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -13,17 +18,18 @@ import static org.junit.Assert.*;
  */
 public class RightTest {
 
-    Core core;
+    private ExecutionContext context;
 
     @Before
     public void init() {
-        int CAPACITY = 30000;
-        core = new Core(" ",  null, null, 0,  new byte[CAPACITY], 3);
+        byte[] memory = new byte[ExecutionContext.CAPACITY];
+        context = new ExecutionContext(0, 3, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
     }
+
     @Test
     public void executeTest() throws Exception {
-        new Right().execute(this.core);
-        assertEquals(4,core.pointer);
+        new Right().execute(this.context);
+        assertEquals(4,context.pointer);
     }
 
 }

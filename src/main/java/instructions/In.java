@@ -1,6 +1,6 @@
 package instructions;
 
-import core.Core;
+import core.ExecutionContext;
 import exception.CoreException;
 import exception.LanguageException;
 
@@ -14,11 +14,11 @@ public class In implements Executable
 {
 
     @Override
-    public void execute(Core core) throws CoreException, LanguageException
+    public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
         try
         {
-            core.memory[core.pointer] = (byte) core.in.read();
+            executionContext.memory[executionContext.pointer] = (byte) executionContext.in.read();
         }
         catch (IOException exception)
         {

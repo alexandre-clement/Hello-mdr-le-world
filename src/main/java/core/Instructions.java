@@ -20,8 +20,8 @@ public enum Instructions // implements Executable
     RIGHT(              new Right(),        "RIGHT",        '>',        new Color(0, 0, 255),       MetricsType.DATA_MOVE,      "Move the memory pointer to the right"),
     OUT(                new Out(),          "OUT",          '.',        new Color(0, 255, 0),       MetricsType.DATA_READ,      "Print out the content of the memory cell as ASCII"),
     IN(                 new In(),           "IN",           ',',        new Color(255, 255, 0),     MetricsType.DATA_WRITE,     "Read the value present in the input as an ASCII character"),
-    JUMP(               new Jump(),         "JUMP",         '[',        new Color(255, 127, 0),     MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero"),
-    BACK(               new Back(),         "BACK",         ']',        new Color(255, 0, 0),       MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero");
+    JUMP(               new JumpOptimised(),         "JUMP",         '[',        new Color(255, 127, 0),     MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero"),
+    BACK(               new BackOptimised(),         "BACK",         ']',        new Color(255, 0, 0),       MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero");
 
     public enum MetricsType
     {
@@ -81,8 +81,8 @@ public enum Instructions // implements Executable
         return semantics;
     }
 
-    public void execute(Core core) throws CoreException, LanguageException
+    public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
-        executable.execute(core);
+        executable.execute(executionContext);
     }
 }

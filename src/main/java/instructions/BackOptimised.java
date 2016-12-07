@@ -6,15 +6,15 @@ import exception.LanguageException;
 
 /**
  * @author Alexandre Clement
- *         Created the 25/11/2016.
+ *         Created the 07/12/2016.
  */
-public class Out implements Executable
+public class BackOptimised implements Executable
 {
-
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
-        executionContext.out.print((char) executionContext.printValue());
-        executionContext.out.flush();
+        if (executionContext.memory[executionContext.pointer] == 0)
+            return;
+        executionContext.instruction = executionContext.jumpTable.get(executionContext.instruction);
     }
 }

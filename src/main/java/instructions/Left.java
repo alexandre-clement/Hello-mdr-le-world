@@ -1,6 +1,6 @@
 package instructions;
 
-import core.Core;
+import core.ExecutionContext;
 import exception.CoreException;
 import exception.LanguageException;
 import exception.OutOfMemoryException;
@@ -13,10 +13,10 @@ public class Left implements Executable
 {
 
     @Override
-    public void execute(Core core) throws CoreException, LanguageException
+    public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
-        if (core.pointer == 0)
-            throw new OutOfMemoryException(core.instruction, core.pointer);
-        core.pointer -= 1;
+        if (executionContext.pointer == 0)
+            throw new OutOfMemoryException(executionContext.instruction, executionContext.pointer);
+        executionContext.pointer -= 1;
     }
 }

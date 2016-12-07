@@ -1,6 +1,6 @@
 package instructions;
 
-import core.Core;
+import core.ExecutionContext;
 import exception.CoreException;
 import exception.LanguageException;
 
@@ -10,5 +10,5 @@ import exception.LanguageException;
  */
 public interface Executable
 {
-    void execute(Core core) throws CoreException, LanguageException;
+    void execute(ExecutionContext executionContext) throws CoreException, LanguageException;
 }

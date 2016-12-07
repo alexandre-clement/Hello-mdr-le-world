@@ -23,8 +23,8 @@ public class Main
             if (interpreter == null)
                 System.exit(exit);
             Language language = new Language(interpreter);
-            Core core = new Core(language.getFilename(), language.getIn(), language.getOut());
-            core.run(interpreter.getOptions(), language.getInstructions());
+            Core core = new Core(language.getFilename());
+            core.run(interpreter.getOptions(), language.getExcecutionContext());
         }
         catch (ExitException exception)
         {

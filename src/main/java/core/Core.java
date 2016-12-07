@@ -18,73 +18,37 @@ public class Core
     private final static int CAPACITY = 30000;
     public final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
     public final static int MIN = 0;
-    //the table of all instructions of the program in the file
-    public Instructions[] program;
+    
     private Probe probe;
-
-    public int instruction;
-    public byte[] memory;
-    public int pointer;
-    //the input stream and output stream
-    public InputStreamReader in;
-    public PrintStream out;
-
     private String filename;
+    private ExecutionContext executionContext;
 
-    public Core(String filename, InputStreamReader in, PrintStream out)
-    {
-        this(filename, in, out, 0, new byte[CAPACITY], 0);
-    }
-
-    public Core(String filename, InputStreamReader in, PrintStream out, int instruction, byte[] memory, int pointer)
+    public Core(String filename)
     {
         this.filename = filename;
-        this.instruction = instruction;
-        this.memory = memory;
-        this.pointer = pointer;
-        this.in = in;
-        this.out = out;
-    }
-
-    /**
-     * @return the value of the cell that the pointer points
-     */
-    public int printValue()
-    {
-        return printValue(pointer);
-    }
-
-    /**
-     *
-     * @param pointer which cell of the memory to return
-     * @return the value the pointer points
-     */
-    private int printValue(int pointer)
-    {
-        return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX: memory[pointer];
     }
 
     /**
      * run the options of the user
      * @param flags options the user puts in
-     * @param program the instructions
+     * @param executionContext the execution context
      */
-    public void run(Deque<Flag> flags, Instructions... program) throws ExitException
+    public void run(Deque<Flag> flags, ExecutionContext executionContext) throws ExitException
     {
+        this.executionContext = executionContext;
         probe = new Probe();
         for (Flag flag : flags)
         {
             switch (flag)
             {
                 case METRICS:
-                    probe.addMeter(new Probe.Metrics(program.length));
+                    probe.addMeter(new Probe.Metrics(executionContext.program.length));
                     break;
                 case TRACE:
                     probe.addMeter(new Probe.Trace(filename));
                     break;
             }
         }
-        this.program = program;
         do {
             switch (flags.pop())
             {
@@ -109,13 +73,13 @@ public class Core
      */
     private void print() throws LanguageException, CoreException
     {
-        for (instruction=0; instruction<program.length; instruction++)
+        for (executionContext.instruction=0; executionContext.instruction<executionContext.program.length; executionContext.instruction++)
         {
-            program[instruction].execute(this);
-            probe.acknowledge(this);
+            executionContext.program[executionContext.instruction].execute(executionContext);
+            probe.acknowledge(executionContext);
         }
         probe.getResult();
-        standardOutput("\n" + getMemorySnapshot());
+        standardOutput("\n" + executionContext.getMemorySnapshot());
     }
 
     /**
@@ -123,8 +87,8 @@ public class Core
      */
     private void rewrite()
     {
-        for (instruction=0; instruction<program.length; instruction++)
-            standardOutput(program[instruction].getShortcut());
+        for (executionContext.instruction=0; executionContext.instruction<executionContext.program.length; executionContext.instruction++)
+            standardOutput(executionContext.program[executionContext.instruction].getShortcut());
         standardOutput('\n');
     }
 
@@ -134,17 +98,17 @@ public class Core
     private void translate()
     {
 
-        int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(program.length));
+        int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(executionContext.program.length));
         int[] colorArray = new int[size * size];
         int div, mod;
-        for (instruction=0; instruction < program.length; instruction++)
+        for (executionContext.instruction=0; executionContext.instruction < executionContext.program.length; executionContext.instruction++)
         {
-            div = (instruction * BitmapImage.SIZE) / size * BitmapImage.SIZE;
+            div = (executionContext.instruction * BitmapImage.SIZE) / size * BitmapImage.SIZE;
             for (int line = div * size; line < (div + BitmapImage.SIZE) * size; line += size)
             {
-                mod = (instruction * BitmapImage.SIZE) % size;
+                mod = (executionContext.instruction * BitmapImage.SIZE) % size;
                 for (int column = mod; column < mod + BitmapImage.SIZE; column++)
-                    colorArray[line + column] = program[instruction].getColor().getRGB();
+                    colorArray[line + column] = executionContext.program[executionContext.instruction].getColor().getRGB();
             }
         }
         try
@@ -164,7 +128,7 @@ public class Core
     private void check() throws NotWellFormedException
     {
         int close = 0;
-        for (Instructions instructions : program)
+        for (Instructions instructions : executionContext.program)
         {
             if (close < 0)
                 throw new NotWellFormedException();
@@ -176,24 +140,6 @@ public class Core
         if (close != 0)
             throw new NotWellFormedException();
     }
-
-    /**
-     * @return the memory snapshot
-     */
-    String getMemorySnapshot()
-    {
-        StringBuilder stringbuilder = new StringBuilder();
-        for (int cell=0; cell<CAPACITY; cell++)
-        {
-            if (memory[cell] != 0)
-            {
-                stringbuilder.append(String.format("C%d:%4d   ", cell, printValue(cell)));
-            }
-        }
-        return stringbuilder.toString();
-    }
-
-
 
     /**
      * print out the parameter

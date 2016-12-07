@@ -1,6 +1,6 @@
 package instructions;
 
-import core.Core;
+import core.ExecutionContext;
 import core.Instructions;
 import exception.CoreException;
 import exception.LanguageException;
@@ -14,20 +14,20 @@ public class Jump implements Executable
 {
 
     @Override
-    public void execute(Core core) throws CoreException, LanguageException
+    public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
-        if (core.memory[core.pointer] != 0)
+        if (executionContext.memory[executionContext.pointer] != 0)
             return;
         int close = 1;
-        int brace = core.instruction;
+        int brace = executionContext.instruction;
         while (close != 0)
         {
-            core.instruction += 1;
-            if (core.instruction >= core.program.length)
+            executionContext.instruction += 1;
+            if (executionContext.instruction >= executionContext.program.length)
                 throw new NotWellFormedException(brace);
-            if (core.program[core.instruction] == Instructions.BACK)
+            if (executionContext.program[executionContext.instruction] == Instructions.BACK)
                 close -= 1;
-            if (core.program[core.instruction] == Instructions.JUMP)
+            if (executionContext.program[executionContext.instruction] == Instructions.JUMP)
                 close += 1;
         }
     }

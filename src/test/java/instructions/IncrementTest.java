@@ -1,9 +1,15 @@
+
 package instructions;
 
 import core.Core;
+import core.ExecutionContext;
+import core.Instructions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -12,18 +18,19 @@ import static org.junit.Assert.*;
  * @author TANG Yi
  */
 public class IncrementTest {
-    Core core;
+    private ExecutionContext context;
 
     @Before
     public void init() {
-        int CAPACITY = 30000;
-        core = new Core(" ",  null, null, 0,  new byte[CAPACITY], 3);
+        byte[] memory = new byte[ExecutionContext.CAPACITY];
+        context = new ExecutionContext(0, 3, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
     }
+
     @Test
     public void executeTest() throws Exception {
         Increment incr = new Increment();
-        incr.execute(core);
-        assertEquals(1,core.memory[3]);
+        incr.execute(context);
+        assertEquals(1, context.memory[3]);
     }
 
 }
