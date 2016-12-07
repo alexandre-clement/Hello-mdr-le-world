@@ -18,5 +18,6 @@
     ###### Windows
     * `bfck [-i input file] [-o output file] -p program [--rewrite | --translate | --check]`
     ###### Unix-like
+    * `chmod u+x bfck`
     * `./bfck [-i input file] [-o output file] -p program [--rewrite | --translate | --check]`
       
