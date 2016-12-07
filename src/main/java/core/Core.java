@@ -36,19 +36,8 @@ public class Core
     public void run(Deque<Flag> flags, ExecutionContext executionContext) throws ExitException
     {
         this.executionContext = executionContext;
-        probe = new Probe();
-        for (Flag flag : flags)
-        {
-            switch (flag)
-            {
-                case METRICS:
-                    probe.addMeter(new Probe.Metrics(executionContext.program.length));
-                    break;
-                case TRACE:
-                    probe.addMeter(new Probe.Trace(filename));
-                    break;
-            }
-        }
+        probe = createProbe(flags, executionContext.program.length);
+
         do {
             switch (flags.pop())
             {
@@ -66,6 +55,29 @@ public class Core
                     break;
             }
         } while (!flags.isEmpty());
+    }
+
+    /**
+     * Créer une probe pour récupérer les métriques ou générer la trace lors de l'exécution du programme
+     * @param flags les options présentes
+     * @param programLength la taille du programme
+     * @return une nouvelle probe initialiser
+     */
+    Probe createProbe(Deque<Flag> flags, int programLength) {
+        Probe createdProbe = new Probe();
+        for (Flag flag : flags)
+        {
+            switch (flag)
+            {
+                case METRICS:
+                    createdProbe.addMeter(new Probe.Metrics(programLength));
+                    break;
+                case TRACE:
+                    createdProbe.addMeter(new Probe.Trace(filename));
+                    break;
+            }
+        }
+        return createdProbe;
     }
 
     /**
