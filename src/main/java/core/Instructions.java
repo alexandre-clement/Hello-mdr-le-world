@@ -48,10 +48,7 @@ public enum Instructions // implements Executable
         this.semantics = semantics;
 
         // TODO: 25/11/2016 improve pattern
-        if (shortcut.equals('+') || shortcut.equals('[') || shortcut.equals(']') || shortcut.equals('.'))
-            this.pattern = Pattern.compile("(\\" + shortcut + "(?![0-9])|\\b" + instruction + "\\b|" + color.getRGB() + "(?![0-9]))");
-        else
-            this.pattern = Pattern.compile("(" + shortcut + "(?![0-9])|\\b" + instruction + "\\b|" + color.getRGB() + "(?![0-9]))");
+        this.pattern = Pattern.compile("(\\" + shortcut + "(?![0-9])|(?:^\\s*)" + instruction + "(?:\\s*$)|^" + color.getRGB() + "$)");
     }
 
     public String getInstruction()
