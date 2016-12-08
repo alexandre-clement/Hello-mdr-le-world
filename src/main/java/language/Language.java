@@ -19,13 +19,11 @@ import java.util.regex.Pattern;
  */
 public class Language
 {
-    private static final String COMMENT = "#";
+    public static final String COMMENT = "#";
     private String filename;
     private ReadFile file;
     private InputStreamReader in;
     private PrintStream out;
-
-    private Map<Integer, Integer> jumptable;
 
     public Language(Interpreter interpreter) throws LanguageException
     {
@@ -58,7 +56,7 @@ public class Language
      * @return le pattern somme de tous les paternes d'instructions
      */
     private Pattern compile() {
-        StringBuilder stringBuilder = new StringBuilder(COMMENT);
+        StringBuilder stringBuilder = new StringBuilder("["+COMMENT+"]");
         for (Instructions instructions : Instructions.values()) {
             stringBuilder.append("|");
             stringBuilder.append(instructions.getPattern());
@@ -71,8 +69,8 @@ public class Language
      * @return les Instructions du programme
      * @throws LanguageException si le fichier n'existe pas
      */
-    public ExecutionContext getExcecutionContext() throws LanguageException, NotWellFormedException {
-        jumptable = new HashMap<>();
+    public ExecutionContext getExecutionContext() throws LanguageException, NotWellFormedException {
+        HashMap<Integer, Integer> jumpTable = new HashMap<>();
         Deque<Instructions> instructionsDeque = new ArrayDeque<>();
         Pattern pattern = compile();
         Matcher matcher;
@@ -95,18 +93,18 @@ public class Language
                         if (matcher.group(i + 1) != null)
                         {
                             length += 1;
-                            brace = instructionsDeque.size()-1;
+                            brace = instructionsDeque.size();
                             instructionsDeque.add(instructions[i]);
                             if (instructions[i] == Instructions.JUMP)
-                                jumptable.put(jump++, brace);
+                                jumpTable.put(jump++, brace);
                             if (instructions[i] == Instructions.BACK)
                             {
-                                jumptable.put(brace, jumptable.get(--jump));
-                                jumptable.put(jumptable.get(jump), brace);
-                                if (!jumptable.containsKey(jump))
+                                jumpTable.put(brace, jumpTable.get(--jump));
+                                jumpTable.put(jumpTable.get(jump), brace);
+                                if (!jumpTable.containsKey(jump))
                                     throw new NotWellFormedException(brace);
-                                if (jumptable.get(jump) != jump)
-                                    jumptable.remove(jump);
+                                if (jumpTable.get(jump) != jump)
+                                    jumpTable.remove(jump);
                             }
                         }
                 }
@@ -117,7 +115,7 @@ public class Language
         {
             throw new LanguageException(127, "File not found");
         }
-        return new ExecutionContext(instructionsDeque.toArray(new Instructions[length]), jumptable, in, out);
+        return new ExecutionContext(instructionsDeque.toArray(new Instructions[length]), jumpTable, in, out);
     }
 
     private String getFilename(String pArgument, int separator) throws LanguageException

@@ -1,8 +1,8 @@
 package instructions;
 
-import core.Core;
 import core.ExecutionContext;
 import core.Instructions;
+import exception.OverflowException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,15 +20,22 @@ public class DecrementTest {
 
     @Before
     public void init() {
-        byte[] memory = new byte[ExecutionContext.CAPACITY];
-        context = new ExecutionContext(0, 3, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        byte[] memory = new byte[1];
+        memory[0] = 1;
+        context = new ExecutionContext(0, 0, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
     }
 
     @Test
     public void executeTest() throws Exception {
-        context.memory[3]=22;
-        new Decrement().execute(this.context);
-        assertEquals(21, context.memory[3]);
+        new Decrement().execute(context);
+        assertEquals(0, context.printValue());
+    }
+
+    @Test(expected = OverflowException.class)
+    public void executeFailTest() throws Exception {
+        Decrement decrement = new Decrement();
+        decrement.execute(context);
+        decrement.execute(context);
     }
 
 }

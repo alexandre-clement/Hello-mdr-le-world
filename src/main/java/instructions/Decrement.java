@@ -1,6 +1,5 @@
 package instructions;
 
-import core.Core;
 import core.ExecutionContext;
 import exception.CoreException;
 import exception.LanguageException;
@@ -15,8 +14,8 @@ public class Decrement implements Executable
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
-        if (executionContext.memory[executionContext.pointer] == Core.MIN)
-            throw new OverflowException(executionContext.instruction, executionContext.pointer);
-        executionContext.memory[executionContext.pointer] -= 1;
+        if (executionContext.getValue() == ExecutionContext.MIN)
+            throw new OverflowException(executionContext.getInstruction(), executionContext.getPointer());
+        executionContext.decrement();
     }
 }

@@ -18,7 +18,7 @@ public class In implements Executable
     {
         try
         {
-            executionContext.memory[executionContext.pointer] = (byte) executionContext.in.read();
+            executionContext.in(executionContext.readNextValue());
         }
         catch (IOException exception)
         {

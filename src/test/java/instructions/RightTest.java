@@ -1,16 +1,14 @@
 package instructions;
 
 import static org.junit.Assert.*;
-import core.Core;
 import core.ExecutionContext;
 import core.Instructions;
+import exception.OutOfMemoryException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;
-
-import static org.junit.Assert.*;
 
 /**
  * @author TANG Yi
@@ -18,18 +16,19 @@ import static org.junit.Assert.*;
  */
 public class RightTest {
 
-    private ExecutionContext context;
-
-    @Before
-    public void init() {
-        byte[] memory = new byte[ExecutionContext.CAPACITY];
-        context = new ExecutionContext(0, 3, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
-    }
-
     @Test
     public void executeTest() throws Exception {
-        new Right().execute(this.context);
-        assertEquals(4,context.pointer);
+        byte[] memory = new byte[5];
+        ExecutionContext context = new ExecutionContext(0, 3, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        new Right().execute(context);
+        assertEquals(4,context.getPointer());
+    }
+
+    @Test(expected = OutOfMemoryException.class)
+    public void executeFailTest() throws Exception {
+        byte[] memory = new byte[5];
+        ExecutionContext context = new ExecutionContext(0, 4, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        new Right().execute(context);
     }
 
 }

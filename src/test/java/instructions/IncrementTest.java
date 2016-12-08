@@ -1,10 +1,9 @@
 
 package instructions;
 
-import core.Core;
 import core.ExecutionContext;
 import core.Instructions;
-import org.junit.Assert;
+import exception.OverflowException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,15 +21,22 @@ public class IncrementTest {
 
     @Before
     public void init() {
-        byte[] memory = new byte[ExecutionContext.CAPACITY];
-        context = new ExecutionContext(0, 3, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        byte[] memory = new byte[1];
+        memory[0] = ExecutionContext.MAX-1;
+        context = new ExecutionContext(0, 0, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
     }
 
     @Test
     public void executeTest() throws Exception {
-        Increment incr = new Increment();
-        incr.execute(context);
-        assertEquals(1, context.memory[3]);
+        new Increment().execute(context);
+        assertEquals(255, context.printValue());
+    }
+
+    @Test(expected = OverflowException.class)
+    public void executeFailTest() throws Exception {
+        Increment increment = new Increment();
+        increment.execute(context);
+        increment.execute(context);
     }
 
 }

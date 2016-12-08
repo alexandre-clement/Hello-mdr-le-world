@@ -24,7 +24,7 @@ public class Main
                 System.exit(exit);
             Language language = new Language(interpreter);
             Core core = new Core(language.getFilename());
-            core.run(interpreter.getOptions(), language.getExcecutionContext());
+            core.run(interpreter.getOptions(), language.getExecutionContext());
         }
         catch (ExitException exception)
         {

@@ -1,10 +1,9 @@
 
 package instructions;
 
-import core.Core;
 import core.ExecutionContext;
 import core.Instructions;
-import org.junit.Before;
+import exception.OutOfMemoryException;
 import org.junit.Test;
 
 import java.io.InputStreamReader;
@@ -18,18 +17,19 @@ import static org.junit.Assert.*;
  */
 public class LeftTest {
 
-    private ExecutionContext context;
-
-    @Before
-    public void init() {
-        byte[] memory = new byte[ExecutionContext.CAPACITY];
-        context = new ExecutionContext(0, 3, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
-    }
-
     @Test
     public void executeTest() throws Exception {
-        new Left().execute(this.context);
-        assertEquals(2,context.pointer);
+        byte[] memory = new byte[5];
+        ExecutionContext context = new ExecutionContext(0, 1, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        new Left().execute(context);
+        assertEquals(0,context.getPointer());
+    }
+
+    @Test(expected = OutOfMemoryException.class)
+    public void executeFailTest() throws Exception {
+        byte[] memory = new byte[5];
+        ExecutionContext context = new ExecutionContext(0, 0, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        new Left().execute(context);
     }
 
 }

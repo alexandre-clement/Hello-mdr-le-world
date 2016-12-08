@@ -15,8 +15,8 @@ public class JumpOptimised implements Executable
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
-        if (executionContext.memory[executionContext.pointer] != 0)
+        if (executionContext.getValue() != 0)
             return;
-        executionContext.instruction = executionContext.jumpTable.get(executionContext.instruction);
+        executionContext.bound(executionContext.getJumpLink());
     }
 }

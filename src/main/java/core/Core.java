@@ -3,6 +3,9 @@ package core;
 import exception.*;
 import interpreter.Flag;
 import language.BitmapImage;
+import probe.Metrics;
+import probe.Probe;
+import probe.Trace;
 
 import java.io.*;
 import java.util.Deque;
@@ -14,11 +17,6 @@ import java.util.Deque;
  */
 public class Core
 {
-
-    private final static int CAPACITY = 30000;
-    public final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
-    public final static int MIN = 0;
-    
     private Probe probe;
     private String filename;
     private ExecutionContext executionContext;
@@ -36,7 +34,7 @@ public class Core
     public void run(Deque<Flag> flags, ExecutionContext executionContext) throws ExitException
     {
         this.executionContext = executionContext;
-        probe = createProbe(flags, executionContext.program.length);
+        probe = createProbe(flags, executionContext.getProgramLength());
 
         do {
             switch (flags.pop())
@@ -55,6 +53,7 @@ public class Core
                     break;
             }
         } while (!flags.isEmpty());
+        executionContext.close();
     }
 
     /**
@@ -63,17 +62,17 @@ public class Core
      * @param programLength la taille du programme
      * @return une nouvelle probe initialiser
      */
-    Probe createProbe(Deque<Flag> flags, int programLength) {
+    private Probe createProbe(Deque<Flag> flags, int programLength) {
         Probe createdProbe = new Probe();
         for (Flag flag : flags)
         {
             switch (flag)
             {
                 case METRICS:
-                    createdProbe.addMeter(new Probe.Metrics(programLength));
+                    createdProbe.addMeter(new Metrics(programLength));
                     break;
                 case TRACE:
-                    createdProbe.addMeter(new Probe.Trace(filename));
+                    createdProbe.addMeter(new Trace(filename));
                     break;
             }
         }
@@ -85,9 +84,9 @@ public class Core
      */
     private void print() throws LanguageException, CoreException
     {
-        for (executionContext.instruction=0; executionContext.instruction<executionContext.program.length; executionContext.instruction++)
+        for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
-            executionContext.program[executionContext.instruction].execute(executionContext);
+            executionContext.getCurrentInstruction().execute(executionContext);
             probe.acknowledge(executionContext);
         }
         probe.getResult();
@@ -99,8 +98,8 @@ public class Core
      */
     private void rewrite()
     {
-        for (executionContext.instruction=0; executionContext.instruction<executionContext.program.length; executionContext.instruction++)
-            standardOutput(executionContext.program[executionContext.instruction].getShortcut());
+        for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
+            standardOutput(executionContext.getCurrentInstruction().getShortcut());
         standardOutput('\n');
     }
 
@@ -110,17 +109,17 @@ public class Core
     private void translate()
     {
 
-        int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(executionContext.program.length));
+        int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(executionContext.getProgramLength()));
         int[] colorArray = new int[size * size];
         int div, mod;
-        for (executionContext.instruction=0; executionContext.instruction < executionContext.program.length; executionContext.instruction++)
+        for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
-            div = (executionContext.instruction * BitmapImage.SIZE) / size * BitmapImage.SIZE;
+            div = (executionContext.getInstruction() * BitmapImage.SIZE) / size * BitmapImage.SIZE;
             for (int line = div * size; line < (div + BitmapImage.SIZE) * size; line += size)
             {
-                mod = (executionContext.instruction * BitmapImage.SIZE) % size;
+                mod = (executionContext.getInstruction() * BitmapImage.SIZE) % size;
                 for (int column = mod; column < mod + BitmapImage.SIZE; column++)
-                    colorArray[line + column] = executionContext.program[executionContext.instruction].getColor().getRGB();
+                    colorArray[line + column] = executionContext.getCurrentInstruction().getColor().getRGB();
             }
         }
         try
@@ -140,13 +139,13 @@ public class Core
     private void check() throws NotWellFormedException
     {
         int close = 0;
-        for (Instructions instructions : executionContext.program)
+        for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
             if (close < 0)
                 throw new NotWellFormedException();
-            if (instructions == Instructions.JUMP)
+            if (executionContext.getCurrentInstruction() == Instructions.JUMP)
                 close += 1;
-            else if (instructions == Instructions.BACK)
+            else if (executionContext.getCurrentInstruction() == Instructions.BACK)
                 close -= 1;
         }
         if (close != 0)
@@ -157,7 +156,7 @@ public class Core
      * print out the parameter
      * @param object to be print out
      */
-    private static void standardOutput(Object object)
+    public static void standardOutput(Object object)
     {
         System.out.print(object);
     }

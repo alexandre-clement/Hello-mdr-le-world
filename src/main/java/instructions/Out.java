@@ -14,7 +14,6 @@ public class Out implements Executable
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
-        executionContext.out.print((char) executionContext.printValue());
-        executionContext.out.flush();
+        executionContext.out((char) executionContext.printValue());
     }
 }
