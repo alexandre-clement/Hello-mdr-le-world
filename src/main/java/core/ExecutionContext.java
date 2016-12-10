@@ -1,5 +1,8 @@
 package core;
 
+import exception.ExitException;
+import instructions.Executable;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -15,7 +18,7 @@ public class ExecutionContext
     public final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
     public final static int MIN = 0;
 
-    private Instructions[] program;
+    private Executable[] program;
     private Map<Integer, Integer> jumpTable;
 
     private int instruction;
@@ -32,7 +35,7 @@ public class ExecutionContext
      * @param in le flux de données entrant
      * @param out le flux de données sortant
      */
-    public ExecutionContext(Instructions[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
+    public ExecutionContext(Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
     {
         this(0, 0, new byte[CAPACITY], program, jumpTable, in, out);
     }
@@ -46,7 +49,7 @@ public class ExecutionContext
      * @param in le flux de données entrant
      * @param out le flux de données sortant
      */
-    public ExecutionContext(int instruction, int pointer, byte[] memory, Instructions[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
+    public ExecutionContext(int instruction, int pointer, byte[] memory, Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
     {
         this.instruction = instruction;
         this.pointer = pointer;
@@ -89,6 +92,11 @@ public class ExecutionContext
             }
         }
         return stringbuilder.toString();
+    }
+
+    public void execute() throws ExitException
+    {
+        program[instruction].execute(this);
     }
 
     public int getInstruction()
@@ -162,9 +170,14 @@ public class ExecutionContext
         return memory[pointer];
     }
 
-    public Instructions getCurrentInstruction()
+    public Executable getCurrentExecutable()
     {
         return program[instruction];
+    }
+
+    public Instructions getCurrentInstruction()
+    {
+        return program[instruction].getInstructions();
     }
 
     int getProgramLength()

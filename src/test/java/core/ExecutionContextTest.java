@@ -23,8 +23,8 @@ public class ExecutionContextTest {
         byte[] memory1= new byte[ExecutionContext.CAPACITY];
         memory1[1] = 30;
 
-        context0 = new ExecutionContext(0, 0, memory0, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
-        context1 = new ExecutionContext(0, 1, memory1, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        context0 = new ExecutionContext(0, 0, memory0, null, null, null, null);
+        context1 = new ExecutionContext(0, 1, memory1, null, null, null, null);
     }
 
     @Test

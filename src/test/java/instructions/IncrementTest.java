@@ -23,7 +23,7 @@ public class IncrementTest {
     public void init() {
         byte[] memory = new byte[1];
         memory[0] = ExecutionContext.MAX-1;
-        context = new ExecutionContext(0, 0, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        context = new ExecutionContext(0, 0, memory, null, new HashMap<>(), new InputStreamReader(System.in), System.out);
     }
 
     @Test

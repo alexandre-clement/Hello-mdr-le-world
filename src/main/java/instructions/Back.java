@@ -10,8 +10,26 @@ import exception.NotWellFormedException;
  * @author Alexandre Clement
  *         Created the 26/11/2016.
  */
-public class Back implements Executable
+public class Back implements Executable, Loop
 {
+
+    @Override
+    public Instructions getInstructions()
+    {
+        return Instructions.OLD_BACK;
+    }
+
+    @Override
+    public Instructions getLinkedInstructions()
+    {
+        return Instructions.OLD_JUMP;
+    }
+
+    @Override
+    public boolean open()
+    {
+        return false;
+    }
 
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
@@ -25,9 +43,10 @@ public class Back implements Executable
             executionContext.previousInstruction();
             if (!executionContext.hasPreviousInstruction())
                 throw new NotWellFormedException(brace);
-            if (executionContext.getCurrentInstruction() == Instructions.BACK)
+            Instructions current = executionContext.getCurrentInstruction();
+            if (current.getLoopType() == getInstructions().getLoopType() && ((Loop) executionContext.getCurrentExecutable()).open() == open())
                 close -= 1;
-            if (executionContext.getCurrentInstruction() == Instructions.JUMP)
+            if (current.getLoopType() == getInstructions().getLoopType() && ((Loop) executionContext.getCurrentExecutable()).open() != open())
                 close += 1;
         }
     }

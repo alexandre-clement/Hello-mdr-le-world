@@ -1,6 +1,7 @@
 package core;
 
 import exception.*;
+import instructions.*;
 import interpreter.Flag;
 import language.BitmapImage;
 import probe.Metrics;
@@ -17,9 +18,7 @@ import java.util.Deque;
  */
 public class Core
 {
-    private Probe probe;
     private String filename;
-    private ExecutionContext executionContext;
 
     public Core(String filename)
     {
@@ -33,23 +32,21 @@ public class Core
      */
     public void run(Deque<Flag> flags, ExecutionContext executionContext) throws ExitException
     {
-        this.executionContext = executionContext;
-        probe = createProbe(flags, executionContext.getProgramLength());
-
         do {
             switch (flags.pop())
             {
                 case PRINT:
-                    print();
+                    Probe probe = createProbe(flags, executionContext.getProgramLength());
+                    print(executionContext, probe);
                     break;
                 case REWRITE:
-                    rewrite();
+                    rewrite(executionContext);
                     break;
                 case TRANSLATE:
-                    translate();
+                    translate(executionContext);
                     break;
                 case CHECK:
-                    check();
+                    check(executionContext);
                     break;
             }
         } while (!flags.isEmpty());
@@ -82,11 +79,11 @@ public class Core
     /**
      * the '-p' option: execution of the program and print out the memory snapshot
      */
-    private void print() throws LanguageException, CoreException
+    private void print(ExecutionContext executionContext, Probe probe) throws ExitException
     {
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
-            executionContext.getCurrentInstruction().execute(executionContext);
+            executionContext.execute();
             probe.acknowledge(executionContext);
         }
         probe.getResult();
@@ -96,7 +93,7 @@ public class Core
     /**
      * the '--rewrite' option: print out the short syntax of the program
      */
-    private void rewrite()
+    private void rewrite(ExecutionContext executionContext)
     {
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
             standardOutput(executionContext.getCurrentInstruction().getShortcut());
@@ -106,7 +103,7 @@ public class Core
     /**
      * the '--translate' option: translate the program to the color syntax and create a image file
      */
-    private void translate()
+    private void translate(ExecutionContext executionContext)
     {
 
         int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(executionContext.getProgramLength()));
@@ -136,7 +133,7 @@ public class Core
      * the '--check' option: check JUMP and BACK in the program are well formed
      * @throws NotWellFormedException if the program is not well formed
      */
-    private void check() throws NotWellFormedException
+    private void check(ExecutionContext executionContext) throws NotWellFormedException
     {
         int close = 0;
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
@@ -150,6 +147,11 @@ public class Core
         }
         if (close != 0)
             throw new NotWellFormedException();
+    }
+
+    public static Executable[] getExecutables()
+    {
+        return new Executable[] {new Increment(), new Decrement(), new Left(), new Right(), new Out(), new In(), new Jump(), new Back(), new JumpOptimised(), new BackOptimised()};
     }
 
     /**

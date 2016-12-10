@@ -1,8 +1,5 @@
 package core;
 
-import exception.CoreException;
-import exception.LanguageException;
-import instructions.*;
 import language.Language;
 
 import java.awt.*;
@@ -12,17 +9,19 @@ import java.util.regex.Pattern;
  * @author Alexandre Clement
  *         Created the 24/11/2016.
  */
-public enum Instructions // implements Executable
+public enum Instructions
 {
-    // Instructions     executable          instructions    shortcut    color                       metrics type                instructions semantics
-    INCREMENT(          new Increment(),    "INCR",         '+',        new Color(255, 255, 255),   MetricsType.DATA_WRITE,     "Increment the pointed cell by one"),
-    DECREMENT(          new Decrement(),    "DECR",         '-',        new Color(75, 0, 130),      MetricsType.DATA_WRITE,     "Decrement the pointed cell by one"),
-    LEFT(               new Left(),         "LEFT",         '<',        new Color(148, 0, 211),     MetricsType.DATA_MOVE,      "Move the memory pointer to the left"),
-    RIGHT(              new Right(),        "RIGHT",        '>',        new Color(0, 0, 255),       MetricsType.DATA_MOVE,      "Move the memory pointer to the right"),
-    OUT(                new Out(),          "OUT",          '.',        new Color(0, 255, 0),       MetricsType.DATA_READ,      "Print out the content of the memory cell as ASCII"),
-    IN(                 new In(),           "IN",           ',',        new Color(255, 255, 0),     MetricsType.DATA_WRITE,     "Read the value present in the input as an ASCII character"),
-    JUMP(               new JumpOptimised(),"JUMP",         '[',        new Color(255, 127, 0),     MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero"),
-    BACK(               new BackOptimised(),"BACK",         ']',        new Color(255, 0, 0),       MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero");
+    // Instructions     instructions    shortcut    color                       loop type           metrics metricsType                instructions semantics
+    INCREMENT(          "INCR",         '+',        new Color(255, 255, 255),   null,               MetricsType.DATA_WRITE,     "Increment the pointed cell by one"),
+    DECREMENT(          "DECR",         '-',        new Color(75, 0, 130),      null,               MetricsType.DATA_WRITE,     "Decrement the pointed cell by one"),
+    LEFT(               "LEFT",         '<',        new Color(148, 0, 211),     null,               MetricsType.DATA_MOVE,      "Move the memory pointer to the left"),
+    RIGHT(              "RIGHT",        '>',        new Color(0, 0, 255),       null,               MetricsType.DATA_MOVE,      "Move the memory pointer to the right"),
+    OUT(                "OUT",          '.',        new Color(0, 255, 0),       null,               MetricsType.DATA_READ,      "Print out the content of the memory cell as ASCII"),
+    IN(                 "IN",           ',',        new Color(255, 255, 0),     null,               MetricsType.DATA_WRITE,     "Read the value present in the input as an ASCII character"),
+    JUMP(               "JUMP",         '[',        new Color(255, 127, 0),     LoopType.OPTIMISED, MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero (using a jump table)"),
+    BACK(               "BACK",         ']',        new Color(255, 0, 0),       LoopType.OPTIMISED, MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero (using a jump table)"),
+    OLD_JUMP(           "OLD_JUMP",     '(',        new Color(255, 127, 127),   LoopType.OLD,       MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero"),
+    OLD_BACK(           "OLD_BACK",     ')',        new Color(255, 0, 127),     LoopType.OLD,       MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero");
 
     public enum MetricsType
     {
@@ -31,25 +30,31 @@ public enum Instructions // implements Executable
         DATA_READ
     }
 
-    private Executable executable;
+    public enum LoopType
+    {
+        OLD,
+        OPTIMISED
+    }
+
     private String instruction;
     private Character shortcut;
     private Color color;
-    private MetricsType type;
+    private LoopType loopType;
+    private MetricsType metricsType;
     private String semantics;
     private Pattern pattern;
 
-    Instructions(Executable executable, String instruction, Character shortcut, Color color, MetricsType type, String semantics)
+    Instructions(String instruction, Character shortcut, Color color, LoopType loopType, MetricsType metricsType, String semantics)
     {
-        this.executable = executable;
         this.instruction = instruction;
         this.shortcut = shortcut;
         this.color = color;
-        this.type = type;
+        this.loopType = loopType;
+        this.metricsType = metricsType;
         this.semantics = semantics;
 
         // TODO: 25/11/2016 improve pattern
-        this.pattern = Pattern.compile("(\\" + shortcut + "(?![0-9])|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + Language.COMMENT +"].*)?$|^" + color.getRGB() + "$)");
+        this.pattern = Pattern.compile("(\\" + shortcut + "(?![0-9])|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + Language.COMMENT + "].*)?$|^" + color.getRGB() + "$)");
     }
 
     public String getInstruction()
@@ -72,9 +77,14 @@ public enum Instructions // implements Executable
         return pattern;
     }
 
-    public MetricsType getType()
+    public LoopType getLoopType()
     {
-        return type;
+        return loopType;
+    }
+
+    public MetricsType getMetricsType()
+    {
+        return metricsType;
     }
 
     public String getSemantics()
@@ -82,8 +92,4 @@ public enum Instructions // implements Executable
         return semantics;
     }
 
-    public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
-    {
-        executable.execute(executionContext);
-    }
 }

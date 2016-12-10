@@ -23,6 +23,7 @@ public class Trace implements Meter
         try
         {
             writer = new FileWriter(filename + ".log");
+            writer.write(String.format("%14s%25s%20s%28s%n%n", "Execution step", "Execution pointer", "Data pointer", "Memory snapshot"));
         }
         catch (IOException e)
         {
@@ -54,7 +55,7 @@ public class Trace implements Meter
     @Override
     public void acknowledge(ExecutionContext executionContext)
     {
-        String log = String.format("Execution step: %10d | Execution pointer: %10d | Data pointer: %10d | %s%n", ++step, executionContext.getInstruction(), executionContext.getPointer(), executionContext.getMemorySnapshot());
+        String log = String.format("%7d%25d%22d                  %s%n", ++step, executionContext.getInstruction(), executionContext.getPointer(), executionContext.getMemorySnapshot());
         try
         {
             writer.write(log);

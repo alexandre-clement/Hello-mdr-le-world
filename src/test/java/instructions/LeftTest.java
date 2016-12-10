@@ -20,7 +20,7 @@ public class LeftTest {
     @Test
     public void executeTest() throws Exception {
         byte[] memory = new byte[5];
-        ExecutionContext context = new ExecutionContext(0, 1, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        ExecutionContext context = new ExecutionContext(0, 1, memory, null, null, null, null);
         new Left().execute(context);
         assertEquals(0,context.getPointer());
     }
@@ -28,7 +28,7 @@ public class LeftTest {
     @Test(expected = OutOfMemoryException.class)
     public void executeFailTest() throws Exception {
         byte[] memory = new byte[5];
-        ExecutionContext context = new ExecutionContext(0, 0, memory, new Instructions[0], new HashMap<>(), new InputStreamReader(System.in), System.out);
+        ExecutionContext context = new ExecutionContext(0, 0, memory, null, null, null, null);
         new Left().execute(context);
     }
 

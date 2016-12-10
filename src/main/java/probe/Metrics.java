@@ -50,7 +50,7 @@ public class Metrics implements Meter
     public void acknowledge(ExecutionContext executionContext)
     {
         exec_move += 1;
-        switch (executionContext.getCurrentInstruction().getType())
+        switch (executionContext.getCurrentInstruction().getMetricsType())
         {
             case DATA_WRITE:
                 data_write += 1;

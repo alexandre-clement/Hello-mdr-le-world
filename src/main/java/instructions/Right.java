@@ -1,6 +1,7 @@
 package instructions;
 
 import core.ExecutionContext;
+import core.Instructions;
 import exception.CoreException;
 import exception.LanguageException;
 import exception.OutOfMemoryException;
@@ -11,6 +12,12 @@ import exception.OutOfMemoryException;
  */
 public class Right implements Executable
 {
+
+    @Override
+    public Instructions getInstructions()
+    {
+        return Instructions.RIGHT;
+    }
 
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException

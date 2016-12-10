@@ -1,9 +1,12 @@
 package language;
 
+import core.Core;
 import core.ExecutionContext;
 import core.Instructions;
 import exception.LanguageException;
 import exception.NotWellFormedException;
+import instructions.Executable;
+import instructions.Loop;
 import interpreter.Flag;
 import interpreter.Interpreter;
 
@@ -55,11 +58,13 @@ public class Language
      * Compile tous les paternes ensemble et rajouter les commentaires i.e #
      * @return le pattern somme de tous les paternes d'instructions
      */
-    private Pattern compile() {
+    private Pattern compile(Executable[] executables)
+    {
         StringBuilder stringBuilder = new StringBuilder("["+COMMENT+"]");
-        for (Instructions instructions : Instructions.values()) {
+        for (Executable executable : executables)
+        {
             stringBuilder.append("|");
-            stringBuilder.append(instructions.getPattern());
+            stringBuilder.append(executable.getInstructions().getPattern());
         }
         return Pattern.compile(stringBuilder.toString());
     }
@@ -69,15 +74,20 @@ public class Language
      * @return les Instructions du programme
      * @throws LanguageException si le fichier n'existe pas
      */
-    public ExecutionContext getExecutionContext() throws LanguageException, NotWellFormedException {
+    public ExecutionContext getExecutionContext() throws LanguageException, NotWellFormedException
+    {
         HashMap<Integer, Integer> jumpTable = new HashMap<>();
-        Deque<Instructions> instructionsDeque = new ArrayDeque<>();
-        Pattern pattern = compile();
+        Deque<Executable> program = new ArrayDeque<>();
+        Executable[] executables = Core.getExecutables();
+        List<Deque<Integer>> loops = new ArrayList<>();
+        for (int i = 0; i < Instructions.LoopType.values().length; i++)
+        {
+            loops.add(new ArrayDeque<>());
+        }
+        Pattern pattern = compile(executables);
         Matcher matcher;
-        Instructions[] instructions = Instructions.values();
+
         int length = 0;
-        int jump = 0;
-        int brace;
 
         try
         {
@@ -89,24 +99,9 @@ public class Language
                     if (COMMENT.equals(matcher.group()))
                         break;
 
-                    for (int i = 0; i < instructions.length; i++)
+                    for (int i = 0; i < executables.length; i++)
                         if (matcher.group(i + 1) != null)
-                        {
-                            length += 1;
-                            brace = instructionsDeque.size();
-                            instructionsDeque.add(instructions[i]);
-                            if (instructions[i] == Instructions.JUMP)
-                                jumpTable.put(jump++, brace);
-                            if (instructions[i] == Instructions.BACK)
-                            {
-                                jumpTable.put(brace, jumpTable.get(--jump));
-                                jumpTable.put(jumpTable.get(jump), brace);
-                                if (!jumpTable.containsKey(jump))
-                                    throw new NotWellFormedException(brace);
-                                if (jumpTable.get(jump) != jump)
-                                    jumpTable.remove(jump);
-                            }
-                        }
+                            addExecutable(program, loops, jumpTable, executables[i], length++);
                 }
             }
             file.close();
@@ -115,7 +110,33 @@ public class Language
         {
             throw new LanguageException(127, "File not found");
         }
-        return new ExecutionContext(instructionsDeque.toArray(new Instructions[length]), jumpTable, in, out);
+        return new ExecutionContext(program.toArray(new Executable[length]), jumpTable, in, out);
+    }
+
+    private void addExecutable(Deque<Executable> program, List<Deque<Integer>> loops, HashMap<Integer, Integer> jumpTable, Executable executable, int length) throws NotWellFormedException
+    {
+        program.add(executable);
+        Instructions instructions = executable.getInstructions();
+        if (instructions.getLoopType() != null)
+            addLoop(loops, jumpTable, executable, length);
+    }
+
+    private void addLoop(List<Deque<Integer>> loops, HashMap<Integer, Integer> jumpTable, Executable executable, int length) throws NotWellFormedException
+    {
+        Loop loop = (Loop) executable;
+        Instructions instructions = executable.getInstructions();
+        int ordinal = instructions.getLoopType().ordinal();
+        if (loop.open())
+        {
+            loops.get(ordinal).addLast(length);
+        }
+        else if (!loops.get(ordinal).isEmpty())
+        {
+            jumpTable.put(loops.get(ordinal).peekLast(), length);
+            jumpTable.put(length, loops.get(ordinal).pollLast());
+        }
+        else
+            throw new NotWellFormedException(length);
     }
 
     private String getFilename(String pArgument, int separator) throws LanguageException

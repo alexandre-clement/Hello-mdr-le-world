@@ -10,8 +10,25 @@ import exception.NotWellFormedException;
  * @author Alexandre Clement
  *         Created the 26/11/2016.
  */
-public class Jump implements Executable
+public class Jump implements Executable, Loop
 {
+
+    @Override
+    public Instructions getInstructions()
+    {
+        return Instructions.OLD_JUMP;
+    }
+
+    @Override
+    public Instructions getLinkedInstructions()
+    {
+        return Instructions.OLD_BACK;
+    }
+
+    @Override
+    public boolean open() {
+        return true;
+    }
 
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
@@ -25,9 +42,10 @@ public class Jump implements Executable
             executionContext.nextInstruction();
             if (!executionContext.hasNextInstruction())
                 throw new NotWellFormedException(brace);
-            if (executionContext.getCurrentInstruction() == Instructions.BACK)
+            Instructions current = executionContext.getCurrentInstruction();
+            if (current.getLoopType() == getInstructions().getLoopType() && ((Loop) executionContext.getCurrentExecutable()).open() != open())
                 close -= 1;
-            if (executionContext.getCurrentInstruction() == Instructions.JUMP)
+            if (current.getLoopType() == getInstructions().getLoopType() && ((Loop) executionContext.getCurrentExecutable()).open() == open())
                 close += 1;
         }
     }

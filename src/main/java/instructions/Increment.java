@@ -2,6 +2,7 @@ package instructions;
 
 import core.Core;
 import core.ExecutionContext;
+import core.Instructions;
 import exception.CoreException;
 import exception.LanguageException;
 import exception.OverflowException;
@@ -12,6 +13,12 @@ import exception.OverflowException;
  */
 public class Increment implements Executable
 {
+
+    @Override
+    public Instructions getInstructions()
+    {
+        return Instructions.INCREMENT;
+    }
 
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException

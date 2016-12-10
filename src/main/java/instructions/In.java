@@ -1,6 +1,7 @@
 package instructions;
 
 import core.ExecutionContext;
+import core.Instructions;
 import exception.CoreException;
 import exception.LanguageException;
 
@@ -12,6 +13,12 @@ import java.io.IOException;
  */
 public class In implements Executable
 {
+
+    @Override
+    public Instructions getInstructions()
+    {
+        return Instructions.IN;
+    }
 
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException

@@ -1,6 +1,7 @@
 package instructions;
 
 import core.ExecutionContext;
+import core.Instructions;
 import exception.CoreException;
 import exception.LanguageException;
 import exception.OverflowException;
@@ -11,6 +12,13 @@ import exception.OverflowException;
  */
 public class Decrement implements Executable
 {
+
+    @Override
+    public Instructions getInstructions()
+    {
+        return Instructions.DECREMENT;
+    }
+
     @Override
     public void execute(ExecutionContext executionContext) throws CoreException, LanguageException
     {
