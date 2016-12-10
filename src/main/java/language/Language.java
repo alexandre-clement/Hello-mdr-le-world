@@ -60,7 +60,7 @@ public class Language
      */
     private Pattern compile(Executable[] executables)
     {
-        StringBuilder stringBuilder = new StringBuilder("["+COMMENT+"]");
+        StringBuilder stringBuilder = new StringBuilder("(["+COMMENT+"])");
         for (Executable executable : executables)
         {
             stringBuilder.append("|");
@@ -70,40 +70,56 @@ public class Language
     }
 
     /**
-     * On enregistre les instructions contenues dans le fichier source
-     * @return les Instructions du programme
+     * Créée l'exécution contexte du programme
+     * @return l'execution contexte du programme
      * @throws LanguageException si le fichier n'existe pas
      */
     public ExecutionContext getExecutionContext() throws LanguageException, NotWellFormedException
     {
+        // la table des boucles
         HashMap<Integer, Integer> jumpTable = new HashMap<>();
+        // le programme contenant les instructions contenues dans le fichier
         Deque<Executable> program = new ArrayDeque<>();
+        // la liste des instructions disponibles
         Executable[] executables = Core.getExecutables();
+        // un liste de stack (une stack par type de boucle)
+        // permet de joindre chaque instruction ouvrant une boucle à l'instruction qui la ferme
         List<Deque<Integer>> loops = new ArrayList<>();
+        // on crée un stack par type de boucle
         for (int i = 0; i < Instructions.LoopType.values().length; i++)
         {
             loops.add(new ArrayDeque<>());
         }
-        Pattern pattern = compile(executables);
-        Matcher matcher;
 
+        // le paterne contenant toutes les instructions ainsi que les caractères de commentaire
+        Pattern pattern = compile(executables);
+        // le matcher résultant de l'application du paterne sur une ligne du fichier
+        Matcher matcher;
+        // la longueur du programme
         int length = 0;
 
         try
         {
+            // pour chaque ligne du fichier
             for (String line = file.next(); line != null; line = file.next())
             {
+                // on applique le paterne à la ligne
                 matcher = pattern.matcher(line);
+                // tant que l'on a une instruction contenue dans la ligne
                 while (matcher.find())
                 {
-                    if (COMMENT.equals(matcher.group()))
+                    // si c'est un commentaire
+                    if (matcher.group(1) != null)
                         break;
 
+                    // sinon on regarde quel instructions a été trouvé dans la ligne
                     for (int i = 0; i < executables.length; i++)
-                        if (matcher.group(i + 1) != null)
+                        if (matcher.group(i + 2) != null)
+                            // l'instruction i a été trouvé, on l'ajoute a notre liste programme
                             addExecutable(program, loops, jumpTable, executables[i], length++);
                 }
             }
+            // on ferme le fichier
             file.close();
         }
         catch (IOException exception)
@@ -113,28 +129,49 @@ public class Language
         return new ExecutionContext(program.toArray(new Executable[length]), jumpTable, in, out);
     }
 
+    /**
+     * @param program le programme a remplir
+     * @param loops la liste de pile contenant les indices des boucles
+     * @param jumpTable la table des boucles
+     * @param executable l'instruction a ajouté au programme
+     * @param length la taille du programme
+     * @throws NotWellFormedException si l'instruction ferme un boucle non ouverte
+     */
     private void addExecutable(Deque<Executable> program, List<Deque<Integer>> loops, HashMap<Integer, Integer> jumpTable, Executable executable, int length) throws NotWellFormedException
     {
         program.add(executable);
         Instructions instructions = executable.getInstructions();
+        // si c'est une instruction de type boucle
         if (instructions.getLoopType() != null)
             addLoop(loops, jumpTable, executable, length);
     }
 
+    /**
+     * @param loops la liste de pile contenant les indices des boucles
+     * @param jumpTable la table des boucles
+     * @param executable l'instruction a ajouté au programme
+     * @param length la taille du programme
+     * @throws NotWellFormedException si l'instruction ferme un boucle non ouverte
+     */
     private void addLoop(List<Deque<Integer>> loops, HashMap<Integer, Integer> jumpTable, Executable executable, int length) throws NotWellFormedException
     {
         Loop loop = (Loop) executable;
         Instructions instructions = executable.getInstructions();
         int ordinal = instructions.getLoopType().ordinal();
+        // si c'est une instruction ouvrant une boucle
         if (loop.open())
         {
+            // on ajoute la position de l'instruction a la pile
             loops.get(ordinal).addLast(length);
         }
+        // sinon si il y a un boucle ouverte
         else if (!loops.get(ordinal).isEmpty())
         {
+            // on complete la table des boucles et on retire la boucle de la pile
             jumpTable.put(loops.get(ordinal).peekLast(), length);
             jumpTable.put(length, loops.get(ordinal).pollLast());
         }
+        // sinon on a une instruction fermante alors qu'aucune boucle n'est ouverte i.e erreur
         else
             throw new NotWellFormedException(length);
     }
