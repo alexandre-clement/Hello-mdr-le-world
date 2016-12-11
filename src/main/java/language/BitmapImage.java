@@ -24,19 +24,12 @@ public class BitmapImage implements ReadFile
 {
 
     public static final int SIZE = 3;
-    private ImageInputStream stream;
-    private ImageReadParam param;
-    private Rectangle rectangle;
-    private ImageReader reader;
-    private int height;
-    private int width;
-
-    public static void createImage(String filename, int[] colorArray, int size) throws IOException
-    {
-        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-        image.setRGB(0, 0, size, size, colorArray, 0, size);
-        ImageIO.write(image, "BMP", new File(filename));
-    }
+    private final ImageInputStream stream;
+    private final ImageReadParam param;
+    private final Rectangle rectangle;
+    private final ImageReader reader;
+    private final int height;
+    private final int width;
 
     BitmapImage(String filename) throws IOException
     {
@@ -50,6 +43,13 @@ public class BitmapImage implements ReadFile
         width = reader.getWidth(0);
         if (height % 3 != 0 || width % 3 != 0) throw new IOException();
         rectangle = new Rectangle(0, 0, SIZE, SIZE);
+    }
+
+    public static void createImage(String filename, int[] colorArray, int size) throws IOException
+    {
+        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, size, size, colorArray, 0, size);
+        ImageIO.write(image, "BMP", new File(filename));
     }
 
     @Override
@@ -69,7 +69,13 @@ public class BitmapImage implements ReadFile
         if (rectangle.x < width - SIZE) rectangle.setLocation(rectangle.x + SIZE, rectangle.y);
         else if (rectangle.y < height - SIZE) rectangle.setLocation(0, rectangle.y + SIZE);
         else rectangle.setLocation(width, height);
-        return String.valueOf(rgbArray[0]);
+        return String.valueOf(Math.abs(rgbArray[0]));
+    }
+
+    @Override
+    public void reset() throws IOException
+    {
+        rectangle.setLocation(0, 0);
     }
 
     @Override

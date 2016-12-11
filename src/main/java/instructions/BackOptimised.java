@@ -19,12 +19,8 @@ public class BackOptimised implements Executable, Loop
     }
 
     @Override
-    public Instructions getLinkedInstructions() {
-        return Instructions.JUMP;
-    }
-
-    @Override
-    public boolean open() {
+    public boolean open()
+    {
         return false;
     }
 

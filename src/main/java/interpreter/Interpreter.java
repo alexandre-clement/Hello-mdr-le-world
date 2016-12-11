@@ -4,37 +4,24 @@ import exception.IllegalCommandlineException;
 import main.Main;
 import org.apache.commons.cli.*;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
 
 /**
  * @author Alexandre Clement
  *         Created the 04 novembre 2016.
- *
- * Interpret the input commandline with Flag as key for options.
+ *         <p>
+ *         Interpret the input commandline with Flag as key for options.
  */
 public class Interpreter
 {
 
-    private CommandLine commandLine;
     private final Options options;
     private final Options helps;
     private final OptionGroup standardOutputOption;
+    private CommandLine commandLine;
     private boolean hasStandardOutputOption;
-
-    /**
-     * Initializes the CommandLine with the given command line.
-     *
-     * @param commandline the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check]
-     * @return a new Interpreter object initialized with the command line given
-     * @throws IllegalCommandlineException  if the commandline given is incorrect i.e
-     *                                      the p options is not given or without argument,
-     *                                      the i/o options are given without argument,
-     *                                      multiple standard output option are given (--rewrite, --translate, --check)
-     */
-    public static Interpreter buildInterpreter(String... commandline) throws IllegalCommandlineException
-    {
-        return new Interpreter().build(commandline);
-    }
 
     /**
      * Initializes a new Interpreter object.
@@ -52,7 +39,7 @@ public class Interpreter
 
         standardOutputOption = new OptionGroup();
 
-        for (Flag flag: Flag.values())
+        for (Flag flag : Flag.values())
         {
             if (flag.isHelp())
                 helps.addOption(optionBuilder(flag));
@@ -66,12 +53,27 @@ public class Interpreter
     /**
      * Initializes the CommandLine with the given command line.
      *
+     * @param commandline the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check]
+     * @return a new Interpreter object initialized with the command line given
+     * @throws IllegalCommandlineException if the commandline given is incorrect i.e
+     *                                     the p options is not given or without argument,
+     *                                     the i/o options are given without argument,
+     *                                     multiple standard output option are given (--rewrite, --translate, --check)
+     */
+    public static Interpreter buildInterpreter(String... commandline) throws IllegalCommandlineException
+    {
+        return new Interpreter().build(commandline);
+    }
+
+    /**
+     * Initializes the CommandLine with the given command line.
+     *
      * @param args the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check]
      * @return the current instance
-     * @throws IllegalCommandlineException  if the commandline given is incorrect i.e
-     *                                      the p options is not given or without argument,
-     *                                      the i/o options are given without argument,
-     *                                      multiple standard output option are given (--rewrite, --translate, --check)
+     * @throws IllegalCommandlineException if the commandline given is incorrect i.e
+     *                                     the p options is not given or without argument,
+     *                                     the i/o options are given without argument,
+     *                                     multiple standard output option are given (--rewrite, --translate, --check)
      */
     private Interpreter build(String... args) throws IllegalCommandlineException
     {
@@ -105,9 +107,9 @@ public class Interpreter
 
     /**
      * Return the argument in the commandline of the flag.
-     *
+     * <p>
      * For example, if the commandline is {"-p", "filename"}, getOptionValue(Flag.PRINT) will return "filename".
-     *
+     * <p>
      * If the option is not in the commandline, getOptionValue return null.
      * For example, if the commandline is {"-p", "filename"}, getOptionValue(Flag.INPUT) will return null.
      *
@@ -121,7 +123,7 @@ public class Interpreter
 
     /**
      * Return true if the option is in the commandline, false otherwise.
-     *
+     * <p>
      * For example, if the commandline is {"-p", "filename"}, hasOption(Flag.PRINT) will return true,
      * and hasOption(Flag.REWRITE) will return false.
      *
@@ -135,7 +137,7 @@ public class Interpreter
 
     /**
      * Return true if the commandline have standard output option, false otherwise.
-     *
+     * <p>
      * For the commandline {"-p", "filename"}, hasStandardOutputOption() will return false,
      * For the commandline {"-p", "filename", "--rewrite"}, hasStandardOutputOption() will return true.
      *

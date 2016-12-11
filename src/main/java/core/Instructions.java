@@ -36,13 +36,13 @@ public enum Instructions
         OPTIMISED
     }
 
-    private String instruction;
-    private Character shortcut;
-    private Color color;
-    private LoopType loopType;
-    private MetricsType metricsType;
-    private String semantics;
-    private Pattern pattern;
+    private final String instruction;
+    private final Character shortcut;
+    private final Color color;
+    private final LoopType loopType;
+    private final MetricsType metricsType;
+    private final String semantics;
+    private final Pattern pattern;
 
     Instructions(String instruction, Character shortcut, Color color, LoopType loopType, MetricsType metricsType, String semantics)
     {
@@ -54,7 +54,7 @@ public enum Instructions
         this.semantics = semantics;
 
         // TODO: 25/11/2016 improve pattern
-        this.pattern = Pattern.compile("(\\" + shortcut + "(?![0-9])|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + Language.COMMENT + "].*)?$|^" + color.getRGB() + "$)");
+        this.pattern = Pattern.compile("(\\" + shortcut + "|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + Language.COMMENT + "].*)?$|^" + color.getRGB() + "$)");
     }
 
     public String getInstruction()

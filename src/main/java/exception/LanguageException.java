@@ -6,7 +6,8 @@ package exception;
  */
 public class LanguageException extends ExitException
 {
-    public LanguageException(int exit, String message) {
+    public LanguageException(int exit, String message)
+    {
         super(exit, message);
     }
 }

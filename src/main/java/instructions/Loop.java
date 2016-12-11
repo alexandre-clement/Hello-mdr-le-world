@@ -1,6 +1,5 @@
 package instructions;
 
-import core.Instructions;
 
 /**
  * @author Alexandre Clement
@@ -9,5 +8,4 @@ import core.Instructions;
 public interface Loop
 {
     boolean open();
-    Instructions getLinkedInstructions();
 }

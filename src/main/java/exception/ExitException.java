@@ -6,7 +6,7 @@ package exception;
  */
 public class ExitException extends Exception
 {
-    private int exit;
+    private final int exit;
 
     public ExitException(int exit, String message)
     {

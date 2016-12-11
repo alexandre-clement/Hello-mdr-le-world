@@ -12,5 +12,6 @@ import exception.LanguageException;
 public interface Executable
 {
     Instructions getInstructions();
+
     void execute(ExecutionContext executionContext) throws CoreException, LanguageException;
 }

@@ -10,7 +10,7 @@ import java.io.RandomAccessFile;
  */
 public class TextFile implements ReadFile
 {
-    private RandomAccessFile source;
+    private final RandomAccessFile source;
 
     TextFile(String filename) throws FileNotFoundException
     {
@@ -21,6 +21,12 @@ public class TextFile implements ReadFile
     public String next() throws IOException
     {
         return source.readLine();
+    }
+
+    @Override
+    public void reset() throws IOException
+    {
+        source.seek(0);
     }
 
     @Override

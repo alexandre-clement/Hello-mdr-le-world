@@ -6,11 +6,11 @@ import core.ExecutionContext;
 /**
  * @author Alexandre Clement
  *         Created the 08/12/2016.
- * Calculate the metrics of the program and print them out using the method getResult
+ *         Calculate the metrics of the program and print them out using the method getResult
  */
 public class Metrics implements Meter
 {
-    private long start;
+    private final long start;
     private long exec_move = 0;
     private long data_move = 0;
     private long data_write = 0;
@@ -44,6 +44,7 @@ public class Metrics implements Meter
 
     /**
      * calculate the metrics with the current instance
+     *
      * @param executionContext the current execution context of the program
      */
     @Override

@@ -10,7 +10,7 @@ public enum FileType
     BF(".bf"),
     BMP(".bmp");
 
-    private String extension;
+    private final String extension;
 
     FileType(String extension)
     {

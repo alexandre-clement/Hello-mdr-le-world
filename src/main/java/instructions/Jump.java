@@ -20,13 +20,8 @@ public class Jump implements Executable, Loop
     }
 
     @Override
-    public Instructions getLinkedInstructions()
+    public boolean open()
     {
-        return Instructions.OLD_BACK;
-    }
-
-    @Override
-    public boolean open() {
         return true;
     }
 

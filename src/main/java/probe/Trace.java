@@ -9,7 +9,7 @@ import java.io.Writer;
 /**
  * @author Alexandre Clement
  *         Created the 08/12/2016.
- * Create the trace of the file in a p.log file
+ *         Create the trace of the file in a p.log file
  */
 public class Trace implements Meter
 {

@@ -1,6 +1,5 @@
 package instructions;
 
-import core.Core;
 import core.ExecutionContext;
 import core.Instructions;
 import exception.CoreException;

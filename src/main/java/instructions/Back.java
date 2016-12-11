@@ -20,12 +20,6 @@ public class Back implements Executable, Loop
     }
 
     @Override
-    public Instructions getLinkedInstructions()
-    {
-        return Instructions.OLD_JUMP;
-    }
-
-    @Override
     public boolean open()
     {
         return false;

@@ -14,26 +14,23 @@ import java.util.Map;
  */
 public class ExecutionContext
 {
-    final static int CAPACITY = 30000;
     public final static int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
     public final static int MIN = 0;
-
-    private Executable[] program;
-    private Map<Integer, Integer> jumpTable;
-
+    final static int CAPACITY = 30000;
+    private final Executable[] program;
+    private final Map<Integer, Integer> jumpTable;
+    private final byte[] memory;
+    //the input stream and output stream
+    private final InputStreamReader in;
+    private final PrintStream out;
     private int instruction;
-    private byte[] memory;
     private int pointer;
 
-    //the input stream and output stream
-    private InputStreamReader in;
-    private PrintStream out;
-
     /**
-     * @param program le programme a exécuté
+     * @param program   le programme a exécuté
      * @param jumpTable la table de liens entre les instructions JUMP et BACK
-     * @param in le flux de données entrant
-     * @param out le flux de données sortant
+     * @param in        le flux de données entrant
+     * @param out       le flux de données sortant
      */
     public ExecutionContext(Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
     {
@@ -42,12 +39,12 @@ public class ExecutionContext
 
     /**
      * @param instruction la valeur par défaut de pointeur d'instruction
-     * @param pointer la valeur par défaut du pointeur
-     * @param memory initialisation de la mémoire
-     * @param program le programme a exécuté
-     * @param jumpTable la table de liens entre les instructions JUMP et BACK
-     * @param in le flux de données entrant
-     * @param out le flux de données sortant
+     * @param pointer     la valeur par défaut du pointeur
+     * @param memory      initialisation de la mémoire
+     * @param program     le programme a exécuté
+     * @param jumpTable   la table de liens entre les instructions JUMP et BACK
+     * @param in          le flux de données entrant
+     * @param out         le flux de données sortant
      */
     public ExecutionContext(int instruction, int pointer, byte[] memory, Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
     {
@@ -69,13 +66,12 @@ public class ExecutionContext
     }
 
     /**
-     *
      * @param pointer le pointeur vers une des cellules mémoire
      * @return la valeur ASCII de la cellule i.e entre 0 et 255
      */
     private int printValue(int pointer)
     {
-        return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX: memory[pointer];
+        return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX : memory[pointer];
     }
 
     /**
@@ -84,7 +80,7 @@ public class ExecutionContext
     public String getMemorySnapshot()
     {
         StringBuilder stringbuilder = new StringBuilder();
-        for (int cell=0; cell<CAPACITY; cell++)
+        for (int cell = 0; cell < CAPACITY; cell++)
         {
             if (memory[cell] != 0)
             {
@@ -207,9 +203,12 @@ public class ExecutionContext
 
     void close()
     {
-        try {
+        try
+        {
             in.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             System.err.println("This should not happen: fail at closing in stream");
         }
         out.close();

@@ -4,7 +4,6 @@ import core.ExecutionContext;
 import core.Instructions;
 import exception.CoreException;
 import exception.LanguageException;
-import exception.NotWellFormedException;
 
 /**
  * @author Alexandre Clement
@@ -20,12 +19,8 @@ public class JumpOptimised implements Executable, Loop
     }
 
     @Override
-    public Instructions getLinkedInstructions() {
-        return Instructions.BACK;
-    }
-
-    @Override
-    public boolean open() {
+    public boolean open()
+    {
         return true;
     }
 

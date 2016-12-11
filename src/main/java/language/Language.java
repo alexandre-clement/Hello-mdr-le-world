@@ -9,6 +9,8 @@ import instructions.Executable;
 import instructions.Loop;
 import interpreter.Flag;
 import interpreter.Interpreter;
+import macro.Macro;
+import macro.MacroBuilder;
 
 import java.io.*;
 import java.util.*;
@@ -23,10 +25,10 @@ import java.util.regex.Pattern;
 public class Language
 {
     public static final String COMMENT = "#";
-    private String filename;
-    private ReadFile file;
-    private InputStreamReader in;
-    private PrintStream out;
+    private final String filename;
+    private final ReadFile file;
+    private final InputStreamReader in;
+    private final PrintStream out;
 
     public Language(Interpreter interpreter) throws LanguageException
     {
@@ -56,11 +58,12 @@ public class Language
 
     /**
      * Compile tous les paternes ensemble et rajouter les commentaires i.e #
+     *
      * @return le pattern somme de tous les paternes d'instructions
      */
     private Pattern compile(Executable[] executables)
     {
-        StringBuilder stringBuilder = new StringBuilder("(["+COMMENT+"])");
+        StringBuilder stringBuilder = new StringBuilder("([" + COMMENT + "])");
         for (Executable executable : executables)
         {
             stringBuilder.append("|");
@@ -71,6 +74,7 @@ public class Language
 
     /**
      * Créée l'exécution contexte du programme
+     *
      * @return l'execution contexte du programme
      * @throws LanguageException si le fichier n'existe pas
      */
@@ -91,6 +95,8 @@ public class Language
             loops.add(new ArrayDeque<>());
         }
 
+        // les macros présentent dans le fichier
+        Deque<Macro> macros = new MacroBuilder(file).findMacro();
         // le paterne contenant toutes les instructions ainsi que les caractères de commentaire
         Pattern pattern = compile(executables);
         // le matcher résultant de l'application du paterne sur une ligne du fichier
@@ -103,6 +109,10 @@ public class Language
             // pour chaque ligne du fichier
             for (String line = file.next(); line != null; line = file.next())
             {
+                for (Macro macro : macros)
+                {
+                    line = macro.match(line);
+                }
                 // on applique le paterne à la ligne
                 matcher = pattern.matcher(line);
                 // tant que l'on a une instruction contenue dans la ligne
@@ -130,11 +140,11 @@ public class Language
     }
 
     /**
-     * @param program le programme a remplir
-     * @param loops la liste de pile contenant les indices des boucles
-     * @param jumpTable la table des boucles
+     * @param program    le programme a remplir
+     * @param loops      la liste de pile contenant les indices des boucles
+     * @param jumpTable  la table des boucles
      * @param executable l'instruction a ajouté au programme
-     * @param length la taille du programme
+     * @param length     la taille du programme
      * @throws NotWellFormedException si l'instruction ferme un boucle non ouverte
      */
     private void addExecutable(Deque<Executable> program, List<Deque<Integer>> loops, HashMap<Integer, Integer> jumpTable, Executable executable, int length) throws NotWellFormedException
@@ -147,10 +157,10 @@ public class Language
     }
 
     /**
-     * @param loops la liste de pile contenant les indices des boucles
-     * @param jumpTable la table des boucles
+     * @param loops      la liste de pile contenant les indices des boucles
+     * @param jumpTable  la table des boucles
      * @param executable l'instruction a ajouté au programme
-     * @param length la taille du programme
+     * @param length     la taille du programme
      * @throws NotWellFormedException si l'instruction ferme un boucle non ouverte
      */
     private void addLoop(List<Deque<Integer>> loops, HashMap<Integer, Integer> jumpTable, Executable executable, int length) throws NotWellFormedException

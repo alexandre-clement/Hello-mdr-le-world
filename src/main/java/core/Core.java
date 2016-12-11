@@ -1,6 +1,7 @@
 package core;
 
-import exception.*;
+import exception.ExitException;
+import exception.NotWellFormedException;
 import instructions.*;
 import interpreter.Flag;
 import language.BitmapImage;
@@ -8,7 +9,7 @@ import probe.Metrics;
 import probe.Probe;
 import probe.Trace;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Deque;
 
 /**
@@ -18,21 +19,38 @@ import java.util.Deque;
  */
 public class Core
 {
-    private String filename;
+    private final String filename;
 
     public Core(String filename)
     {
         this.filename = filename;
     }
 
+    public static Executable[] getExecutables()
+    {
+        return new Executable[]{new Increment(), new Decrement(), new Left(), new Right(), new Out(), new In(), new Jump(), new Back(), new JumpOptimised(), new BackOptimised()};
+    }
+
+    /**
+     * print out the parameter
+     *
+     * @param object to be print out
+     */
+    public static void standardOutput(Object object)
+    {
+        System.out.print(object);
+    }
+
     /**
      * run the options of the user
-     * @param flags options the user puts in
+     *
+     * @param flags            options the user puts in
      * @param executionContext the execution context
      */
     public void run(Deque<Flag> flags, ExecutionContext executionContext) throws ExitException
     {
-        do {
+        do
+        {
             switch (flags.pop())
             {
                 case PRINT:
@@ -55,11 +73,13 @@ public class Core
 
     /**
      * Créer une probe pour récupérer les métriques ou générer la trace lors de l'exécution du programme
-     * @param flags les options présentes
+     *
+     * @param flags         les options présentes
      * @param programLength la taille du programme
      * @return une nouvelle probe initialiser
      */
-    private Probe createProbe(Deque<Flag> flags, int programLength) {
+    private Probe createProbe(Deque<Flag> flags, int programLength)
+    {
         Probe createdProbe = new Probe();
         for (Flag flag : flags)
         {
@@ -131,6 +151,7 @@ public class Core
 
     /**
      * the '--check' option: check JUMP and BACK in the program are well formed
+     *
      * @throws NotWellFormedException if the program is not well formed
      */
     private void check(ExecutionContext executionContext) throws NotWellFormedException
@@ -147,19 +168,5 @@ public class Core
         }
         if (close != 0)
             throw new NotWellFormedException();
-    }
-
-    public static Executable[] getExecutables()
-    {
-        return new Executable[] {new Increment(), new Decrement(), new Left(), new Right(), new Out(), new In(), new Jump(), new Back(), new JumpOptimised(), new BackOptimised()};
-    }
-
-    /**
-     * print out the parameter
-     * @param object to be print out
-     */
-    public static void standardOutput(Object object)
-    {
-        System.out.print(object);
     }
 }
