@@ -2,6 +2,7 @@ package macro;
 
 import instructions.Executable;
 
+import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,25 +13,30 @@ import java.util.regex.Pattern;
 public class Macro
 {
     private final Pattern pattern;
-    private final String sequence;
-    private final boolean hasParameters;
+    private String sequence;
 
-    public Macro(String name, String sequence, String parameters)
+    public Macro(String name, String sequence)
     {
-        hasParameters = parameters != null;
-        if (!hasParameters)
-            pattern = Pattern.compile(name);
-        else
-            pattern = Pattern.compile(name + "\\((\\d*)\\)");
+        this.pattern = Pattern.compile("^\\s*" + name + "\\s*(\\d+)?\\s*$");
         this.sequence = sequence;
+    }
+
+    public void applyOn(Deque<Macro> macros)
+    {
+        Matcher matcher;
+        for (Macro macro : macros)
+        {
+            macro.sequence = match(macro.sequence);
+        }
     }
 
     public String match(String string)
     {
         Matcher matcher = pattern.matcher(string);
+
         if (!matcher.find())
             return string;
-        if (!hasParameters)
+        if (matcher.group(1) == null)
             return matcher.replaceAll(sequence);
         String seq = "";
         for (Integer i = 0; i < Integer.valueOf(matcher.group(1)); i++)
@@ -43,6 +49,6 @@ public class Macro
     @Override
     public String toString()
     {
-        return "Macro{" + "pattern=" + pattern + ", sequence='" + sequence + '\'' + '}';
+        return "Macro { " + pattern + ": " + sequence + " }";
     }
 }

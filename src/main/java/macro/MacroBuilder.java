@@ -20,9 +20,7 @@ public class MacroBuilder
 
     public MacroBuilder(ReadFile file)
     {
-        // todo improve pattern permettant de supporter plusieurs paramètres (prochaine version: ^\s*#define (\w*)(\((\w*, )*(\w*)\))? (.*)$)
-        this(file, Pattern.compile("^\\s*#define (\\w*)(\\(\\w\\))? (.*)$"));
-
+        this(file, Pattern.compile("^\\s*#\\s*define\\s+(\\w*)\\s+(.*)$"));
     }
 
     private MacroBuilder(ReadFile file, Pattern compile)
@@ -40,17 +38,18 @@ public class MacroBuilder
             // pour chaque ligne du fichier
             for (String line = file.next(); line != null; line = file.next())
             {
-                // on applique le paterne à la ligne
+                // on applique le paterne d'une macro i.e #define name(parameters) sequence
                 matcher = pattern.matcher(line);
-                // tant que l'on a une instruction contenue dans la ligne
+                // tant que l'on a une macro contenue dans la ligne
                 if (matcher.matches())
                 {
-                    String sequence = matcher.group(3);
+                    String sequence = matcher.group(2);
                     for (Macro macro : macros)
                     {
                         sequence = macro.match(sequence);
                     }
-                    macros.add(new Macro(matcher.group(1), sequence, matcher.group(2)));
+                    macros.add(new Macro(matcher.group(1), sequence));
+                    macros.peekLast().applyOn(macros);
                 }
             }
             file.reset();
