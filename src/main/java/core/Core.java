@@ -5,12 +5,12 @@ import exception.NotWellFormedException;
 import instructions.*;
 import interpreter.Flag;
 import language.BitmapImage;
+import main.Main;
 import probe.Metrics;
 import probe.Probe;
 import probe.Trace;
 
 import java.io.IOException;
-import java.util.Deque;
 
 /**
  * @author Alexandre Clement
@@ -32,29 +32,20 @@ public class Core
     }
 
     /**
-     * print out the parameter
-     *
-     * @param object to be print out
-     */
-    public static void standardOutput(Object object)
-    {
-        System.out.print(object);
-    }
-
-    /**
      * run the options of the user
      *
      * @param flags            options the user puts in
+     * @param probes the probes the user puts in
      * @param executionContext the execution context
      */
-    public void run(Deque<Flag> flags, ExecutionContext executionContext) throws ExitException
+    public void run(Flag[] flags, Flag[] probes, ExecutionContext executionContext) throws ExitException
     {
-        do
+        for (Flag flag : flags)
         {
-            switch (flags.pop())
+            switch (flag)
             {
                 case PRINT:
-                    Probe probe = createProbe(flags, executionContext.getProgramLength());
+                    Probe probe = createProbe(probes, executionContext.getProgramLength());
                     print(executionContext, probe);
                     break;
                 case REWRITE:
@@ -67,23 +58,23 @@ public class Core
                     check(executionContext);
                     break;
             }
-        } while (!flags.isEmpty());
+        }
         executionContext.close();
     }
 
     /**
      * Créer une probe pour récupérer les métriques ou générer la trace lors de l'exécution du programme
      *
-     * @param flags         les options présentes
+     * @param probes        les options présentes
      * @param programLength la taille du programme
      * @return une nouvelle probe initialiser
      */
-    private Probe createProbe(Deque<Flag> flags, int programLength)
+    private Probe createProbe(Flag[] probes, int programLength)
     {
         Probe createdProbe = new Probe();
-        for (Flag flag : flags)
+        for (Flag probe : probes)
         {
-            switch (flag)
+            switch (probe)
             {
                 case METRICS:
                     createdProbe.addMeter(new Metrics(programLength));
@@ -107,7 +98,7 @@ public class Core
             probe.acknowledge(executionContext);
         }
         probe.getResult();
-        standardOutput("\n" + executionContext.getMemorySnapshot());
+        Main.standardOutput("\n" + executionContext.getMemorySnapshot());
     }
 
     /**
@@ -116,8 +107,8 @@ public class Core
     private void rewrite(ExecutionContext executionContext)
     {
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
-            standardOutput(executionContext.getCurrentInstruction().getShortcut());
-        standardOutput('\n');
+            Main.standardOutput(executionContext.getCurrentInstruction().getShortcut());
+        Main.standardOutput('\n');
     }
 
     /**

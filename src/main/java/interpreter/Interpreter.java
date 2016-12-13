@@ -4,9 +4,8 @@ import exception.IllegalCommandlineException;
 import main.Main;
 import org.apache.commons.cli.*;
 
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
+import java.util.function.Predicate;
 
 /**
  * @author Alexandre Clement
@@ -149,20 +148,25 @@ public class Interpreter
     }
 
     /**
-     * Create a Deque object which contains the flags present in the commandline.
+     * Create an array which contains the flags present in the commandline.
      * (Print is removed if a standard option is also present in the commandline)
      *
      * @return the flags present in the commandline
      */
-    public Deque<Flag> getOptions()
+    public Flag[] getOptions()
     {
-        Deque<Flag> flags = new ArrayDeque<>();
-        for (Flag flag : Flag.values())
-        {
-            if (hasOption(flag) && (flag != Flag.PRINT || !hasStandardOutputOption()))
-                flags.add(flag);
-        }
-        return flags;
+        Predicate<Flag> PrintNorStandardOutputOption = flag -> hasOption(flag) && (flag != Flag.PRINT || !hasStandardOutputOption());
+        return Arrays.stream(Flag.values()).filter(PrintNorStandardOutputOption).toArray(Flag[]::new);
+    }
+
+    /**
+     * Create an array which only contains the probes present in the commandline.
+     *
+     * @return Probes options is the commandline
+     */
+    public Flag[] getProbes()
+    {
+        return Arrays.stream(Flag.values()).filter(Flag::isProbe).toArray(Flag[]::new);
     }
 
     /**

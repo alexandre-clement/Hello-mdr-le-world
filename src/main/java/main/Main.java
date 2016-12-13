@@ -24,7 +24,7 @@ public class Main
                 System.exit(exit);
             Language language = new Language(interpreter);
             Core core = new Core(language.getFilename());
-            core.run(interpreter.getOptions(), language.getExecutionContext());
+            core.run(interpreter.getOptions(), interpreter.getProbes(), language.getExecutionContext());
         }
         catch (ExitException exception)
         {
@@ -34,5 +34,15 @@ public class Main
         }
 
         System.exit(exit);
+    }
+
+    /**
+     * print out the parameter
+     *
+     * @param object to be print out
+     */
+    public static void standardOutput(Object object)
+    {
+        System.out.print(object);
     }
 }

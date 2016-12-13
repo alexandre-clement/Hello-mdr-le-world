@@ -1,7 +1,7 @@
 package probe;
 
-import core.Core;
 import core.ExecutionContext;
+import main.Main;
 
 /**
  * @author Alexandre Clement
@@ -39,7 +39,7 @@ public class Metrics implements Meter
         metrics += "DATA_MOVE: " + data_move + '\n';
         metrics += "DATA_WRITE: " + data_write + '\n';
         metrics += "DATA_READ: " + data_read;
-        Core.standardOutput(metrics);
+        Main.standardOutput(metrics);
     }
 
     /**

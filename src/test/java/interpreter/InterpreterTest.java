@@ -132,33 +132,33 @@ public class InterpreterTest {
 
     @Test
     public void getOptions() throws Exception {
-        assertEquals(1, noOption.getOptions().size());
-        assertTrue(noOption.getOptions().contains(Flag.PRINT));
+        assertEquals(1, noOption.getOptions().length);
+        assertTrue(noOption.getOptions()[0] == Flag.PRINT);
 
-        assertEquals(1, oneOption.getOptions().size());
-        assertTrue(oneOption.getOptions().contains(Flag.REWRITE));
+        assertEquals(1, oneOption.getOptions().length);
+        assertTrue(oneOption.getOptions()[0] == Flag.REWRITE);
 
-        assertEquals(2, oneMetric.getOptions().size());
-        assertTrue(oneMetric.getOptions().contains(Flag.PRINT));
-        assertTrue(oneMetric.getOptions().contains(Flag.METRICS));
+        assertEquals(2, oneMetric.getOptions().length);
+        assertTrue(oneMetric.getOptions()[0] == Flag.PRINT);
+        assertTrue(oneMetric.getOptions()[1] == Flag.METRICS);
 
-        assertEquals(3, twoMetrics.getOptions().size());
-        assertTrue(twoMetrics.getOptions().contains(Flag.PRINT));
-        assertTrue(twoMetrics.getOptions().contains(Flag.METRICS));
-        assertTrue(twoMetrics.getOptions().contains(Flag.TRACE));
+        assertEquals(3, twoMetrics.getOptions().length);
+        assertTrue(twoMetrics.getOptions()[0] == Flag.PRINT);
+        assertTrue(twoMetrics.getOptions()[1] == Flag.METRICS);
+        assertTrue(twoMetrics.getOptions()[2] == Flag.TRACE);
 
-        assertEquals(2, metricsAndOption.getOptions().size());
-        assertTrue(metricsAndOption.getOptions().contains(Flag.METRICS));
-        assertTrue(metricsAndOption.getOptions().contains(Flag.REWRITE));
+        assertEquals(2, metricsAndOption.getOptions().length);
+        assertTrue(metricsAndOption.getOptions()[1] == Flag.METRICS);
+        assertTrue(metricsAndOption.getOptions()[0] == Flag.REWRITE);
 
-        assertEquals(2, fileOption.getOptions().size());
-        assertTrue(fileOption.getOptions().contains(Flag.PRINT));
-        assertTrue(fileOption.getOptions().contains(Flag.INPUT));
+        assertEquals(2, fileOption.getOptions().length);
+        assertTrue(fileOption.getOptions()[0] == Flag.PRINT);
+        assertTrue(fileOption.getOptions()[1] == Flag.INPUT);
 
-        assertEquals(3, twoFilesOptions.getOptions().size());
-        assertTrue(twoFilesOptions.getOptions().contains(Flag.PRINT));
-        assertTrue(twoFilesOptions.getOptions().contains(Flag.INPUT));
-        assertTrue(twoFilesOptions.getOptions().contains(Flag.OUTPUT));
+        assertEquals(3, twoFilesOptions.getOptions().length);
+        assertTrue(twoFilesOptions.getOptions()[0] == Flag.PRINT);
+        assertTrue(twoFilesOptions.getOptions()[1] == Flag.INPUT);
+        assertTrue(twoFilesOptions.getOptions()[2] == Flag.OUTPUT);
     }
 
 }
