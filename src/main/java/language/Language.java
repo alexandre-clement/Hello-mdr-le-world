@@ -136,6 +136,8 @@ public class Language
         {
             throw new LanguageException(127, "File not found");
         }
+        if (!loops.stream().allMatch(Deque::isEmpty))
+            throw new NotWellFormedException(length);
         return new ExecutionContext(program.toArray(new Executable[length]), jumpTable, in, out);
     }
 

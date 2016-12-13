@@ -20,8 +20,8 @@ public enum Instructions
     IN(                 "IN",           ',',        new Color(255, 255, 0),     null,               MetricsType.DATA_WRITE,     "Read the value present in the input as an ASCII character"),
     JUMP(               "JUMP",         '[',        new Color(255, 127, 0),     LoopType.OPTIMISED, MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero (using a jump table)"),
     BACK(               "BACK",         ']',        new Color(255, 0, 0),       LoopType.OPTIMISED, MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero (using a jump table)"),
-    OLD_JUMP(           "OLD_JUMP",     '(',        new Color(255, 127, 127),   LoopType.OLD,       MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero"),
-    OLD_BACK(           "OLD_BACK",     ')',        new Color(255, 0, 127),     LoopType.OLD,       MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero");
+    OLD_JUMP(           "OLD_JUMP",     '{',        new Color(255, 127, 127),   LoopType.OLD,       MetricsType.DATA_READ,      "Jump to the instruction right after the associated BACK if the pointed memory is equals to zero"),
+    OLD_BACK(           "OLD_BACK",     '}',        new Color(255, 0, 127),     LoopType.OLD,       MetricsType.DATA_READ,      "Go back to the instruction right after the associated JUMP if the pointer memory cell is not equals to zero");
 
     public enum MetricsType
     {

@@ -156,17 +156,28 @@ public class Core
      */
     private void check(ExecutionContext executionContext) throws NotWellFormedException
     {
-        int close = 0;
+        int length = Instructions.LoopType.values().length;
+        int[] closes = new int[length];
+        Instructions.LoopType loopType;
+
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
-            if (close < 0)
-                throw new NotWellFormedException();
-            if (executionContext.getCurrentInstruction() == Instructions.JUMP)
-                close += 1;
-            else if (executionContext.getCurrentInstruction() == Instructions.BACK)
-                close -= 1;
+            for (int i = 0; i < length; i++)
+            {
+                if (closes[i] < 0)
+                    throw new NotWellFormedException();
+            }
+            loopType = executionContext.getCurrentInstruction().getLoopType();
+            if (loopType != null && ((Loop) executionContext.getCurrentExecutable()).open())
+                closes[loopType.ordinal()] += 1;
+            else if (loopType != null && !((Loop) executionContext.getCurrentExecutable()).open())
+                closes[loopType.ordinal()] -= 1;
         }
-        if (close != 0)
-            throw new NotWellFormedException();
+
+        for (int i = 0; i < length; i++)
+        {
+            if (closes[i] != 0)
+                throw new NotWellFormedException();
+        }
     }
 }

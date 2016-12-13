@@ -28,6 +28,7 @@ public class Main
         }
         catch (ExitException exception)
         {
+            System.out.flush();
             System.err.println(exception.getMessage());
             exit = exception.getExit();
         }
