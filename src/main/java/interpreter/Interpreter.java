@@ -88,9 +88,9 @@ public class Interpreter
         options.addOptionGroup(standardOutputOption);
 
         if (hasOption(Flag.HELP))
-            return help();
+            help();
         if (hasOption(Flag.VERSION))
-            return version();
+            version();
 
         try
         {
@@ -171,27 +171,23 @@ public class Interpreter
 
     /**
      * Display the help
-     *
-     * @return the current instance
      */
-    public Interpreter help()
+    public void help()
     {
         helps.getOptions().forEach(options::addOption);
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setWidth(120);
         helpFormatter.printHelp("bfck", "Brainfuck interpreter in Java\n\n", options, "\nVersion " + Main.VERSION, true);
-        return null;
+        System.exit(0);
     }
 
     /**
      * Display the version
-     *
-     * @return the current instance
      */
-    public Interpreter version()
+    public void version()
     {
         System.out.println("Version " + Main.VERSION);
-        return null;
+        System.exit(0);
     }
 
     private boolean countStandardOutputOption()

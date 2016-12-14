@@ -1,41 +1,31 @@
 package instructions;
 
 import core.ExecutionContext;
-import core.Instructions;
 import exception.OverflowException;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStreamReader;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created on 07/12/2016.
  * @author TANG Yi
  */
 public class DecrementTest {
-    private ExecutionContext context;
 
-    @Before
-    public void init() {
-        byte[] memory = new byte[1];
-        memory[0] = 1;
-        context = new ExecutionContext(0, 0, memory, null, null, null, null);
-    }
-
-    @Test
-    public void executeTest() throws Exception {
-        new Decrement().execute(context);
-        assertEquals(0, context.printValue());
-    }
-
+    /**
+     * Decrement 255 fois une cellule mémoire
+     * @throws Exception OverflowException lorsque la cellule dépasse la valeur max i.e 255
+     */
     @Test(expected = OverflowException.class)
-    public void executeFailTest() throws Exception {
+    public void emptyFailTest() throws Exception {
+        ExecutionContext full = new ExecutionContext(0, 0, new byte[]{ExecutionContext.MAX});
         Decrement decrement = new Decrement();
-        decrement.execute(context);
-        decrement.execute(context);
+        for (int i = 254; i >= 0; i--)
+        {
+            decrement.execute(full);
+            assertEquals(i, full.printValue());
+        }
+        decrement.execute(full);
     }
 
 }

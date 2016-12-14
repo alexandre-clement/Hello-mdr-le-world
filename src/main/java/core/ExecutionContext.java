@@ -26,6 +26,17 @@ public class ExecutionContext
     private int instruction;
     private int pointer;
 
+
+    /**
+     * @param instruction la valeur par défaut de pointeur d'instruction
+     * @param pointer     la valeur par défaut du pointeur
+     * @param memory      initialisation de la mémoire
+     */
+    public ExecutionContext(int instruction, int pointer, byte[] memory)
+    {
+        this(instruction, pointer, memory, null, null, null, null);
+    }
+
     /**
      * @param program   le programme a exécuté
      * @param jumpTable la table de liens entre les instructions JUMP et BACK
@@ -69,7 +80,7 @@ public class ExecutionContext
      * @param pointer le pointeur vers une des cellules mémoire
      * @return la valeur ASCII de la cellule i.e entre 0 et 255
      */
-    private int printValue(int pointer)
+    public int printValue(int pointer)
     {
         return memory[pointer] < 0 ? Byte.MAX_VALUE - Byte.MIN_VALUE + memory[pointer] - MAX : memory[pointer];
     }

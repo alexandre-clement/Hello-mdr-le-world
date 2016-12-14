@@ -1,7 +1,5 @@
 package macro;
 
-import instructions.Executable;
-
 import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

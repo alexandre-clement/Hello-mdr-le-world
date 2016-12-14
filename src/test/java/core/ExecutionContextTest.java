@@ -3,10 +3,7 @@ package core;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStreamReader;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author TANG Yi
@@ -23,8 +20,8 @@ public class ExecutionContextTest {
         byte[] memory1= new byte[ExecutionContext.CAPACITY];
         memory1[1] = 30;
 
-        context0 = new ExecutionContext(0, 0, memory0, null, null, null, null);
-        context1 = new ExecutionContext(0, 1, memory1, null, null, null, null);
+        context0 = new ExecutionContext(0, 0, memory0);
+        context1 = new ExecutionContext(0, 1, memory1);
     }
 
     @Test

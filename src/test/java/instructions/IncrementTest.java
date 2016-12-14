@@ -2,41 +2,33 @@
 package instructions;
 
 import core.ExecutionContext;
-import core.Instructions;
 import exception.OverflowException;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStreamReader;
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created on 07/12/2016.
  * @author TANG Yi
+ *
+ * Test for Increment Instruction
  */
 public class IncrementTest {
-    private ExecutionContext context;
 
-    @Before
-    public void init() {
-        byte[] memory = new byte[1];
-        memory[0] = ExecutionContext.MAX-1;
-        context = new ExecutionContext(0, 0, memory, null, new HashMap<>(), new InputStreamReader(System.in), System.out);
-    }
-
-    @Test
-    public void executeTest() throws Exception {
-        new Increment().execute(context);
-        assertEquals(255, context.printValue());
-    }
-
+    /**
+     * Increment 255 fois une cellule mémoire
+     * @throws Exception OverflowException lorsque la cellule dépasse la valeur max i.e 255
+     */
     @Test(expected = OverflowException.class)
-    public void executeFailTest() throws Exception {
+    public void emptyFailTest() throws Exception {
+        ExecutionContext empty = new ExecutionContext(0, 0, new byte[1]);
         Increment increment = new Increment();
-        increment.execute(context);
-        increment.execute(context);
+        for (int i = 1; i < 256; i++)
+        {
+            increment.execute(empty);
+            assertEquals(i, empty.printValue());
+        }
+        increment.execute(empty);
     }
 
 }
