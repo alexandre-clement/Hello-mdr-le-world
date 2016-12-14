@@ -166,7 +166,7 @@ public class Interpreter
      */
     public Flag[] getProbes()
     {
-        return Arrays.stream(Flag.values()).filter(Flag::isProbe).toArray(Flag[]::new);
+        return Arrays.stream(Flag.values()).filter(Flag::isProbe).filter(this::hasOption).toArray(Flag[]::new);
     }
 
     /**

@@ -20,8 +20,6 @@ public class Main
         try
         {
             Interpreter interpreter = Interpreter.buildInterpreter(args);
-            if (interpreter == null)
-                System.exit(exit);
             Language language = new Language(interpreter);
             Core core = new Core(language.getFilename());
             core.run(interpreter.getOptions(), interpreter.getProbes(), language.getExecutionContext());
