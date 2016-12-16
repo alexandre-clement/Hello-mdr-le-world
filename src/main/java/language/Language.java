@@ -136,8 +136,13 @@ public class Language
         {
             throw new LanguageException(127, "File not found");
         }
-        if (!loops.stream().allMatch(Deque::isEmpty))
-            throw new NotWellFormedException(length);
+        for (Deque<Integer> loop : loops)
+        {
+            for (Integer brace : loop)
+            {
+                jumpTable.put(brace, brace);
+            }
+        }
         return new ExecutionContext(program.toArray(new Executable[length]), jumpTable, in, out);
     }
 
@@ -185,7 +190,7 @@ public class Language
         }
         // sinon on a une instruction fermante alors qu'aucune boucle n'est ouverte i.e erreur
         else
-            throw new NotWellFormedException(length);
+            jumpTable.put(length, length);
     }
 
     private String getFilename(String pArgument, int separator) throws LanguageException

@@ -8,6 +8,7 @@ import language.BitmapImage;
 import main.Main;
 import probe.Metrics;
 import probe.Probe;
+import probe.Time;
 import probe.Trace;
 
 import java.io.IOException;
@@ -82,6 +83,9 @@ public class Core
                 case TRACE:
                     createdProbe.addMeter(new Trace(filename));
                     break;
+                case TIME:
+                    createdProbe.addMeter(new Time());
+                    break;
             }
         }
         return createdProbe;
@@ -92,6 +96,7 @@ public class Core
      */
     private void print(ExecutionContext executionContext, Probe probe) throws ExitException
     {
+        probe.initialize();
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
             executionContext.execute();
@@ -156,7 +161,7 @@ public class Core
             for (int i = 0; i < length; i++)
             {
                 if (closes[i] < 0)
-                    throw new NotWellFormedException();
+                    throw new NotWellFormedException(executionContext.getInstruction());
             }
             loopType = executionContext.getCurrentInstruction().getLoopType();
             if (loopType != null && ((Loop) executionContext.getCurrentExecutable()).open())

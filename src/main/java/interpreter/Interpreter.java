@@ -10,8 +10,8 @@ import java.util.function.Predicate;
 /**
  * @author Alexandre Clement
  *         Created the 04 novembre 2016.
- *         <p>
- *         Interpret the input commandline with Flag as key for options.
+ * <p>
+ * Interpret the input commandline with Flag as key for options.
  */
 public class Interpreter
 {

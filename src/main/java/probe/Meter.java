@@ -8,6 +8,8 @@ import core.ExecutionContext;
  */
 public interface Meter
 {
+    void initialize();
+
     void getResult();
 
     /**

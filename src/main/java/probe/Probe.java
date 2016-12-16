@@ -18,6 +18,11 @@ public class Probe
         probes.add(meter);
     }
 
+    public void initialize()
+    {
+        probes.forEach(Meter::initialize);
+    }
+
     public void acknowledge(ExecutionContext executionContext)
     {
         probes.forEach(probe -> probe.acknowledge(executionContext));

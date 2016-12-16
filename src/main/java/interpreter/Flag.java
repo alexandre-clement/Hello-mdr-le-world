@@ -16,7 +16,8 @@ public enum Flag
     OUTPUT(     "o",    null,           false,      false,      true,   "OUTPUT",   false,                  false,      "Specify the file name of the output file (the file given must exists)"),
     CHECK(      null,   "check",        false,      false,      false,  null,       true,                   false,      "Verify if the program is well-formed i.e each JUMP instruction is bound to a BACK one, and exit silently (without executing the program)"),
     METRICS(    "m",    "metrics",      false,      false,      false,  null,       false,                  true,       "Display the metrics of the execution of the program on the standard output"),
-    TRACE(      null,   "trace",        false,      false,      false,  null,       false,                  true,       "Create a log file with execution data named filename.log (for -p filename.bf)");
+    TRACE(      null,   "trace",        false,      false,      false,  null,       false,                  true,       "Create a log file with execution data named filename.log (for -p filename.bf)"),
+    TIME(       "t",    "time",         false,      false,      false,  null,       false,                  true,       "Time the programme execution");
 
     private String opt;
     private String longOpt;

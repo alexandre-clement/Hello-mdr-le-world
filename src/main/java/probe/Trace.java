@@ -2,33 +2,39 @@ package probe;
 
 import core.ExecutionContext;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 
 /**
  * @author Alexandre Clement
  *         Created the 08/12/2016.
- *         Create the trace of the file in a p.log file
+ *
+ * Create the trace of the file in a p.log file
  */
 public class Trace implements Meter
 {
     private long step;
-    private Writer writer;
+    private PrintWriter writer;
 
     public Trace(String filename)
     {
         step = 0;
-
         try
         {
-            writer = new FileWriter(filename + ".log");
-            writer.write(String.format("%14s%25s%20s%28s%n%n", "Execution step", "Execution pointer", "Data pointer", "Memory snapshot"));
+            writer = new PrintWriter(new BufferedWriter(new FileWriter(filename + ".log")));
         }
         catch (IOException e)
         {
             System.err.println("This should never happen");
         }
+    }
+
+    @Override
+    public void initialize()
+    {
+        writer.format("%14s%25s%20s%28s%n%n", "Execution step", "Execution pointer", "Data pointer", "Memory snapshot");
     }
 
     /**
@@ -37,14 +43,7 @@ public class Trace implements Meter
     @Override
     public void getResult()
     {
-        try
-        {
-            writer.close();
-        }
-        catch (IOException e)
-        {
-            System.err.println("This should never happen");
-        }
+        writer.close();
     }
 
     /**
@@ -55,15 +54,6 @@ public class Trace implements Meter
     @Override
     public void acknowledge(ExecutionContext executionContext)
     {
-        String log = String.format("%7d%25d%22d                  %s%n", ++step, executionContext.getInstruction(), executionContext.getPointer(), executionContext.getMemorySnapshot());
-        try
-        {
-            writer.write(log);
-            writer.flush();
-        }
-        catch (IOException e)
-        {
-            System.err.println("This should never happen");
-        }
+        writer.format("%7d%25d%22d                  %s%n", ++step, executionContext.getInstruction(), executionContext.getPointer(), executionContext.getMemorySnapshot());
     }
 }

@@ -10,7 +10,7 @@ import main.Main;
  */
 public class Metrics implements Meter
 {
-    private final long start;
+    private long start;
     private long exec_move = 0;
     private long data_move = 0;
     private long data_write = 0;
@@ -20,11 +20,17 @@ public class Metrics implements Meter
     public Metrics(long length)
     {
         this.length = length;
+
+    }
+
+    @Override
+    public void initialize()
+    {
+        start = System.currentTimeMillis();
         exec_move = 0;
         data_move = 0;
         data_write = 0;
         data_read = 0;
-        start = System.currentTimeMillis();
     }
 
     /**
