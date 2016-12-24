@@ -138,6 +138,7 @@ public class ExecutionContextBuilder
             matchLine(line);
         }
         completeTable();
+        file.close();
         return build();
     }
 

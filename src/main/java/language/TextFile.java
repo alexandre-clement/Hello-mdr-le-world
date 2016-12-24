@@ -44,22 +44,6 @@ public class TextFile implements ReadFile
     }
 
     /**
-     * Retourne à la première ligne
-     */
-    @Override
-    public void reset() throws ExitException
-    {
-        try
-        {
-            source.seek(0);
-        }
-        catch (IOException e)
-        {
-            throw new ExitException(127, this.getClass().getSimpleName(), "#reset", e);
-        }
-    }
-
-    /**
      * Ferme le reader
      */
     @Override

@@ -24,9 +24,4 @@ public interface ReadFile
      * ferme le reader
      */
     void close() throws ExitException;
-
-    /**
-     * reset le reader
-     */
-    void reset() throws ExitException;
 }

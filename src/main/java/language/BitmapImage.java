@@ -103,15 +103,6 @@ public class BitmapImage implements ReadFile
     }
 
     /**
-     * Retourne au début de l'image
-     */
-    @Override
-    public void reset()
-    {
-        rectangle.setLocation(0, 0);
-    }
-
-    /**
      * Ferme l'image
      */
     @Override
