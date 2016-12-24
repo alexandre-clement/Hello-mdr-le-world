@@ -2,7 +2,6 @@ package language;
 
 
 import exception.ExitException;
-import main.Main;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -70,6 +69,10 @@ public class BitmapImage implements ReadFile
         ImageIO.write(image, "BMP", new File(filename));
     }
 
+    /**
+     * @return la valeur du prochain carré de côté SIZE
+     * @throws ExitException si le carré n'est pas conforme i.e les SIZExSIZE pixels ne sont pas de la même couleur
+     */
     @Override
     public String next() throws ExitException
     {
@@ -94,19 +97,24 @@ public class BitmapImage implements ReadFile
         }
         catch (IOException exception)
         {
-            Main.standardException(exception);
+            throw new ExitException(127, this.getClass().getSimpleName(), "#next", exception);
         }
-        return null;
     }
 
+    /**
+     * Retourne au début de l'image
+     */
     @Override
     public void reset()
     {
         rectangle.setLocation(0, 0);
     }
 
+    /**
+     * Ferme l'image
+     */
     @Override
-    public void close()
+    public void close() throws ExitException
     {
         reader.reset();
         try
@@ -115,7 +123,7 @@ public class BitmapImage implements ReadFile
         }
         catch (IOException exception)
         {
-            Main.standardException(exception);
+            throw new ExitException(127, this.getClass().getSimpleName(), "#close", exception);
         }
     }
 }

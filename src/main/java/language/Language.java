@@ -3,7 +3,6 @@ package language;
 import exception.ExitException;
 import interpreter.Flag;
 import interpreter.Interpreter;
-import main.Main;
 
 import java.io.*;
 import java.util.Arrays;
@@ -87,8 +86,7 @@ public class Language
         }
         catch (IOException exception)
         {
-            Main.standardException(exception);
-            throw new ExitException(127, this.getClass().getSimpleName(), "#getFile", "File not found");
+            throw new ExitException(127, this.getClass().getSimpleName(), "#getFile", exception);
         }
     }
 
@@ -101,8 +99,7 @@ public class Language
             }
             catch (FileNotFoundException exception)
             {
-                Main.standardException(exception);
-                throw new ExitException(3, this.getClass().getSimpleName(), "#getIn", "In file not found");
+                throw new ExitException(3, this.getClass().getSimpleName(), "#getIn", exception);
             }
         else
             return new InputStreamReader(System.in);
@@ -117,8 +114,7 @@ public class Language
             }
             catch (FileNotFoundException exception)
             {
-                Main.standardException(exception);
-                throw new ExitException(3, this.getClass().getSimpleName(), "#getOut", "Out file not found");
+                throw new ExitException(3, this.getClass().getSimpleName(), "#getOut", exception);
             }
         else
             return new PrintStream(System.out);

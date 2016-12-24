@@ -86,7 +86,7 @@ public class Core
      * @param programLength la taille du programme
      * @return une nouvelle probe initialiser
      */
-    private Probe createProbe(Flag[] probes, int programLength)
+    private Probe createProbe(Flag[] probes, int programLength) throws ExitException
     {
         Probe createdProbe = new Probe();
         for (Flag probe : probes)
@@ -137,7 +137,7 @@ public class Core
     /**
      * L'option translate: retranscrit le programme en image bitmap
      */
-    private void translate(ExecutionContext executionContext)
+    private void translate(ExecutionContext executionContext) throws ExitException
     {
 
         int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(executionContext.getProgramLength()));
@@ -160,7 +160,7 @@ public class Core
         }
         catch (IOException exception)
         {
-            Main.standardException(exception);
+            throw new ExitException(3, this.getClass().getSimpleName(), "#translate", exception);
         }
     }
 

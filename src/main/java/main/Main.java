@@ -59,14 +59,4 @@ public class Main
     {
         System.out.print(object);
     }
-
-    /**
-     * Log an unexpected exception
-     *
-     * @param exception the unexpected exception
-     */
-    public static void standardException(Throwable exception)
-    {
-        LOGGER.warning(exception.getMessage());
-    }
 }

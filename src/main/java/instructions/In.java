@@ -3,7 +3,6 @@ package instructions;
 import core.ExecutionContext;
 import core.Instructions;
 import exception.ExitException;
-import main.Main;
 
 import java.io.IOException;
 
@@ -39,8 +38,7 @@ public class In implements Executable
         }
         catch (IOException exception)
         {
-            Main.standardException(exception);
-            throw new ExitException(3, this.getClass().getSimpleName(), "#execute", exception.getMessage());
+            throw new ExitException(3, this.getClass().getSimpleName(), "#execute", exception);
         }
     }
 }

@@ -65,12 +65,6 @@ public class ExecutionContextBuilder
         return this;
     }
 
-    public ExecutionContextBuilder setProgram(Deque<Executable> program)
-    {
-        this.program = program;
-        return this;
-    }
-
     public ExecutionContext build()
     {
         return new ExecutionContext(program.toArray(new Executable[length]), jumpTable, in, out);

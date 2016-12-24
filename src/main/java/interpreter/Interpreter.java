@@ -83,7 +83,7 @@ public class Interpreter
         }
         catch (ParseException exception)
         {
-            Main.standardException(exception);
+            throw new ExitException(127, this.getClass().getSimpleName(), "build", exception);
         }
 
         options.addOptionGroup(standardOutputOption);

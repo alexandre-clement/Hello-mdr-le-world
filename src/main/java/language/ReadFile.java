@@ -21,10 +21,10 @@ public interface ReadFile
     /**
      * ferme le reader
      */
-    void close();
+    void close() throws ExitException;
 
     /**
      * reset le reader
      */
-    void reset();
+    void reset() throws ExitException;
 }

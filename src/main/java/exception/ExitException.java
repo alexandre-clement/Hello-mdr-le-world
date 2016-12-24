@@ -20,6 +20,11 @@ public class ExitException extends Exception
         this.sourceMethod = sourceMethod;
     }
 
+    public ExitException(int exit, String sourceClass, String sourceMethod, Throwable throwable)
+    {
+        this(exit, sourceClass, sourceMethod, throwable.getMessage());
+    }
+
     public int getExit()
     {
         return exit;

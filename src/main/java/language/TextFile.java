@@ -1,6 +1,7 @@
 package language;
 
-import main.Main;
+import exception.ExitException;
+import macro.MacroBuilder;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.io.RandomAccessFile;
  * @author Alexandre Clement
  *         Created the 17/11/2016.
  *         <p>
- *         Lit les fichiers textes brainfuck
+ *         Lit les fichiers textes brainfuck en appliquant les macros
  */
 public class TextFile implements ReadFile
 {
@@ -20,16 +21,16 @@ public class TextFile implements ReadFile
      * @param filename le nom du fichier
      * @throws FileNotFoundException si le fichier n'est pas trouver
      */
-    TextFile(String filename) throws FileNotFoundException
+    TextFile(String filename) throws IOException
     {
-        source = new RandomAccessFile(filename, "r");
+        source = new RandomAccessFile(new MacroBuilder(filename).build(), "r");
     }
 
     /**
      * @return la prochaine ligne du fichier
      */
     @Override
-    public String next()
+    public String next() throws ExitException
     {
         try
         {
@@ -37,16 +38,15 @@ public class TextFile implements ReadFile
         }
         catch (IOException e)
         {
-            Main.standardException(e);
+            throw new ExitException(127, this.getClass().getSimpleName(), "#next", e);
         }
-        return null;
     }
 
     /**
      * Retourne à la première ligne
      */
     @Override
-    public void reset()
+    public void reset() throws ExitException
     {
         try
         {
@@ -54,7 +54,7 @@ public class TextFile implements ReadFile
         }
         catch (IOException e)
         {
-            Main.standardException(e);
+            throw new ExitException(127, this.getClass().getSimpleName(), "#reset", e);
         }
     }
 
@@ -62,7 +62,7 @@ public class TextFile implements ReadFile
      * Ferme le reader
      */
     @Override
-    public void close()
+    public void close() throws ExitException
     {
         try
         {
@@ -70,7 +70,7 @@ public class TextFile implements ReadFile
         }
         catch (IOException e)
         {
-            Main.standardException(e);
+            throw new ExitException(127, this.getClass().getSimpleName(), "#close", e);
         }
     }
 }

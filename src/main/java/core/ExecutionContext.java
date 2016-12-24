@@ -2,7 +2,6 @@ package core;
 
 import exception.ExitException;
 import instructions.Executable;
-import main.Main;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -326,7 +325,7 @@ public class ExecutionContext
     /**
      * Ferme les flux d'entrée et de sortie
      */
-    void close()
+    void close() throws ExitException
     {
         try
         {
@@ -334,7 +333,7 @@ public class ExecutionContext
         }
         catch (IOException e)
         {
-            Main.standardException(e);
+            throw new ExitException(3, this.getClass().getSimpleName(), "#close", e);
         }
         out.close();
     }

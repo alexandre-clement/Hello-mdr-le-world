@@ -1,7 +1,7 @@
 package probe;
 
 import core.ExecutionContext;
-import main.Main;
+import exception.ExitException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -19,7 +19,7 @@ public class Trace implements Meter
     private long step;
     private PrintWriter writer;
 
-    public Trace(String filename)
+    public Trace(String filename) throws ExitException
     {
         step = 0;
         try
@@ -28,7 +28,7 @@ public class Trace implements Meter
         }
         catch (IOException e)
         {
-            Main.standardException(e);
+            throw new ExitException(127, this.getClass().getSimpleName(), "#Trace", e);
         }
     }
 

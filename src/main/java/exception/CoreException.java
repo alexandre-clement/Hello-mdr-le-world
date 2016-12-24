@@ -6,9 +6,9 @@ package exception;
  *         <p>
  *         Exception lors de l'exécution du programme
  */
-public class CoreException extends ExitException
+class CoreException extends ExitException
 {
-    public CoreException(int exit, String sourceClass, String sourceMethod, String message, int instructions, int pointer)
+    CoreException(int exit, String sourceClass, String sourceMethod, String message, int instructions, int pointer)
     {
         super(exit, sourceClass, sourceMethod, message + " at instructions " + instructions + ", memory pointer was at " + pointer);
     }
