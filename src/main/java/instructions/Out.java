@@ -5,10 +5,11 @@ import core.Instructions;
 import exception.ExitException;
 
 /**
+ * Instruction Out
+ *
  * @author Alexandre Clement
- *         Created the 25/11/2016.
- *         <p>
- *         Instruction Out
+ * @see Executable
+ * @since 25/11/2016.
  */
 public class Out implements Executable
 {

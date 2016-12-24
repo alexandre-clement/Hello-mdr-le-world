@@ -6,10 +6,11 @@ import exception.ExitException;
 import exception.OutOfMemoryException;
 
 /**
+ * L'instruction Right
+ *
  * @author Alexandre Clement
- *         Created the 25/11/2016.
- *         <p>
- *         L'instruction Right
+ * @see Executable
+ * @since 25/11/2016.
  */
 public class Right implements Executable
 {

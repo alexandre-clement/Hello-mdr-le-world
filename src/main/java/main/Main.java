@@ -7,23 +7,41 @@ import exception.ExitException;
 import interpreter.Interpreter;
 import language.Language;
 
+import java.io.PrintStream;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Brainfuck Interpreter
+ *
  * @author Alexandre Clement
- *         Created the 09/11/2016.
- *         <p>
- *         Brainfuck Interpreter
+ * @since 09/11/2016.
  */
 public class Main
 {
+    /**
+     * La version
+     */
     public static final double VERSION = 1.0;
+    /**
+     * Le logger d'exception
+     */
     private static final Logger LOGGER = Logger.getLogger("Brainfuck - " + Calendar.getInstance().getTime().toString());
+    /**
+     * La sortie standard
+     */
+    public static final PrintStream DEFAULT_OUT = System.out;
 
-    private Main() {}
+    private Main()
+    {
+    }
 
+    /**
+     * Interprète et exécute la ligne de commande en entrée
+     *
+     * @param args la ligne de commande
+     */
     public static void main(String... args)
     {
         int exit = 0;
@@ -57,6 +75,6 @@ public class Main
      */
     public static void standardOutput(Object object)
     {
-        System.out.print(object);
+        DEFAULT_OUT.print(object);
     }
 }

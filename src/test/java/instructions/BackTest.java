@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author Alexandre Clement
- *         Created the 07/12/2016.
+ * @since  07/12/2016.
  */
 public class BackTest {
     private ExecutionContext simpleLoopContext;

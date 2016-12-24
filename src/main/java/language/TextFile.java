@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
+ * Lit les fichiers textes brainfuck en appliquant les macros
+ *
  * @author Alexandre Clement
- *         Created the 17/11/2016.
- *         <p>
- *         Lit les fichiers textes brainfuck en appliquant les macros
+ * @see ReadFile
+ * @since 17/11/2016.
  */
 public class TextFile implements ReadFile
 {

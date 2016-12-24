@@ -2,10 +2,11 @@ package exception;
 
 
 /**
+ * Exception lorsque la valeur d'une cellule mémoire sort de son domaine
+ *
  * @author Alexandre Clement
- *         Created the 16/11/2016.
- *         <p>
- *         Exception lorsque la valeur d'une cellule mémoire sort de son domaine
+ * @see CoreException
+ * @since 16/11/2016.
  */
 public class OverflowException extends CoreException
 {

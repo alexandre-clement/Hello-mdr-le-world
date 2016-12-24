@@ -9,10 +9,10 @@ import java.io.PrintStream;
 import java.util.Map;
 
 /**
+ * Le contexte d'exécution contenant le programme et le tuple mémoire, pointeur mémoire, pointeur d'instruction
+ *
  * @author Alexandre Clement
- *         Created the 07/12/2016.
- *         <p>
- *         Le contexte d'exécution contenant le programme et le tuple mémoire, pointeur mémoire, pointeur d'instruction
+ * @since 07/12/2016.
  */
 public class ExecutionContext
 {

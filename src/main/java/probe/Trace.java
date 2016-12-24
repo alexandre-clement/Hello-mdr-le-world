@@ -9,10 +9,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * Create the trace of the file in a p.log file
+ *
  * @author Alexandre Clement
- *         Created the 08/12/2016.
- *         <p>
- *         Create the trace of the file in a p.log file
+ * @see Meter
+ * @since 08/12/2016.
  */
 public class Trace implements Meter
 {

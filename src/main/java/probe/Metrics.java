@@ -4,10 +4,11 @@ import core.ExecutionContext;
 import main.Main;
 
 /**
+ * Calculate the metrics of the program and print them out using the method getResult
+ *
  * @author Alexandre Clement
- *         Created the 08/12/2016.
- *         <p>
- *         Calculate the metrics of the program and print them out using the method getResult
+ * @see Meter
+ * @since 08/12/2016.
  */
 public class Metrics implements Meter
 {

@@ -1,10 +1,11 @@
 package exception;
 
 /**
+ * Exception lorsque le pointeur mémoire dépasse la capacité mémoire
+ *
  * @author Alexandre Clement
- *         Created the 16/11/2016.
- *         <p>
- *         Exception lorsque le pointeur mémoire dépasse la capacité mémoire
+ * @see CoreException
+ * @since 16/11/2016.
  */
 public class OutOfMemoryException extends CoreException
 {

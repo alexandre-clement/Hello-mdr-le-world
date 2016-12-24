@@ -1,15 +1,13 @@
 package core;
 
-import language.Language;
-
 import java.awt.*;
 import java.util.regex.Pattern;
 
 /**
+ * Définit les propriétés de chaque instructions
+ *
  * @author Alexandre Clement
- *         Created the 24/11/2016.
- *         <p>
- *         Définit les propriétés de chaque instructions
+ * @since 24/11/2016.
  */
 public enum Instructions
 {
@@ -38,6 +36,10 @@ public enum Instructions
         OPTIMISED
     }
 
+    /**
+     * Les caractère commentaires
+     */
+    public static final String COMMENT = "#";
     /**
      * La syntaxe longue
      */
@@ -84,7 +86,7 @@ public enum Instructions
         this.metricsType = metricsType;
         this.semantics = semantics;
 
-        this.pattern = Pattern.compile("(\\" + shortcut + "|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + Language.COMMENT + "].*)?$|^" + color.getRGB() + "$)");
+        this.pattern = Pattern.compile("(\\" + shortcut + "|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + COMMENT + "].*)?$|^" + color.getRGB() + "$)");
     }
 
     /**

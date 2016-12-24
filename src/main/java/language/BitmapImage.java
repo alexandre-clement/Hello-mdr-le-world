@@ -17,10 +17,11 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
+ * Lit et écrit des images bitmap
+ *
  * @author Alexandre Clement
- *         Created the 17/11/2016.
- *         <p>
- *         Lit et écrit des images bitmap
+ * @see ReadFile
+ * @since 17/11/2016.
  */
 public class BitmapImage implements ReadFile
 {

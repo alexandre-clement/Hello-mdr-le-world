@@ -9,10 +9,11 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 
 /**
+ * Interpret the input commandline with Flag as key for options.
+ *
  * @author Alexandre Clement
- *         Created the 04 novembre 2016.
- *         <p>
- *         Interpret the input commandline with Flag as key for options.
+ * @see Flag
+ * @since 04 novembre 2016.
  */
 public class Interpreter
 {

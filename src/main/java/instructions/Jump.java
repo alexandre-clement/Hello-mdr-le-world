@@ -6,10 +6,11 @@ import exception.ExitException;
 import exception.NotWellFormedException;
 
 /**
+ * Instruction Jump
+ *
  * @author Alexandre Clement
- *         Created the 26/11/2016.
- *         <p>
- *         Instruction Jump
+ * @see Executable
+ * @since 26/11/2016.
  */
 public class Jump implements Executable, Loop
 {

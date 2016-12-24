@@ -7,10 +7,11 @@ import exception.ExitException;
 import java.io.IOException;
 
 /**
+ * Instruction In
+ *
  * @author Alexandre Clement
- *         Created the 25/11/2016.
- *         <p>
- *         Instruction In
+ * @see Executable
+ * @since 25/11/2016.
  */
 public class In implements Executable
 {

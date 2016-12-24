@@ -4,10 +4,11 @@ import core.ExecutionContext;
 import main.Main;
 
 /**
+ * Time the program execution
+ *
  * @author Alexandre Clement
- *         Created the 16/12/2016.
- *         <p>
- *         Time the program execution
+ * @see Meter
+ * @since 16/12/2016.
  */
 public class Time implements Meter
 {

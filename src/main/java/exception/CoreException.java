@@ -1,10 +1,11 @@
 package exception;
 
 /**
+ * Exception lors de l'exécution du programme
+ *
  * @author Alexandre Clement
- *         Created the 16/11/2016.
- *         <p>
- *         Exception lors de l'exécution du programme
+ * @see ExitException
+ * @since 16/11/2016.
  */
 class CoreException extends ExitException
 {

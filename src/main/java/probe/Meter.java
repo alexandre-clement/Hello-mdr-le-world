@@ -3,8 +3,13 @@ package probe;
 import core.ExecutionContext;
 
 /**
+ * Interface définissant une métrique
+ *
  * @author Alexandre Clement
- *         Created the 08/12/2016.
+ * @see Metrics
+ * @see Time
+ * @see Trace
+ * @since 08/12/2016.
  */
 public interface Meter
 {

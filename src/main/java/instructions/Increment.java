@@ -6,10 +6,11 @@ import exception.ExitException;
 import exception.OverflowException;
 
 /**
+ * Instruction Increment
+ *
  * @author Alexandre Clement
- *         Created the 23/11/2016.
- *         <p>
- *         Instruction Increment
+ * @see Executable
+ * @since 23/11/2016.
  */
 public class Increment implements Executable
 {

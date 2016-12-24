@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * La sonde contenant toutes les métriques
+ *
  * @author Alexandre Clement
- *         Created the 07/12/2016.
- *         <p>
- *         La sonde contenant toutes les métriques
+ * @see Meter
+ * @since 07/12/2016.
  */
 public class Probe
 {

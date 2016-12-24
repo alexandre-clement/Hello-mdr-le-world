@@ -3,24 +3,46 @@ package language;
 import exception.ExitException;
 import interpreter.Flag;
 import interpreter.Interpreter;
+import main.Main;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.Optional;
 
 /**
+ * Permet de récupérée les différents flux de l'interpreter
+ *
  * @author Alexandre Clement
  * @author TANG Yi
- *         Created the 26/11/2016.
+ * @see FileType
+ * @see ReadFile
+ * @since 26/11/2016.
  */
 public class Language
 {
-    public static final String COMMENT = "#";
+    /**
+     * Le nom du fichier source
+     */
     private String filename;
+    /**
+     * Le fichier source
+     */
     private ReadFile file;
+    /**
+     * Le flux d'entrée
+     */
     private InputStreamReader in;
+    /**
+     * Le flux de sortie
+     */
     private PrintStream out;
 
+    /**
+     * Créer les différents flux à partir des données récupérer par l'Interpreter
+     *
+     * @param interpreter l'interpreter
+     * @throws ExitException si l'un des flux n'existe pas / est invalide
+     */
     public Language(Interpreter interpreter) throws ExitException
     {
         String pArgument = interpreter.getOptionValue(Flag.PRINT);
@@ -32,26 +54,45 @@ public class Language
         out = getOut(interpreter);
     }
 
+    /**
+     * Retourne le fichier source
+     *
+     * @return le fichier source
+     */
     public ReadFile getFile()
     {
         return file;
     }
 
+    /**
+     * Retourne le nom du fichier source
+     *
+     * @return le nom du fichier source
+     */
     public String getFilename()
     {
         return filename;
     }
 
+    /**
+     * Le flux d'entrée
+     *
+     * @return le flux d'entrée
+     */
     public InputStreamReader getIn()
     {
         return in;
     }
 
+    /**
+     * Le flux de sortie
+     *
+     * @return le flux de sortie
+     */
     public PrintStream getOut()
     {
         return out;
     }
-
 
     private String getFilename(String pArgument, int separator) throws ExitException
     {
@@ -117,7 +158,7 @@ public class Language
                 throw new ExitException(3, this.getClass().getSimpleName(), "#getOut", exception);
             }
         else
-            return new PrintStream(System.out);
+            return new PrintStream(Main.DEFAULT_OUT);
     }
 
 }

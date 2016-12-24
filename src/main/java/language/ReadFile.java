@@ -3,10 +3,12 @@ package language;
 import exception.ExitException;
 
 /**
+ * Lit le fichier source
+ *
  * @author Alexandre Clement
- *         Created the 17/11/2016.
- *         <p>
- *         Lit le fichier source
+ * @see BitmapImage
+ * @see TextFile
+ * @since 17/11/2016.
  */
 public interface ReadFile
 {

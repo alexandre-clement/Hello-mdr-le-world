@@ -5,10 +5,11 @@ import core.Instructions;
 import exception.ExitException;
 
 /**
+ * Interface pour les Instructions
+ *
  * @author Alexandre Clement
- *         Created the 25/11/2016.
- *         <p>
- *         Interface pour les Instructions
+ * @see Executable
+ * @since 25/11/2016.
  */
 public interface Executable
 {

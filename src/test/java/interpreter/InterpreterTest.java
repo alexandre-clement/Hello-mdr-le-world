@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 /**
  * @author Alexandre Clement
- *         Created the 07/12/2016.
+ * @since  07/12/2016.
  */
 public class InterpreterTest {
     private Interpreter noOption;

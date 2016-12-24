@@ -6,10 +6,11 @@ import exception.ExitException;
 import exception.NotWellFormedException;
 
 /**
+ * Instruction Back Itératif
+ *
  * @author Alexandre Clement
- *         Created the 26/11/2016.
- *         <p>
- *         Instruction Back Iteratif
+ * @see Executable
+ * @since 26/11/2016.
  */
 public class Back implements Executable, Loop
 {

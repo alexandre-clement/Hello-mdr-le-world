@@ -5,10 +5,11 @@ import core.Instructions;
 import exception.ExitException;
 
 /**
+ * Instruction Back Optimisée
+ *
  * @author Alexandre Clement
- *         Created the 07/12/2016.
- *         <p>
- *         Instruction Back Optimisée
+ * @see Executable
+ * @since 07/12/2016.
  */
 public class BackOptimised implements Executable, Loop
 {

@@ -2,10 +2,10 @@ package language;
 
 
 /**
+ * Les extensions de fichiers supportées
+ *
  * @author Alexandre Clement
- *         Created the 17/11/2016.
- *         <p>
- *         Les extensions de fichiers supportées
+ * @since 17/11/2016.
  */
 public enum FileType
 {

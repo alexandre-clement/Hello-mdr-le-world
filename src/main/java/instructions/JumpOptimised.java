@@ -5,10 +5,11 @@ import core.Instructions;
 import exception.ExitException;
 
 /**
+ * Instruction Jump Optimisée
+ *
  * @author Alexandre Clement
- *         Created the 07/12/2016.
- *         <p>
- *         Instruction Jump Optimisée
+ * @see Executable
+ * @since 07/12/2016.
  */
 public class JumpOptimised implements Executable, Loop
 {

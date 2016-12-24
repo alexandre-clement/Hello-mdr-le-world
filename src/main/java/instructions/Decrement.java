@@ -6,10 +6,11 @@ import exception.ExitException;
 import exception.OverflowException;
 
 /**
+ * Instruction Decrement
+ *
  * @author Alexandre Clement
- *         Created the 23/11/2016.
- *         <p>
- *         Instruction Decrement
+ * @see Executable
+ * @since 23/11/2016.
  */
 public class Decrement implements Executable
 {

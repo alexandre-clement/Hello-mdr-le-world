@@ -2,10 +2,11 @@ package instructions;
 
 
 /**
+ * Interface pour les boucles
+ *
  * @author Alexandre Clement
- *         Created the 09/12/2016.
- *         <p>
- *         Interface pour les boucles
+ * @see Executable
+ * @since 09/12/2016.
  */
 @FunctionalInterface
 public interface Loop

@@ -1,10 +1,11 @@
 package exception;
 
 /**
+ * Exception lorsque le programme est mal formé
+ *
  * @author Alexandre Clement
- *         Created the 18/11/2016.
- *         <p>
- *         Exception lorsque le programme est mal formé
+ * @see ExitException
+ * @since 18/11/2016.
  */
 public class NotWellFormedException extends ExitException
 {

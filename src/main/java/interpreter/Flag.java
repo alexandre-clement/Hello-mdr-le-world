@@ -1,10 +1,10 @@
 package interpreter;
 
 /**
+ * Les options de l'interpreteur
+ *
  * @author Alexandre Clement
- *         Created the 10/11/2016.
- *         <p>
- *         Les options de l'interpreteur
+ * @since 10/11/2016.
  */
 public enum Flag
 {

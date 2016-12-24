@@ -18,11 +18,16 @@ import java.util.Deque;
 import java.util.List;
 
 /**
+ * Exécute les options sur le programme
+ *
  * @author Alexandre Clement
  * @author TANG Yi
- *         Created the 16/11/2016.
- *         <p>
- *         Exécute les options sur le programme
+ * @see ExecutionContext
+ * @see Instructions
+ * @see Executable
+ * @see Probe
+ * @see Flag
+ * @since 16/11/2016.
  */
 public class Core
 {
@@ -48,7 +53,7 @@ public class Core
     }
 
     /**
-     * exécute les options sur le context
+     * Exécute les options sur le context
      *
      * @param flags            les options a exécuté
      * @param probes           les métriques
