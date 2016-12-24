@@ -1,18 +1,30 @@
 package language;
 
-import exception.LanguageException;
-
-import java.io.IOException;
+import exception.ExitException;
 
 /**
  * @author Alexandre Clement
  *         Created the 17/11/2016.
+ *         <p>
+ *         Lit le fichier source
  */
 public interface ReadFile
 {
-    String next() throws IOException, LanguageException;
+    /**
+     * Renvoie le prochain élément contenue dans le fichier
+     *
+     * @return le prochain élément du fichier
+     * @throws ExitException si le fichier n'est pas conforme au spécification
+     */
+    String next() throws ExitException;
 
-    void close() throws IOException;
+    /**
+     * ferme le reader
+     */
+    void close();
 
-    void reset() throws IOException;
+    /**
+     * reset le reader
+     */
+    void reset();
 }

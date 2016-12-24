@@ -8,11 +8,19 @@ import core.ExecutionContext;
  */
 public interface Meter
 {
+    /**
+     * Initialise la métrique
+     */
     void initialize();
 
+    /**
+     * Récupère le résultat de la métrique après exécution du programme
+     */
     void getResult();
 
     /**
+     * Récupère une image du contexte lors de l'exécution du programme
+     *
      * @param executionContext the current execution context of the program
      */
     void acknowledge(ExecutionContext executionContext);

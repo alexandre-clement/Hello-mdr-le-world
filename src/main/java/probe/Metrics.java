@@ -6,31 +6,37 @@ import main.Main;
 /**
  * @author Alexandre Clement
  *         Created the 08/12/2016.
+ *         <p>
  *         Calculate the metrics of the program and print them out using the method getResult
  */
 public class Metrics implements Meter
 {
     private long start;
-    private long exec_move = 0;
-    private long data_move = 0;
-    private long data_write = 0;
-    private long data_read = 0;
+    private long execMove;
+    private long dataMove;
+    private long dataWrite;
+    private long dataRead;
     private long length;
 
+    /**
+     * @param length la taille du programme
+     */
     public Metrics(long length)
     {
         this.length = length;
-
     }
 
+    /**
+     * Initialise toutes les valeurs
+     */
     @Override
     public void initialize()
     {
         start = System.currentTimeMillis();
-        exec_move = 0;
-        data_move = 0;
-        data_write = 0;
-        data_read = 0;
+        execMove = 0;
+        dataMove = 0;
+        dataWrite = 0;
+        dataRead = 0;
     }
 
     /**
@@ -41,10 +47,10 @@ public class Metrics implements Meter
     {
         String metrics = "\nPROG_SIZE: " + length + '\n';
         metrics += "EXEC_TIME: " + (System.currentTimeMillis() - start) + " ms\n";
-        metrics += "EXEC_MOVE: " + exec_move + '\n';
-        metrics += "DATA_MOVE: " + data_move + '\n';
-        metrics += "DATA_WRITE: " + data_write + '\n';
-        metrics += "DATA_READ: " + data_read;
+        metrics += "EXEC_MOVE: " + execMove + '\n';
+        metrics += "DATA_MOVE: " + dataMove + '\n';
+        metrics += "DATA_WRITE: " + dataWrite + '\n';
+        metrics += "DATA_READ: " + dataRead;
         Main.standardOutput(metrics);
     }
 
@@ -56,17 +62,17 @@ public class Metrics implements Meter
     @Override
     public void acknowledge(ExecutionContext executionContext)
     {
-        exec_move += 1;
+        execMove += 1;
         switch (executionContext.getCurrentInstruction().getMetricsType())
         {
             case DATA_WRITE:
-                data_write += 1;
+                dataWrite += 1;
                 break;
             case DATA_READ:
-                data_read += 1;
+                dataRead += 1;
                 break;
             case DATA_MOVE:
-                data_move += 1;
+                dataMove += 1;
                 break;
         }
     }

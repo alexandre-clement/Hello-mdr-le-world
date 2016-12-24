@@ -1,7 +1,8 @@
 package language;
 
 
-import exception.LanguageException;
+import exception.ExitException;
+import main.Main;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -19,10 +20,14 @@ import java.util.stream.Collectors;
 /**
  * @author Alexandre Clement
  *         Created the 17/11/2016.
+ *         <p>
+ *         Lit et écrit des images bitmap
  */
 public class BitmapImage implements ReadFile
 {
-
+    /**
+     * Côtés d'une instruction dans une image
+     */
     public static final int SIZE = 3;
     private final ImageInputStream stream;
     private final ImageReadParam param;
@@ -31,20 +36,33 @@ public class BitmapImage implements ReadFile
     private final int height;
     private final int width;
 
+    /**
+     * @param filename le nom de l'image
+     * @throws IOException si l'image n'est pas trouvée
+     */
     BitmapImage(String filename) throws IOException
     {
         stream = ImageIO.createImageInputStream(new File(filename));
         Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
-        if (!readers.hasNext()) throw new FileNotFoundException();
+        if (!readers.hasNext())
+            throw new FileNotFoundException();
         reader = readers.next();
         reader.setInput(stream);
         param = reader.getDefaultReadParam();
         height = reader.getHeight(0);
         width = reader.getWidth(0);
-        if (height % 3 != 0 || width % 3 != 0) throw new IOException();
+        if (height % 3 != 0 || width % 3 != 0)
+            throw new IOException();
         rectangle = new Rectangle(0, 0, SIZE, SIZE);
     }
 
+    /**
+     * Créer une image à partie d'un tableau des valeurs
+     *
+     * @param filename   le nom de l'image
+     * @param colorArray les valeurs à insérer dans l'image
+     * @param size       la taille de l'image
+     */
     public static void createImage(String filename, int[] colorArray, int size) throws IOException
     {
         BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
@@ -53,33 +71,42 @@ public class BitmapImage implements ReadFile
     }
 
     @Override
-    public String next() throws IOException, LanguageException
+    public String next() throws ExitException
     {
         if (rectangle.x == width && rectangle.y == height)
             return null;
         param.setSourceRegion(rectangle);
-
-        BufferedImage image = reader.read(0, param);
-        reader.reset();
-        stream.seek(0);
-        reader.setInput(stream);
-        int[] rgbArray = image.getRGB(0, 0, SIZE, SIZE, null, 0, SIZE);
-        if (Arrays.stream(rgbArray).boxed().collect(Collectors.toSet()).size() != 1)
-            throw new LanguageException(127, "Bitmap not well formed at position " + rectangle.x / SIZE + ", " + rectangle.y / SIZE);
-        if (rectangle.x < width - SIZE) rectangle.setLocation(rectangle.x + SIZE, rectangle.y);
-        else if (rectangle.y < height - SIZE) rectangle.setLocation(0, rectangle.y + SIZE);
-        else rectangle.setLocation(width, height);
-        return String.valueOf(Math.abs(rgbArray[0]));
+        try
+        {
+            BufferedImage image = reader.read(0, param);
+            reader.reset();
+            stream.seek(0);
+            reader.setInput(stream);
+            int[] rgbArray = image.getRGB(0, 0, SIZE, SIZE, null, 0, SIZE);
+            if (Arrays.stream(rgbArray).boxed().collect(Collectors.toSet()).size() != 1)
+                throw new ExitException(127, this.getClass().getSimpleName(), "#next", "Bitmap not well formed at position " + rectangle.x / SIZE + ", " + rectangle.y / SIZE);
+            if (rectangle.x < width - SIZE)
+                rectangle.setLocation(rectangle.x + SIZE, rectangle.y);
+            else if (rectangle.y < height - SIZE)
+                rectangle.setLocation(0, rectangle.y + SIZE);
+            else rectangle.setLocation(width, height);
+            return String.valueOf(Math.abs(rgbArray[0]));
+        }
+        catch (IOException exception)
+        {
+            Main.standardException(exception);
+        }
+        return null;
     }
 
     @Override
-    public void reset() throws IOException
+    public void reset()
     {
         rectangle.setLocation(0, 0);
     }
 
     @Override
-    public void close() throws IOException
+    public void close()
     {
         reader.reset();
         try
@@ -88,8 +115,7 @@ public class BitmapImage implements ReadFile
         }
         catch (IOException exception)
         {
-            if (!"closed".equals(exception.getMessage()))
-                throw exception;
+            Main.standardException(exception);
         }
     }
 }

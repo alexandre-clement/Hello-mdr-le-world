@@ -1,6 +1,7 @@
 package interpreter;
 
-import exception.IllegalCommandlineException;
+import core.Instructions;
+import exception.ExitException;
 import main.Main;
 import org.apache.commons.cli.*;
 
@@ -10,8 +11,8 @@ import java.util.function.Predicate;
 /**
  * @author Alexandre Clement
  *         Created the 04 novembre 2016.
- * <p>
- * Interpret the input commandline with Flag as key for options.
+ *         <p>
+ *         Interpret the input commandline with Flag as key for options.
  */
 public class Interpreter
 {
@@ -54,12 +55,12 @@ public class Interpreter
      *
      * @param commandline the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check]
      * @return a new Interpreter object initialized with the command line given
-     * @throws IllegalCommandlineException if the commandline given is incorrect i.e
-     *                                     the p options is not given or without argument,
-     *                                     the i/o options are given without argument,
-     *                                     multiple standard output option are given (--rewrite, --translate, --check)
+     * @throws exception.ExitException if the commandline given is incorrect i.e
+     *                                 the p options is not given or without argument,
+     *                                 the i/o options are given without argument,
+     *                                 multiple standard output option are given (--rewrite, --translate, --check)
      */
-    public static Interpreter buildInterpreter(String... commandline) throws IllegalCommandlineException
+    public static Interpreter buildInterpreter(String... commandline) throws ExitException
     {
         return new Interpreter().build(commandline);
     }
@@ -69,12 +70,12 @@ public class Interpreter
      *
      * @param args the commandline i.e [-i input file] [-o output file] -p program [--rewrite | --translate | --check]
      * @return the current instance
-     * @throws IllegalCommandlineException if the commandline given is incorrect i.e
-     *                                     the p options is not given or without argument,
-     *                                     the i/o options are given without argument,
-     *                                     multiple standard output option are given (--rewrite, --translate, --check)
+     * @throws ExitException if the commandline given is incorrect i.e
+     *                       the p options is not given or without argument,
+     *                       the i/o options are given without argument,
+     *                       multiple standard output option are given (--rewrite, --translate, --check)
      */
-    private Interpreter build(String... args) throws IllegalCommandlineException
+    private Interpreter build(String... args) throws ExitException
     {
         try
         {
@@ -82,7 +83,7 @@ public class Interpreter
         }
         catch (ParseException exception)
         {
-            System.err.println(exception.getMessage()); // this should not happen
+            Main.standardException(exception);
         }
 
         options.addOptionGroup(standardOutputOption);
@@ -91,6 +92,8 @@ public class Interpreter
             help();
         if (hasOption(Flag.VERSION))
             version();
+        if (hasOption(Flag.SYNTAX))
+            syntax();
 
         try
         {
@@ -98,7 +101,7 @@ public class Interpreter
         }
         catch (ParseException exception)
         {
-            throw new IllegalCommandlineException(exception);
+            throw new ExitException(126, this.getClass().getSimpleName(), "#build", exception.getMessage());
         }
         hasStandardOutputOption = countStandardOutputOption();
         return this;
@@ -155,8 +158,8 @@ public class Interpreter
      */
     public Flag[] getOptions()
     {
-        Predicate<Flag> PrintNorStandardOutputOption = flag -> hasOption(flag) && (flag != Flag.PRINT || !hasStandardOutputOption());
-        return Arrays.stream(Flag.values()).filter(PrintNorStandardOutputOption).toArray(Flag[]::new);
+        Predicate<Flag> printNorStandardOutputOption = flag -> hasOption(flag) && (flag != Flag.PRINT || !hasStandardOutputOption());
+        return Arrays.stream(Flag.values()).filter(printNorStandardOutputOption).toArray(Flag[]::new);
     }
 
     /**
@@ -172,11 +175,11 @@ public class Interpreter
     /**
      * Display the help
      */
-    public void help()
+    private void help()
     {
         helps.getOptions().forEach(options::addOption);
         HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.setWidth(120);
+        helpFormatter.setWidth(150);
         helpFormatter.printHelp("bfck", "Brainfuck interpreter in Java\n\n", options, "\nVersion " + Main.VERSION, true);
         System.exit(0);
     }
@@ -184,9 +187,23 @@ public class Interpreter
     /**
      * Display the version
      */
-    public void version()
+    private void version()
     {
-        System.out.println("Version " + Main.VERSION);
+        Main.standardOutput("Version " + Main.VERSION);
+        System.exit(0);
+    }
+
+    /**
+     * Display the syntaxe of the instructions
+     */
+    private void syntax()
+    {
+        Main.standardOutput("Brainfuck instructions syntax:\n\n");
+        Main.standardOutput(String.format("%-20s%-10s%-10s%-10s%n", "Instruction", "Shortcut", "Hex Code", "Semantic"));
+        for (Instructions instructions : Instructions.values())
+        {
+            Main.standardOutput(String.format("%-20s%-10s%-10x%s%n", instructions.getInstruction(), instructions.getShortcut(), instructions.getColor().getRGB(), instructions.getSemantics()));
+        }
         System.exit(0);
     }
 

@@ -12,32 +12,47 @@ import probe.Time;
 import probe.Trace;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * @author Alexandre Clement
  * @author TANG Yi
  *         Created the 16/11/2016.
+ *         <p>
+ *         Exécute les options sur le programme
  */
 public class Core
 {
+    /**
+     * Le nom du fichier
+     */
     private final String filename;
 
+    /**
+     * @param filename Le nom du fichier a exécuté
+     */
     public Core(String filename)
     {
         this.filename = filename;
     }
 
+    /**
+     * @return Les instructions exécutables disponibles
+     */
     public static Executable[] getExecutables()
     {
         return new Executable[]{new Increment(), new Decrement(), new Left(), new Right(), new Out(), new In(), new Jump(), new Back(), new JumpOptimised(), new BackOptimised()};
     }
 
     /**
-     * run the options of the user
+     * exécute les options sur le context
      *
-     * @param flags            options the user puts in
-     * @param probes the probes the user puts in
-     * @param executionContext the execution context
+     * @param flags            les options a exécuté
+     * @param probes           les métriques
+     * @param executionContext le contexte d'exécution
      */
     public void run(Flag[] flags, Flag[] probes, ExecutionContext executionContext) throws ExitException
     {
@@ -58,6 +73,7 @@ public class Core
                 case CHECK:
                     check(executionContext);
                     break;
+                default:
             }
         }
         executionContext.close();
@@ -86,13 +102,15 @@ public class Core
                 case TIME:
                     createdProbe.addMeter(new Time());
                     break;
+                default:
+                    throw new UnsupportedOperationException("Probe \"" + probe + "\" not implemented yet");
             }
         }
         return createdProbe;
     }
 
     /**
-     * the '-p' option: execution of the program and print out the memory snapshot
+     * L'option p: exécute le programme avec les métriques et affiche l'état de la mémoire
      */
     private void print(ExecutionContext executionContext, Probe probe) throws ExitException
     {
@@ -107,7 +125,7 @@ public class Core
     }
 
     /**
-     * the '--rewrite' option: print out the short syntax of the program
+     * L'option rewrite: affiche le programme en syntaxe courte
      */
     private void rewrite(ExecutionContext executionContext)
     {
@@ -117,14 +135,15 @@ public class Core
     }
 
     /**
-     * the '--translate' option: translate the program to the color syntax and create a image file
+     * L'option translate: retranscrit le programme en image bitmap
      */
     private void translate(ExecutionContext executionContext)
     {
 
         int size = BitmapImage.SIZE * (int) Math.ceil(Math.sqrt(executionContext.getProgramLength()));
         int[] colorArray = new int[size * size];
-        int div, mod;
+        int div;
+        int mod;
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
             div = (executionContext.getInstruction() * BitmapImage.SIZE) / size * BitmapImage.SIZE;
@@ -141,39 +160,46 @@ public class Core
         }
         catch (IOException exception)
         {
-            System.err.println("Error with translated image");
+            Main.standardException(exception);
         }
     }
 
     /**
-     * the '--check' option: check JUMP and BACK in the program are well formed
+     * L'option check: vérifie si le programme est bien formé
+     * i.e toutes les boucles ouvertes sont fermées et vice-versa
      *
-     * @throws NotWellFormedException if the program is not well formed
+     * @throws NotWellFormedException si le programme n'est pas bien formé
      */
     private void check(ExecutionContext executionContext) throws NotWellFormedException
     {
         int length = Instructions.LoopType.values().length;
-        int[] closes = new int[length];
+        List<Deque<Integer>> closes = new ArrayList<>(length);
+        for (int i = 0; i < length; i++)
+        {
+            closes.add(new ArrayDeque<>());
+        }
+
         Instructions.LoopType loopType;
 
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
         {
-            for (int i = 0; i < length; i++)
-            {
-                if (closes[i] < 0)
-                    throw new NotWellFormedException(executionContext.getInstruction());
-            }
             loopType = executionContext.getCurrentInstruction().getLoopType();
             if (loopType != null && ((Loop) executionContext.getCurrentExecutable()).open())
-                closes[loopType.ordinal()] += 1;
+            {
+                closes.get(loopType.ordinal()).push(executionContext.getInstruction());
+            }
             else if (loopType != null && !((Loop) executionContext.getCurrentExecutable()).open())
-                closes[loopType.ordinal()] -= 1;
+            {
+                if (closes.get(loopType.ordinal()).isEmpty())
+                    throw new NotWellFormedException(this.getClass().getSimpleName(), "#check", executionContext.getInstruction());
+                closes.get(loopType.ordinal()).pop();
+            }
         }
 
-        for (int i = 0; i < length; i++)
+        for (Deque<Integer> close : closes)
         {
-            if (closes[i] != 0)
-                throw new NotWellFormedException();
+            if (!close.isEmpty())
+                throw new NotWellFormedException(this.getClass().getSimpleName(), "#check", close.pop());
         }
     }
 }

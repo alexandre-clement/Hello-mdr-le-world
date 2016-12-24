@@ -1,14 +1,10 @@
 package instructions;
 
-import static org.junit.Assert.*;
 import core.ExecutionContext;
-import core.Instructions;
 import exception.OutOfMemoryException;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStreamReader;
-import java.util.HashMap;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author TANG Yi

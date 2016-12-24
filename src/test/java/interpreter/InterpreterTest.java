@@ -1,6 +1,5 @@
 package interpreter;
 
-import exception.IllegalCommandlineException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,31 +32,6 @@ public class InterpreterTest {
 
     @Test
     public void buildInterpreter() throws Exception {
-        try {
-            Interpreter.buildInterpreter("");
-            throw new AssertionError();
-        } catch (IllegalCommandlineException e) {
-            assertEquals(126, e.getExit());
-        }
-        try {
-            Interpreter.buildInterpreter("-p");
-            throw new AssertionError();
-        } catch (IllegalCommandlineException e) {
-            assertEquals(126, e.getExit());
-        }
-        try {
-            Interpreter.buildInterpreter("-p", "test.bf", "--rewrite", "--translate");
-            throw new AssertionError();
-        } catch (IllegalCommandlineException e) {
-            assertEquals(126, e.getExit());
-        }
-        try {
-            Interpreter.buildInterpreter("-p", "test.bf", "-i");
-            throw new AssertionError();
-        } catch (IllegalCommandlineException e) {
-            assertEquals(126, e.getExit());
-        }
-
         assertNotNull(noOption);
         assertNotNull(oneOption);
         assertNotNull(oneMetric);

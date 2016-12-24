@@ -1,17 +1,28 @@
 package main;
 
 import core.Core;
+import core.ExecutionContext;
+import core.ExecutionContextBuilder;
 import exception.ExitException;
 import interpreter.Interpreter;
 import language.Language;
 
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * @author Alexandre Clement
  *         Created the 09/11/2016.
+ *         <p>
+ *         Brainfuck Interpreter
  */
 public class Main
 {
-    public final static double VERSION = 1.0;
+    public static final double VERSION = 1.0;
+    private static final Logger LOGGER = Logger.getLogger("Brainfuck - " + Calendar.getInstance().getTime().toString());
+
+    private Main() {}
 
     public static void main(String... args)
     {
@@ -22,12 +33,17 @@ public class Main
             Interpreter interpreter = Interpreter.buildInterpreter(args);
             Language language = new Language(interpreter);
             Core core = new Core(language.getFilename());
-            core.run(interpreter.getOptions(), interpreter.getProbes(), language.getExecutionContext());
+            ExecutionContext context = new ExecutionContextBuilder()
+                    .setIn(language.getIn())
+                    .setOut(language.getOut())
+                    .setExecutables(Core.getExecutables())
+                    .buildFromFile(language.getFile());
+            core.run(interpreter.getOptions(), interpreter.getProbes(), context);
         }
         catch (ExitException exception)
         {
-            System.out.flush();
-            System.err.println(exception.getMessage());
+            LOGGER.logp(Level.SEVERE, exception.getSourceClass(), exception.getSourceMethod(), exception.getMessage());
+            LOGGER.throwing(exception.getSourceClass(), exception.getSourceMethod(), exception);
             exit = exception.getExit();
         }
 
@@ -42,5 +58,15 @@ public class Main
     public static void standardOutput(Object object)
     {
         System.out.print(object);
+    }
+
+    /**
+     * Log an unexpected exception
+     *
+     * @param exception the unexpected exception
+     */
+    public static void standardException(Throwable exception)
+    {
+        LOGGER.warning(exception.getMessage());
     }
 }

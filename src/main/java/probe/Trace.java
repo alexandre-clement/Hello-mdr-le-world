@@ -1,6 +1,7 @@
 package probe;
 
 import core.ExecutionContext;
+import main.Main;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -10,8 +11,8 @@ import java.io.PrintWriter;
 /**
  * @author Alexandre Clement
  *         Created the 08/12/2016.
- *
- * Create the trace of the file in a p.log file
+ *         <p>
+ *         Create the trace of the file in a p.log file
  */
 public class Trace implements Meter
 {
@@ -27,7 +28,7 @@ public class Trace implements Meter
         }
         catch (IOException e)
         {
-            System.err.println("This should never happen");
+            Main.standardException(e);
         }
     }
 
