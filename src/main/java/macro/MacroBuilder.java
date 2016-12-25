@@ -9,9 +9,8 @@ import java.util.regex.Pattern;
 /**
  * Le pre-processeur remplacant les macros par leurs valeurs.
  *
+ * <P>Exemple d'une macro
  * <pre>
- * Exemple d'une macro
- *
  * // L'operateur MACRO definissant une macro est insensible a la casse
  * // Le nom de la macro ainsi que les parametres sont sensible a la casse
  * // Le corps de la macro doit etre indentee

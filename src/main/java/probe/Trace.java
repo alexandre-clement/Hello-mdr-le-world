@@ -65,6 +65,6 @@ public class Trace implements Meter
     @Override
     public void acknowledge(ExecutionContext executionContext)
     {
-        writer.format("%7d%25d%22d                  %s%n", ++step, executionContext.getInstruction(), executionContext.getPointer(), executionContext.getMemorySnapshot());
+        writer.format("%-22d%-25d%-25d%s%n", ++step, executionContext.getInstruction(), executionContext.getPointer(), executionContext.getMemorySnapshot());
     }
 }

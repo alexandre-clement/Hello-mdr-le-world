@@ -33,6 +33,9 @@ public class Main
      */
     public static final PrintStream DEFAULT_OUT = System.out;
 
+    /**
+     * No default constructor.
+     */
     private Main()
     {
     }

@@ -1,5 +1,6 @@
 package interpreter;
 
+import exception.ExitException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,9 +8,10 @@ import static org.junit.Assert.*;
 
 /**
  * @author Alexandre Clement
- * @since  07/12/2016.
+ * @since 07/12/2016.
  */
-public class InterpreterTest {
+public class InterpreterTest
+{
     private Interpreter noOption;
     private Interpreter oneOption;
     private Interpreter oneMetric;
@@ -19,19 +21,21 @@ public class InterpreterTest {
     private Interpreter twoFilesOptions;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception
+    {
         noOption = Interpreter.buildInterpreter("-p", "test.bf");
         oneOption = Interpreter.buildInterpreter("-p", "test.bf", "--rewrite");
         oneMetric = Interpreter.buildInterpreter("-p", "test.bf", "-m");
         twoMetrics = Interpreter.buildInterpreter("-p", "test.bf", "-m", "--trace");
         metricsAndOption = Interpreter.buildInterpreter("-p", "test.bf", "-m", "--rewrite");
-        fileOption =  Interpreter.buildInterpreter("-p", "test.bf", "-i", "input.txt");
-        twoFilesOptions =  Interpreter.buildInterpreter("-p", "test.bf", "-i", "input.txt", "-o", "output.txt");
+        fileOption = Interpreter.buildInterpreter("-p", "test.bf", "-i", "input.txt");
+        twoFilesOptions = Interpreter.buildInterpreter("-p", "test.bf", "-i", "input.txt", "-o", "output.txt");
 
     }
 
     @Test
-    public void buildInterpreter() throws Exception {
+    public void buildInterpreter() throws Exception
+    {
         assertNotNull(noOption);
         assertNotNull(oneOption);
         assertNotNull(oneMetric);
@@ -43,7 +47,58 @@ public class InterpreterTest {
     }
 
     @Test
-    public void getOptionValue() throws Exception {
+    public void getIllegalCommandLine()
+    {
+        try
+        {
+            Interpreter.buildInterpreter();
+            fail("empty command line isn't accepted");
+        }
+        catch (ExitException exception)
+        {
+            assertEquals(126, exception.getExit());
+        }
+        try
+        {
+            Interpreter.buildInterpreter("");
+            fail("command line without p option isn't accepted");
+        }
+        catch (ExitException exception)
+        {
+            assertEquals(126, exception.getExit());
+        }
+        try
+        {
+            Interpreter.buildInterpreter("-p");
+            fail("commandline without source file isn't accepted");
+        }
+        catch (ExitException exception)
+        {
+            assertEquals(126, exception.getExit());
+        }
+        try
+        {
+            Interpreter.buildInterpreter("-p", "file.bf", "--rewrite", "--translate");
+            fail("multiple standard output option isn't accepted");
+        }
+        catch (ExitException exception)
+        {
+            assertEquals(126, exception.getExit());
+        }
+        try
+        {
+            Interpreter.buildInterpreter("-p", "file.bf", "-i");
+            fail("I/O options without file isn't accepted");
+        }
+        catch (ExitException exception)
+        {
+            assertEquals(126, exception.getExit());
+        }
+    }
+
+    @Test
+    public void getOptionValue() throws Exception
+    {
         assertEquals("test.bf", noOption.getOptionValue(Flag.PRINT));
         assertEquals("test.bf", oneOption.getOptionValue(Flag.PRINT));
         assertEquals("test.bf", oneMetric.getOptionValue(Flag.PRINT));
@@ -70,7 +125,20 @@ public class InterpreterTest {
     }
 
     @Test
-    public void hasOption() throws Exception {
+    public void getProbes() throws Exception
+    {
+        assertEquals(0, noOption.getProbes().length);
+        assertEquals(0, oneOption.getProbes().length);
+        assertEquals(1, oneMetric.getProbes().length);
+        assertEquals(2, twoMetrics.getProbes().length);
+        assertEquals(1, metricsAndOption.getProbes().length);
+        assertEquals(0, fileOption.getProbes().length);
+        assertEquals(0, twoFilesOptions.getProbes().length);
+    }
+
+    @Test
+    public void hasOption() throws Exception
+    {
         assertTrue(noOption.hasOption(Flag.PRINT));
         assertTrue(oneOption.hasOption(Flag.PRINT));
         assertTrue(oneMetric.hasOption(Flag.PRINT));
@@ -105,7 +173,8 @@ public class InterpreterTest {
     }
 
     @Test
-    public void getOptions() throws Exception {
+    public void getOptions() throws Exception
+    {
         assertEquals(1, noOption.getOptions().length);
         assertTrue(noOption.getOptions()[0] == Flag.PRINT);
 

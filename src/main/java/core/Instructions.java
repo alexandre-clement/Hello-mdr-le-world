@@ -94,7 +94,7 @@ public enum Instructions
         this.metricsType = metricsType;
         this.semantics = semantics;
 
-        this.pattern = Pattern.compile("(\\" + shortcut + "|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + COMMENT + "].*)?$|^" + color.getRGB() + "$)");
+        this.pattern = Pattern.compile("(\\" + shortcut + "|(?:^\\s*)" + instruction + "(?:\\s*)(?:[" + COMMENT + "].*)?$|^" + Math.abs(color.getRGB()) + "$)");
     }
 
     /**
