@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * Le pre-processeur remplacant les macros par leurs valeurs.
- *
+ * <p>
  * <P>Exemple d'une macro
  * <pre>
  * // L'operateur MACRO definissant une macro est insensible a la casse
@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
  * NOM_DE_LA_MACRO valeurs_parametre1 valeurs_parametre2 ... valeurs_parametreN
  * // Les valeurs des parametres doivent etre des valeurs constantes (pas de variables ni d'expressions)
  * </pre>
+ *
  * @author Alexandre Clement
  * @since 24/12/2016.
  */
@@ -75,41 +76,47 @@ public class MacroBuilder
      * Remplace les macros par leurs valeurs.
      *
      * @return le fichier temporaires apres remplacement des macros
-     * @see Macro
      * @throws IOException si le fichier n'est pas trouver
+     * @see Macro
      */
     public File build() throws IOException
     {
         Deque<Macro> macros = new ArrayDeque<>();
         Matcher defMatcher;
-        Matcher seqMatcher;
-        StringBuilder body;
-        String temp;
 
         for (String line = file.readLine(); line != null; line = file.readLine())
         {
             defMatcher = definition.matcher(line);
             if (defMatcher.matches())
-            {
-                body = new StringBuilder();
-                for (seqMatcher = sequence.matcher(file.readLine()); seqMatcher.matches(); seqMatcher = sequence.matcher(file.readLine()))
-                {
-                    body.append(seqMatcher.group()).append('\n');
-                }
-                macros.push(new Macro(defMatcher.group(1), defMatcher.group(2), body + "\n "));
-            }
+                macros.push(createMacro(defMatcher));
             else
-            {
-                temp = line;
-                for (Macro macro : macros)
-                {
-                    temp = macro.match(temp);
-                }
-                writer.write(temp + '\n');
-            }
+                writer.write(applyMacroOn(macros, line) + '\n');
         }
         writer.flush();
         writer.close();
         return tmp;
+    }
+
+    private String applyMacroOn(Deque<Macro> macros, String line)
+    {
+        String temp;
+        temp = line;
+        for (Macro macro : macros)
+        {
+            temp = macro.match(temp);
+        }
+        return temp;
+    }
+
+    private Macro createMacro(Matcher defMatcher) throws IOException
+    {
+        StringBuilder body;
+        Matcher seqMatcher;
+        body = new StringBuilder();
+        for (seqMatcher = sequence.matcher(file.readLine()); seqMatcher.matches(); seqMatcher = sequence.matcher(file.readLine()))
+        {
+            body.append(seqMatcher.group()).append('\n');
+        }
+        return new Macro(defMatcher.group(1), defMatcher.group(2), body + "\n ");
     }
 }

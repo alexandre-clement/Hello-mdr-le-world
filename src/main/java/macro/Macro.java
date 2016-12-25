@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  *
  * // Incremente 2^x cellules memoire a la valeur y
  *
- * MACRO Incr_2^x_cell_to_y x y
+ * MACRO Incr_2_pow_x_cell_to_y x y
  *      APPLY 2^x ON
  *          APPLY y ON
  *              INCR
@@ -192,7 +192,7 @@ public class Macro
     }
 
     /**
-     * Interface definissant une le corps d'une macro.
+     * Interface definissant les sequences composant le corps d'une macro.
      *
      * @see StringSequence
      * @see Sequence
@@ -216,7 +216,7 @@ public class Macro
     {
         private String sequence;
 
-        StringSequence(String sequence)
+        private StringSequence(String sequence)
         {
             this.sequence = sequence;
         }
