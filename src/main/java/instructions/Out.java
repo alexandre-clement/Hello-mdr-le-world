@@ -5,7 +5,7 @@ import core.Instructions;
 import exception.ExitException;
 
 /**
- * Instruction Out
+ * Instruction Out.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -23,7 +23,7 @@ public class Out implements Executable
     }
 
     /**
-     * Affiche sur le flux de sortie la valeur ascii de la cellule mémoire pointée
+     * Affiche sur le flux de sortie la valeur ascii de la cellule memoire pointee.
      *
      * @param executionContext le contexte
      * @throws ExitException si le flux de sortie n'existe pas

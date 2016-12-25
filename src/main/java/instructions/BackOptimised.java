@@ -5,7 +5,7 @@ import core.Instructions;
 import exception.ExitException;
 
 /**
- * Instruction Back Optimisée
+ * Instruction Back Optimisee.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -23,6 +23,8 @@ public class BackOptimised implements Executable, Loop
     }
 
     /**
+     * L'instruction ferme une boucle.
+     *
      * @return false
      */
     @Override
@@ -32,10 +34,10 @@ public class BackOptimised implements Executable, Loop
     }
 
     /**
-     * Saute jusqu'à l'instruction JumpOptimised associé
+     * Saute jusqu'a l'instruction JumpOptimised associe.
      *
      * @param executionContext le contexte
-     * @throws ExitException l'instruction JumpOptimised associé n'existe pas
+     * @throws ExitException l'instruction JumpOptimised associe n'existe pas
      */
     @Override
     public void execute(ExecutionContext executionContext) throws ExitException

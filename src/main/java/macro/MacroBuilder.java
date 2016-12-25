@@ -7,57 +7,58 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Le pré-processeur remplaçant les macros par leurs valeurs
- * <p>
+ * Le pre-processeur remplacant les macros par leurs valeurs.
+ *
+ * <pre>
  * Exemple d'une macro
- * <p>
- * // L'opérateur MACRO définissant une macro est insensible à la casse
- * // Le nom de la macro ainsi que les paramètres sont sensible à la casse
- * // Le corps de la macro doit être indentée
- * <p>
- * MACRO NOM_DE_LA_MACRO paramètre1 paramètre2 ... paramètreN
+ *
+ * // L'operateur MACRO definissant une macro est insensible a la casse
+ * // Le nom de la macro ainsi que les parametres sont sensible a la casse
+ * // Le corps de la macro doit etre indentee
+ *
+ * MACRO NOM_DE_LA_MACRO parametre1 parametre2 ... parametreN
  *      INSTRUCTION_1
  *      INSTRUCTIONS_2
  *      ...
  *      INSTRUCTIONS_N
- * // Retour à la ligne vide obligatoire
- * <p>
- * // Pour appeler une macro
- * NOM_DE_LA_MACRO valeurs_paramètre1 valeurs_paramètre2 ... valeurs_paramètreN
- * // Les valeurs des paramètres doivent être des valeurs constantes (pas de variables et d'expressions)
+ * // Retour a la ligne vide obligatoire
  *
+ * // Pour appeler une macro
+ * NOM_DE_LA_MACRO valeurs_parametre1 valeurs_parametre2 ... valeurs_parametreN
+ * // Les valeurs des parametres doivent etre des valeurs constantes (pas de variables ni d'expressions)
+ * </pre>
  * @author Alexandre Clement
  * @since 24/12/2016.
  */
 public class MacroBuilder
 {
     /**
-     * Une tabulation équivaut à INDENTATION espaces
+     * Une tabulation equivaut a {@value} espaces.
      */
     static final int INDENTATION = 4;
     /**
-     * Le pattern définissant une macro i.e MACRO NOM_DE_LA_MACRO paramètre1 paramètre2 ... paramètreN
+     * Le pattern definissant une macro. i.e MACRO NOM_DE_LA_MACRO parametre1 parametre2 ... parametreN
      */
     private final Pattern definition;
     /**
-     * Pattern définissant le corps d'une macro (doit être indentée et suivis d'un retour à la ligne)
+     * Pattern definissant le corps d'une macro. (doit etre indentee et suivis d'un retour a la ligne)
      */
     private final Pattern sequence;
     /**
-     * Le fichier d'entrée
+     * Le fichier d'entree.
      */
     private RandomAccessFile file;
     /**
-     * Le fichier de sortie
+     * Le fichier de sortie.
      */
     private PrintWriter writer;
     /**
-     * Le fichier temporaire dans lequel on écrit
+     * Le fichier temporaire dans lequel on ecrit.
      */
     private File tmp;
 
     /**
-     * Construit le pré-processeur
+     * Construit le pre-processeur.
      *
      * @param filename le noms du fichier
      * @throws IOException si le fichier n'est pas trouver
@@ -72,10 +73,11 @@ public class MacroBuilder
     }
 
     /**
-     * Remplace les macros par leurs valeurs
+     * Remplace les macros par leurs valeurs.
      *
-     * @return le fichier temporaires après remplacement des macros
+     * @return le fichier temporaires apres remplacement des macros
      * @see Macro
+     * @throws IOException si le fichier n'est pas trouver
      */
     public File build() throws IOException
     {

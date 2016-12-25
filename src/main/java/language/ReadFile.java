@@ -3,7 +3,7 @@ package language;
 import exception.ExitException;
 
 /**
- * Lit le fichier source
+ * Lit le fichier source.
  *
  * @author Alexandre Clement
  * @see BitmapImage
@@ -13,15 +13,17 @@ import exception.ExitException;
 public interface ReadFile
 {
     /**
-     * Renvoie le prochain élément contenue dans le fichier
+     * Renvoie le prochain element contenue dans le fichier.
      *
-     * @return le prochain élément du fichier
-     * @throws ExitException si le fichier n'est pas conforme au spécification
+     * @return le prochain element du fichier
+     * @throws ExitException si le fichier n'est pas conforme au specification ou si le fichier rencontre une erreur a la lecture
      */
     String next() throws ExitException;
 
     /**
-     * ferme le reader
+     * Ferme le reader.
+     *
+     * @throws ExitException si le fichier rencontre une erreur a la lecture
      */
     void close() throws ExitException;
 }

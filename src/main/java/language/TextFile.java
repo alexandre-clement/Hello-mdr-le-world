@@ -3,12 +3,11 @@ package language;
 import exception.ExitException;
 import macro.MacroBuilder;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
- * Lit les fichiers textes brainfuck en appliquant les macros
+ * Lit les fichiers textes brainfuck en appliquant les macros.
  *
  * @author Alexandre Clement
  * @see ReadFile
@@ -19,8 +18,10 @@ public class TextFile implements ReadFile
     private final RandomAccessFile source;
 
     /**
+     * Creer un objet ReadFile permettant de lire et d'executer les macros present dans un fichier texte.
+     *
      * @param filename le nom du fichier
-     * @throws FileNotFoundException si le fichier n'est pas trouver
+     * @throws IOException si le fichier n'est pas trouver
      */
     TextFile(String filename) throws IOException
     {
@@ -29,6 +30,7 @@ public class TextFile implements ReadFile
 
     /**
      * @return la prochaine ligne du fichier
+     * @throws ExitException si le fichier rencontre une erreur a la lecture
      */
     @Override
     public String next() throws ExitException
@@ -44,7 +46,9 @@ public class TextFile implements ReadFile
     }
 
     /**
-     * Ferme le reader
+     * Ferme le reader.
+     *
+     * @throws ExitException si le fichier rencontre une erreur a la fermeture
      */
     @Override
     public void close() throws ExitException

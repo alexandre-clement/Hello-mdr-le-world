@@ -6,7 +6,7 @@ import exception.ExitException;
 import exception.NotWellFormedException;
 
 /**
- * Instruction Back Itératif
+ * Instruction Back Iteratif.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -24,6 +24,8 @@ public class Back implements Executable, Loop
     }
 
     /**
+     * L'instruction ferme une boucle.
+     *
      * @return false
      */
     @Override
@@ -33,10 +35,10 @@ public class Back implements Executable, Loop
     }
 
     /**
-     * Retourne à l'instruction Jump associé
+     * Retourne a l'instruction Jump associe.
      *
      * @param executionContext le contexte
-     * @throws ExitException si l'instruction Jump n'est pas trouvé
+     * @throws ExitException si l'instruction Jump n'est pas trouve
      */
     @Override
     public void execute(ExecutionContext executionContext) throws ExitException

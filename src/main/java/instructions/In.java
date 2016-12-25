@@ -7,7 +7,7 @@ import exception.ExitException;
 import java.io.IOException;
 
 /**
- * Instruction In
+ * Instruction In.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -25,10 +25,10 @@ public class In implements Executable
     }
 
     /**
-     * Remplace la valeur de la cellule mémoire pointée par la valeur du caractère ascii présent dans le flux d'entrée
+     * Remplace la valeur de la cellule memoire pointee par la valeur du caractere ascii present dans le flux d'entree.
      *
      * @param executionContext le contexte
-     * @throws ExitException si le flux d'entrée n'existe pas
+     * @throws ExitException si le flux d'entree n'existe pas
      */
     @Override
     public void execute(ExecutionContext executionContext) throws ExitException

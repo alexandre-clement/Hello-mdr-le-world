@@ -13,6 +13,9 @@ import java.util.function.Predicate;
  *
  * @author Alexandre Clement
  * @see Flag
+ * @see CommandLine
+ * @see Option
+ * @see OptionGroup
  * @since 04 novembre 2016.
  */
 public class Interpreter
@@ -174,7 +177,7 @@ public class Interpreter
     }
 
     /**
-     * Display the help
+     * Display the help.
      */
     private void help()
     {
@@ -186,7 +189,7 @@ public class Interpreter
     }
 
     /**
-     * Display the version
+     * Display the version.
      */
     private void version()
     {
@@ -195,7 +198,7 @@ public class Interpreter
     }
 
     /**
-     * Display the syntaxe of the instructions
+     * Display the syntaxe of the instructions.
      */
     private void syntax()
     {
@@ -208,11 +211,22 @@ public class Interpreter
         System.exit(0);
     }
 
+    /**
+     * Renvoie true si le nombre d'option utilisant la sortie standard vaut 1, false sinon.
+     *
+     * @return true si le nombre d'option utilisant la sortie standard vaut 1, false sinon
+     */
     private boolean countStandardOutputOption()
     {
         return Arrays.stream(Flag.values()).filter(flag -> flag.isStandardOutputOption() && hasOption(flag)).count() == 1;
     }
 
+    /**
+     * Creer l'option avec les propriete du Flag associer.
+     *
+     * @param flag les proprietes de l'option a creer
+     * @return une option avec les propriete voulue
+     */
     private Option optionBuilder(Flag flag)
     {
         return Option.builder(flag.getOpt())

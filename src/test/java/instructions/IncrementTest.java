@@ -16,8 +16,8 @@ import static org.junit.Assert.assertEquals;
 public class IncrementTest {
 
     /**
-     * Increment 255 fois une cellule mémoire
-     * @throws Exception OverflowException lorsque la cellule dépasse la valeur max i.e 255
+     * Increment 255 fois une cellule memoire
+     * @throws Exception OverflowException lorsque la cellule depasse la valeur max i.e 255
      */
     @Test(expected = OverflowException.class)
     public void emptyFailTest() throws Exception {

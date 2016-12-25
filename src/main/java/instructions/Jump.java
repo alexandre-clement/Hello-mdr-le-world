@@ -6,7 +6,7 @@ import exception.ExitException;
 import exception.NotWellFormedException;
 
 /**
- * Instruction Jump
+ * Instruction Jump.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -24,6 +24,8 @@ public class Jump implements Executable, Loop
     }
 
     /**
+     * L'instruction ouvre une boucle.
+     *
      * @return true
      */
     @Override
@@ -33,10 +35,10 @@ public class Jump implements Executable, Loop
     }
 
     /**
-     * Avance jusqu'à l'instruction Back associé
+     * Avance jusqu'a l'instruction Back associe.
      *
      * @param executionContext le contexte
-     * @throws ExitException si l'instruction Back n'est pas trouvé
+     * @throws ExitException si l'instruction Back n'est pas trouve
      */
     @Override
     public void execute(ExecutionContext executionContext) throws ExitException

@@ -1,7 +1,7 @@
 package exception;
 
 /**
- * Exception comportant un exit code
+ * Exception comportant un exit code.
  *
  * @author Alexandre Clement
  * @since 11/11/2016.
@@ -9,24 +9,24 @@ package exception;
 public class ExitException extends Exception
 {
     /**
-     * L'exit code
+     * L'exit code.
      */
     private final int exit;
     /**
-     * La classe source
+     * La classe source.
      */
     private final String sourceClass;
     /**
-     * La méthode source
+     * La methode source.
      */
     private final String sourceMethod;
 
     /**
-     * Construit une exception à partir d'un message
+     * Construit une exception a partir d'un message.
      *
      * @param exit         le code de sortie
-     * @param sourceClass  la classe lançant l'exception
-     * @param sourceMethod la méthode lançant l'exception
+     * @param sourceClass  la classe lancant l'exception
+     * @param sourceMethod la methode lancant l'exception
      * @param message      le message
      */
     public ExitException(int exit, String sourceClass, String sourceMethod, String message)
@@ -38,11 +38,11 @@ public class ExitException extends Exception
     }
 
     /**
-     * Construit une exception à partir d'une exception
+     * Construit une exception a partir d'une exception.
      *
      * @param exit         le code de sortie
-     * @param sourceClass  la classe lançant l'exception
-     * @param sourceMethod la méthode lançant l'exception
+     * @param sourceClass  la classe lancant l'exception
+     * @param sourceMethod la methode lancant l'exception
      * @param throwable    l'exception
      */
     public ExitException(int exit, String sourceClass, String sourceMethod, Throwable throwable)
@@ -51,7 +51,7 @@ public class ExitException extends Exception
     }
 
     /**
-     * Récupère le code de sortie
+     * Recupere le code de sortie.
      *
      * @return l'exit code
      */
@@ -61,7 +61,7 @@ public class ExitException extends Exception
     }
 
     /**
-     * Récupère la classe source
+     * Recupere la classe source.
      *
      * @return la classe source
      */
@@ -71,9 +71,9 @@ public class ExitException extends Exception
     }
 
     /**
-     * Récupère la méthode source
+     * Recupere la methode source.
      *
-     * @return la méthode source
+     * @return la methode source
      */
     public String getSourceMethod()
     {

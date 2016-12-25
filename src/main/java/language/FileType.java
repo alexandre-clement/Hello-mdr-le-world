@@ -2,18 +2,24 @@ package language;
 
 
 /**
- * Les extensions de fichiers supportées
+ * Les extensions de fichiers supportees.
  *
  * @author Alexandre Clement
  * @since 17/11/2016.
  */
 public enum FileType
 {
+    /**
+     * Fichier texte standard .bf
+     */
     BF(".bf"),
+    /**
+     * Fichier image bitmap .bmp
+     */
     BMP(".bmp");
 
     /**
-     * L'extension supportée
+     * L'extension supportee.
      */
     private final String extension;
 
@@ -23,7 +29,9 @@ public enum FileType
     }
 
     /**
-     * @return l'extension
+     * Recupere l'extension associer.
+     *
+     * @return l'extension.
      */
     public String getExtension()
     {

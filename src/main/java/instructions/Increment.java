@@ -6,7 +6,7 @@ import exception.ExitException;
 import exception.OverflowException;
 
 /**
- * Instruction Increment
+ * Instruction Increment.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -24,10 +24,10 @@ public class Increment implements Executable
     }
 
     /**
-     * Incrémente la cellule mémoire pointée de 1
+     * Incremente la cellule memoire pointee de 1.
      *
      * @param executionContext le contexte
-     * @throws ExitException si la cellule est à la valeur maximale
+     * @throws ExitException si la cellule est a la valeur maximale
      */
     @Override
     public void execute(ExecutionContext executionContext) throws ExitException

@@ -1,7 +1,7 @@
 package interpreter;
 
 /**
- * Les options de l'interpreteur
+ * Les options de l'interpreteur.
  *
  * @author Alexandre Clement
  * @since 10/11/2016.
@@ -23,44 +23,58 @@ public enum Flag
     TIME(       "t",    "time",         false,      false,      false,  null,       false,                  true,       "Time the programme execution");
 
     /**
-     * La syntaxe courte
+     * La syntaxe courte.
      */
     private String opt;
     /**
-     * La syntaxe longue
+     * La syntaxe longue.
      */
     private String longOpt;
     /**
-     * L'option est une aide
+     * L'option est une aide.
      */
     private boolean help;
     /**
-     * L'option est requise (sauf si une option d'aide a été sélectionnée)
+     * L'option est requise. (sauf si une option d'aide a ete selectionnee)
      */
     private boolean required;
     /**
-     * L'option possède un argument
+     * L'option possede un argument.
      */
     private boolean hasArg;
     /**
-     * Le nom donnée a l'argument lorsque l'aide est affiché (null si l'option ne possède pas d'argument)
+     * Le nom donnee a l'argument lorsque l'aide est affiche. (null si l'option ne possede pas d'argument)
      */
     private String argName;
     /**
-     * L'option est une option utilisant la sortie standard
-     * (une seule option de ce type peut être exécutée à la fois
-     * si aucune option de ce type n'est exécutée alors le programme est exécuté normalement)
+     * L'option est une option utilisant la sortie standard.
+     *
+     * (une seule option de ce type peut etre executee a la fois
+     * si aucune option de ce type n'est executee alors le programme est execute normalement)
      */
     private boolean isStandardOutputOption;
     /**
-     * L'option est une métrique
+     * L'option est une metrique.
      */
     private boolean isProbe;
     /**
-     * La description
+     * La description.
      */
     private String description;
 
+    /**
+     * Configure les proprietes d'une option
+     *
+     * @param opt                       la syntaxe courte
+     * @param longOpt                   la syntaxe longue
+     * @param help                      l'option est une aide
+     * @param required                  l'option est requise
+     * @param hasArg                    l'option a un argument
+     * @param argName                   le nom de l'argument (null si il n'y en a pas)
+     * @param isStandardOutputOption    l'option utilise la sortie standard
+     * @param isProbe                   l'option est une metrique
+     * @param description               la description de l'option
+     */
     Flag(String opt, String longOpt, boolean help, boolean required, boolean hasArg, String argName, boolean isStandardOutputOption, boolean isProbe, String description)
     {
         this.opt = opt;
@@ -75,7 +89,7 @@ public enum Flag
     }
 
     /**
-     * @return la syntaxe courte
+     * @return la syntaxe courte.
      */
     public String getOpt()
     {
@@ -83,7 +97,7 @@ public enum Flag
     }
 
     /**
-     * @return la syntaxe longue
+     * @return la syntaxe longue.
      */
     public String getLongOpt()
     {
@@ -91,7 +105,7 @@ public enum Flag
     }
 
     /**
-     * @return true si l'option est une aide, false sinon
+     * @return true si l'option est une aide, false sinon.
      */
     public boolean isHelp()
     {
@@ -99,7 +113,7 @@ public enum Flag
     }
 
     /**
-     * @return true si l'option est requise, false sinon
+     * @return true si l'option est requise, false sinon.
      */
     public boolean isRequired()
     {
@@ -107,7 +121,7 @@ public enum Flag
     }
 
     /**
-     * @return true si l'option possède un argument, false sinon
+     * @return true si l'option possede un argument, false sinon.
      */
     public boolean hasArg()
     {
@@ -115,7 +129,7 @@ public enum Flag
     }
 
     /**
-     * @return le nom de l'argument dans l'aide
+     * @return le nom de l'argument dans l'aide.
      */
     public String getArgName()
     {
@@ -123,7 +137,7 @@ public enum Flag
     }
 
     /**
-     * @return true si l'option est une option utilisant la sortie standard, false sinon
+     * @return true si l'option est une option utilisant la sortie standard, false sinon.
      */
     public boolean isStandardOutputOption()
     {
@@ -131,7 +145,7 @@ public enum Flag
     }
 
     /**
-     * @return true si l'option est une métrique, false sinon
+     * @return true si l'option est une metrique, false sinon.
      */
     public boolean isProbe()
     {
@@ -139,7 +153,7 @@ public enum Flag
     }
 
     /**
-     * @return la description de l'option
+     * @return la description de l'option.
      */
     public String getDescription()
     {

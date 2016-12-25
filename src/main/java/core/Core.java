@@ -18,7 +18,7 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- * Exécute les options sur le programme
+ * Execute les options sur le programme.
  *
  * @author Alexandre Clement
  * @author TANG Yi
@@ -32,12 +32,12 @@ import java.util.List;
 public class Core
 {
     /**
-     * Le nom du fichier
+     * Le nom du fichier.
      */
     private final String filename;
 
     /**
-     * @param filename Le nom du fichier a exécuté
+     * @param filename Le nom du fichier a execute
      */
     public Core(String filename)
     {
@@ -45,7 +45,7 @@ public class Core
     }
 
     /**
-     * @return Les instructions exécutables disponibles
+     * @return Les instructions executables disponibles
      */
     public static Executable[] getExecutables()
     {
@@ -53,11 +53,12 @@ public class Core
     }
 
     /**
-     * Exécute les options sur le context
+     * Execute les options sur le context.
      *
-     * @param flags            les options a exécuté
-     * @param probes           les métriques
-     * @param executionContext le contexte d'exécution
+     * @param flags            les options a execute
+     * @param probes           les metriques
+     * @param executionContext le contexte d'execution
+     * @throws ExitException si l'execution du fichier engendre une erreur
      */
     public void run(Flag[] flags, Flag[] probes, ExecutionContext executionContext) throws ExitException
     {
@@ -85,11 +86,12 @@ public class Core
     }
 
     /**
-     * Créer une probe pour récupérer les métriques ou générer la trace lors de l'exécution du programme
+     * Creer une probe pour recuperer les metriques ou generer la trace lors de l'execution du programme.
      *
-     * @param probes        les options présentes
+     * @param probes        les options presentes
      * @param programLength la taille du programme
      * @return une nouvelle probe initialiser
+     * @throws ExitException si le fichier log ne peut pas etre creer
      */
     private Probe createProbe(Flag[] probes, int programLength) throws ExitException
     {
@@ -115,7 +117,11 @@ public class Core
     }
 
     /**
-     * L'option p: exécute le programme avec les métriques et affiche l'état de la mémoire
+     * L'option p: execute le programme avec les metriques et affiche l'etat de la memoire.
+     *
+     * @param executionContext le contexte d'execution sur lequel le programme va s'executer
+     * @param probe            les metriques a utiliser lors de l'execution du programme
+     * @throws ExitException si l'execution du programme engendre une erreur
      */
     private void print(ExecutionContext executionContext, Probe probe) throws ExitException
     {
@@ -130,7 +136,9 @@ public class Core
     }
 
     /**
-     * L'option rewrite: affiche le programme en syntaxe courte
+     * L'option rewrite: affiche le programme en syntaxe courte.
+     *
+     * @param executionContext le contexte contenant le programme a retranscrire en syntaxe courte
      */
     private void rewrite(ExecutionContext executionContext)
     {
@@ -140,7 +148,10 @@ public class Core
     }
 
     /**
-     * L'option translate: retranscrit le programme en image bitmap
+     * L'option translate: retranscrit le programme en image bitmap.
+     *
+     * @param executionContext le contexte contenant le programme a retranscrire en image
+     * @throws ExitException si l'ecriture de l'image engendre une erreur
      */
     private void translate(ExecutionContext executionContext) throws ExitException
     {
@@ -170,10 +181,12 @@ public class Core
     }
 
     /**
-     * L'option check: vérifie si le programme est bien formé
-     * i.e toutes les boucles ouvertes sont fermées et vice-versa
+     * L'option check: verifie si le programme est bien forme.
+     * <p>
+     * i.e toutes les boucles ouvertes sont fermees et vice-versa
      *
-     * @throws NotWellFormedException si le programme n'est pas bien formé
+     * @param executionContext le contexte qui doit etre verifier
+     * @throws NotWellFormedException si le programme n'est pas bien forme
      */
     private void check(ExecutionContext executionContext) throws NotWellFormedException
     {

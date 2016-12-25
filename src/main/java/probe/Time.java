@@ -4,7 +4,7 @@ import core.ExecutionContext;
 import main.Main;
 
 /**
- * Time the program execution
+ * Time the program execution.
  *
  * @author Alexandre Clement
  * @see Meter
@@ -15,7 +15,7 @@ public class Time implements Meter
     private long start;
 
     /**
-     * Initialize timer
+     * Initialize timer.
      */
     @Override
     public void initialize()
@@ -24,7 +24,7 @@ public class Time implements Meter
     }
 
     /**
-     * Print the execution time
+     * Print the execution time.
      */
     @Override
     public void getResult()
@@ -33,7 +33,7 @@ public class Time implements Meter
     }
 
     /**
-     * Do nothing
+     * Do nothing.
      *
      * @param executionContext the current execution context of the program
      */

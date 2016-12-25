@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * La sonde contenant toutes les métriques
+ * La sonde contenant toutes les metriques.
  *
  * @author Alexandre Clement
  * @see Meter
@@ -15,14 +15,14 @@ import java.util.List;
 public class Probe
 {
     /**
-     * Liste des métriques
+     * Liste des metriques.
      */
     private List<Meter> probes = new ArrayList<>();
 
     /**
-     * Ajoute une métrique à la sonde
+     * Ajoute une metrique a la sonde.
      *
-     * @param meter la métrique à ajoutée
+     * @param meter la metrique a ajoutee
      */
     public void addMeter(Meter meter)
     {
@@ -30,7 +30,7 @@ public class Probe
     }
 
     /**
-     * Initialise toutes les métriques
+     * Initialise toutes les metriques.
      */
     public void initialize()
     {
@@ -38,9 +38,9 @@ public class Probe
     }
 
     /**
-     * Récupère une image du contexte et l'injecte dans les métriques
+     * Recupere une image du contexte et l'injecte dans les metriques.
      *
-     * @param executionContext le contexte d'exécution
+     * @param executionContext le contexte d'execution
      */
     public void acknowledge(ExecutionContext executionContext)
     {
@@ -48,7 +48,7 @@ public class Probe
     }
 
     /**
-     * Récupère le résultat de toutes les métriques
+     * Recupere le resultat de toutes les metriques.
      */
     public void getResult()
     {

@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import java.util.Map;
 
 /**
- * Le contexte d'exécution contenant le programme et le tuple mémoire, pointeur mémoire, pointeur d'instruction
+ * Le contexte d'execution contenant le programme et le tuple memoire, pointeur memoire, pointeur d'instruction.
  *
  * @author Alexandre Clement
  * @since 07/12/2016.
@@ -17,53 +17,53 @@ import java.util.Map;
 public class ExecutionContext
 {
     /**
-     * La valeur max d'une cellule mémoire = -1
+     * La valeur max d'une cellule memoire = {@value}.
      */
     public static final int MAX = Byte.MAX_VALUE + Byte.MIN_VALUE;
     /**
-     * La valeur minimum d'une cellule mémoire = 0
+     * La valeur minimum d'une cellule memoire = {@value}.
      */
     public static final int MIN = 0;
     /**
-     * La capacité par défaut de la mémoire = 30000
+     * La capacite par defaut de la memoire = {@value}.
      */
     static final int CAPACITY = 30000;
     /**
-     * Le programme contenant le tableau d'exécutable
+     * Le programme contenant le tableau d'executable.
      */
     private final Executable[] program;
     /**
-     * La table utilisée par les boucles
+     * La table utilisee par les boucles.
      */
     private final Map<Integer, Integer> jumpTable;
     /**
-     * La mémoire
+     * La memoire.
      */
     private final byte[] memory;
     /**
-     * Le flux d'entrée
+     * Le flux d'entree.
      */
     private final InputStreamReader in;
     /**
-     * Le flux de sortie
+     * Le flux de sortie.
      */
     private final PrintStream out;
     /**
-     * Le pointeur d'instruction
+     * Le pointeur d'instruction.
      */
     private int instruction;
     /**
-     * Le pointeur mémoire
+     * Le pointeur memoire.
      */
     private int pointer;
 
 
     /**
-     * Initialise le tuple d'exécution (pointeur d'instruction, pointeur mémoire, mémoire)
+     * Initialise le tuple d'execution (pointeur d'instruction, pointeur memoire, memoire).
      *
-     * @param instruction la valeur par défaut du pointeur d'instruction
-     * @param pointer     la valeur par défaut du pointeur
-     * @param memory      initialisation de la mémoire
+     * @param instruction la valeur par defaut du pointeur d'instruction
+     * @param pointer     la valeur par defaut du pointeur
+     * @param memory      initialisation de la memoire
      */
     public ExecutionContext(int instruction, int pointer, byte[] memory)
     {
@@ -71,12 +71,13 @@ public class ExecutionContext
     }
 
     /**
-     * Initialise le contexte d'exécution avec les valeurs par défaut pour le pointeur d'instruction, le pointeur mémoire et la mémoire
+     * Initialise le contexte d'execution avec les valeurs par defaut pour le pointeur d'instruction,
+     * le pointeur memoire et la memoire.
      *
-     * @param program   le programme a exécuté
+     * @param program   le programme a execute
      * @param jumpTable la table de liens entre les instructions OPTIMISED_JUMP et OPTIMISED_BACK
-     * @param in        le flux de données entrant
-     * @param out       le flux de données sortant
+     * @param in        le flux de donnees entrant
+     * @param out       le flux de donnees sortant
      */
     public ExecutionContext(Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
     {
@@ -84,15 +85,15 @@ public class ExecutionContext
     }
 
     /**
-     * Initialise le contexte d'exécution
+     * Initialise le contexte d'execution.
      *
-     * @param instruction la valeur par défaut de pointeur d'instruction
-     * @param pointer     la valeur par défaut du pointeur
-     * @param memory      initialisation de la mémoire
-     * @param program     le programme a exécuté
+     * @param instruction la valeur par defaut de pointeur d'instruction
+     * @param pointer     la valeur par defaut du pointeur
+     * @param memory      initialisation de la memoire
+     * @param program     le programme a execute
      * @param jumpTable   la table de liens entre les instructions OPTIMISED_JUMP et OPTIMISED_BACK
-     * @param in          le flux de données entrant
-     * @param out         le flux de données sortant
+     * @param in          le flux de donnees entrant
+     * @param out         le flux de donnees sortant
      */
     public ExecutionContext(int instruction, int pointer, byte[] memory, Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
     {
@@ -106,7 +107,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return la valeur de la cellule mémoire pointé
+     * @return la valeur de la cellule memoire pointe
      */
     public int printValue()
     {
@@ -114,7 +115,7 @@ public class ExecutionContext
     }
 
     /**
-     * @param pointer le pointeur vers une des cellules mémoire
+     * @param pointer le pointeur vers une des cellules memoire
      * @return la valeur ASCII de la cellule i.e entre 0 et 255
      */
     public int printValue(int pointer)
@@ -123,7 +124,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return l'image mémoire
+     * @return l'image memoire
      */
     public String getMemorySnapshot()
     {
@@ -139,9 +140,9 @@ public class ExecutionContext
     }
 
     /**
-     * Exécute l'intruction pointée
+     * Execute l'intruction pointee.
      *
-     * @throws ExitException si l'exécution engendre une erreur
+     * @throws ExitException si l'execution engendre une erreur
      */
     public void execute() throws ExitException
     {
@@ -157,7 +158,7 @@ public class ExecutionContext
     }
 
     /**
-     * Incrémente de 1 le pointeur d'instruction i.e pointe l'instruction suivante
+     * Incremente de 1 le pointeur d'instruction i.e pointe l'instruction suivante.
      */
     public void nextInstruction()
     {
@@ -165,7 +166,7 @@ public class ExecutionContext
     }
 
     /**
-     * Décrémente de 1 le pointeur d'instruction i.e pointe l'instruction précédente
+     * Decremente de 1 le pointeur d'instruction i.e pointe l'instruction precedente.
      */
     public void previousInstruction()
     {
@@ -173,7 +174,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return le pointeur mémoire
+     * @return le pointeur memoire
      */
     public int getPointer()
     {
@@ -181,7 +182,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return true si on peut incrémenter le pointeur mémoire, false sinon
+     * @return true si on peut incrementer le pointeur memoire, false sinon
      */
     public boolean hasNextCell()
     {
@@ -189,7 +190,7 @@ public class ExecutionContext
     }
 
     /**
-     * Incrémente de 1 le pointeur mémoire i.e pointe la cellule suivante
+     * Incremente de 1 le pointeur memoire i.e pointe la cellule suivante.
      */
     public void nextCell()
     {
@@ -197,7 +198,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return true si on peut décrémenter le pointeur mémoire, false sinon
+     * @return true si on peut decrementer le pointeur memoire, false sinon
      */
     public boolean hasPreviousCell()
     {
@@ -205,7 +206,7 @@ public class ExecutionContext
     }
 
     /**
-     * Décrémente de 1 le pointeur mémoire i.e pointe la cellule précédente
+     * Decremente de 1 le pointeur memoire i.e pointe la cellule precedente.
      */
     public void previousCell()
     {
@@ -213,7 +214,7 @@ public class ExecutionContext
     }
 
     /**
-     * Incrémente la cellule mémoire pointée de 1
+     * Incremente la cellule memoire pointee de 1.
      */
     public void increment()
     {
@@ -221,7 +222,7 @@ public class ExecutionContext
     }
 
     /**
-     * Décrémente la cellule mémoire pointée de 1
+     * Decremente la cellule memoire pointee de 1.
      */
     public void decrement()
     {
@@ -229,7 +230,7 @@ public class ExecutionContext
     }
 
     /**
-     * @param value la nouvelle valeur de la cellule mémoire pointée (entre Byte.Min_Value et Byte.Max_Value)
+     * @param value la nouvelle valeur de la cellule memoire pointee (entre Byte.Min_Value et Byte.Max_Value)
      */
     public void in(byte value)
     {
@@ -237,7 +238,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return la valeur ascii présente dans le flux d'entrée
+     * @return la valeur ascii presente dans le flux d'entree
      * @throws IOException si le flux n'existe pas
      */
     public byte readNextValue() throws IOException
@@ -246,7 +247,7 @@ public class ExecutionContext
     }
 
     /**
-     * @param value affiche la valeur de la cellule mémoire pointée en caractère ascii
+     * @param value affiche la valeur de la cellule memoire pointee en caractere ascii
      */
     public void out(char value)
     {
@@ -255,7 +256,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return la valeur de la cellule pointée
+     * @return la valeur de la cellule pointee
      */
     public byte getValue()
     {
@@ -263,7 +264,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return l'instruction pointée
+     * @return l'instruction pointee
      */
     public Executable getCurrentExecutable()
     {
@@ -271,7 +272,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return les propriétés de l'instruction pointée
+     * @return les proprietes de l'instruction pointee
      */
     public Instructions getCurrentInstruction()
     {
@@ -287,7 +288,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return true si il reste des instructions à exécutée, false sinon
+     * @return true si il reste des instructions a executee, false sinon
      */
     public boolean hasNextInstruction()
     {
@@ -295,7 +296,7 @@ public class ExecutionContext
     }
 
     /**
-     * @return true si des instructions ont déjà été exécutée, false sinon
+     * @return true si des instructions ont deja ete executee, false sinon
      */
     public boolean hasPreviousInstruction()
     {
@@ -303,9 +304,9 @@ public class ExecutionContext
     }
 
     /**
-     * Déplace le pointeur d'instruction jusqu'à la position ciblée
+     * Deplace le pointeur d'instruction jusqu'a la position ciblee.
      *
-     * @param instruction la position ciblée
+     * @param instruction la position ciblee
      */
     public void bound(int instruction)
     {
@@ -313,9 +314,9 @@ public class ExecutionContext
     }
 
     /**
-     * Récupère la position de l'instruction lié à celle actuellement pointée
+     * Recupere la position de l'instruction lie a celle actuellement pointee.
      *
-     * @return la position de l'instruction lié
+     * @return la position de l'instruction lie
      */
     public int getJumpLink()
     {
@@ -323,7 +324,9 @@ public class ExecutionContext
     }
 
     /**
-     * Ferme les flux d'entrée et de sortie
+     * Ferme les flux d'entree et de sortie.
+     *
+     * @throws ExitException si le flux d'entree ne peut pas etre fermer
      */
     void close() throws ExitException
     {

@@ -6,7 +6,7 @@ import exception.ExitException;
 import exception.OverflowException;
 
 /**
- * Instruction Decrement
+ * Instruction Decrement.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -24,10 +24,10 @@ public class Decrement implements Executable
     }
 
     /**
-     * Décrémente la cellule mémoire pointée de 1
+     * Decremente la cellule memoire pointee de 1.
      *
      * @param executionContext le contexte
-     * @throws ExitException si la cellule mémoire est à la valeur minimale
+     * @throws ExitException si la cellule memoire est a la valeur minimale
      */
     @Override
     public void execute(ExecutionContext executionContext) throws ExitException

@@ -1,7 +1,6 @@
 package core;
 
 import exception.ExitException;
-import exception.NotWellFormedException;
 import instructions.Executable;
 import instructions.Loop;
 import language.ReadFile;
@@ -13,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Construit le contexte d'exécution
+ * Construit le contexte d'execution.
  *
  * @author Alexandre Clement
  * @see ExecutionContext
@@ -22,47 +21,48 @@ import java.util.regex.Pattern;
 public class ExecutionContextBuilder
 {
     /**
-     * La table utilisée par les boucles
+     * La table utilisee par les boucles.
      */
     private Map<Integer, Integer> jumpTable;
     /**
-     * Le programme contenant le tableau d'exécutable
+     * Le programme contenant le tableau d'executable.
      */
     private Deque<Executable> program;
     /**
-     * Le tableau des instructions disponibles
+     * Le tableau des instructions disponibles.
      */
     private Executable[] executables;
 
     /**
-     * Permet de construire la jump table
+     * Permet de construire la jump table.
+     *
      * une liste de stack (une stack par type de boucle)
-     * permet de joindre chaque instruction ouvrant une boucle à l'instruction qui la ferme
+     * permet de joindre chaque instruction ouvrant une boucle a l'instruction qui la ferme
      */
     private final List<Deque<Integer>> loops;
     /**
-     * le paterne contenant toutes les instructions ainsi que les caractères de commentaire
+     * le paterne contenant toutes les instructions ainsi que les caracteres de commentaire.
      */
     private Pattern pattern;
     /**
-     * le matcher résultant de l'application du paterne sur une ligne du fichier
+     * le matcher resultant de l'application du paterne sur une ligne du fichier.
      */
     private Matcher matcher;
     /**
-     * Le flux d'entrée
+     * Le flux d'entree.
      */
     private InputStreamReader in;
     /**
-     * Le flux de sortie
+     * Le flux de sortie.
      */
     private PrintStream out;
     /**
-     * la longueur du programme
+     * la longueur du programme.
      */
     private int length;
 
     /**
-     * Initialise le builder
+     * Initialise le builder.
      */
     public ExecutionContextBuilder()
     {
@@ -74,9 +74,9 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Ajoute un flux d'entrée
+     * Ajoute un flux d'entree.
      *
-     * @param in le flux d'entrée
+     * @param in le flux d'entree
      * @return this
      */
     public ExecutionContextBuilder setIn(InputStreamReader in)
@@ -86,7 +86,7 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Ajoute un flux de sortie
+     * Ajoute un flux de sortie.
      *
      * @param out le flux de sortie
      * @return this
@@ -98,9 +98,9 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Ajoute le tableau d'exécutable disponible
+     * Ajoute le tableau d'executable disponible.
      *
-     * @param executables le tableau d'exécutable
+     * @param executables le tableau d'executable
      * @return this
      */
     public ExecutionContextBuilder setExecutables(Executable[] executables)
@@ -110,9 +110,9 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Construit le contexte d'exécution
+     * Construit le contexte d'execution.
      *
-     * @return le contexte d'exécution
+     * @return le contexte d'execution
      */
     public ExecutionContext build()
     {
@@ -120,10 +120,10 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Construit un contexte d'exécution à partir d'un fichier
+     * Construit un contexte d'execution a partir d'un fichier.
      *
      * @param file le fichier source
-     * @return le contexte d'exécution
+     * @return le contexte d'execution
      * @throws ExitException si le fichier n'exite pas
      */
     public ExecutionContext buildFromFile(ReadFile file) throws ExitException
@@ -142,7 +142,12 @@ public class ExecutionContextBuilder
         return build();
     }
 
-    private void matchLine(String line) throws NotWellFormedException
+    /**
+     * Parcours une ligne en cherchant les instructions, s'arrete si on rencontre un commentaire i.e {@value Instructions#COMMENT}.
+     *
+     * @param line la ligne a parcourir
+     */
+    private void matchLine(String line)
     {
         matcher = pattern.matcher(line);
         while (matcher.find())
@@ -153,17 +158,20 @@ public class ExecutionContextBuilder
         }
     }
 
-    private void matchExecutable() throws NotWellFormedException
+    /**
+     * Ajoute l'executable contenue dans la ligne au programme.
+     */
+    private void matchExecutable()
     {
-        // sinon on regarde quel instructions a été trouvé dans la ligne
+        // sinon on regarde quel instructions a ete trouve dans la ligne
         for (int i = 0; i < executables.length; i++)
             if (matcher.group(i + 2) != null)
-                // l'instruction i a été trouvé, on l'ajoute a notre liste programme
+                // l'instruction i a ete trouve, on l'ajoute a notre liste programme
                 addExecutable(executables[i]);
     }
 
     /**
-     * @return true si le caractère est un commentaire, false sinon
+     * @return true si le caractere est un commentaire, false sinon.
      */
     private boolean matchComment()
     {
@@ -171,8 +179,9 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Compile tous les paternes ensemble et rajouter les commentaires i.e #
+     * Compile tous les paternes ensemble et rajouter les commentaires i.e {@value Instructions#COMMENT}.
      *
+     * @param executables le tableau d'executable disponible
      * @return le pattern somme de tous les paternes d'instructions
      */
     private Pattern compile(Executable[] executables)
@@ -187,9 +196,9 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Ajoute l'instrucion au programme
+     * Ajoute l'instrucion au programme.
      *
-     * @param executable l'instruction a ajouté au programme
+     * @param executable l'instruction a ajoute au programme
      */
     private void addExecutable(Executable executable)
     {
@@ -202,9 +211,9 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Ajoute la position de l'exécutable à la jump table
+     * Ajoute la position de l'executable a la jump table.
      *
-     * @param executable l'exécutable à ajoutée à la jump table
+     * @param executable l'executable a ajoutee a la jump table
      */
     private void addLoop(Executable executable)
     {
@@ -230,7 +239,7 @@ public class ExecutionContextBuilder
     }
 
     /**
-     * Complète la jump table s'il reste des boucles ouvertes non fermées / des boucles fermées non ouverte
+     * Complete la jump table s'il reste des boucles ouvertes non fermees / des boucles fermees non ouverte.
      */
     private void completeTable()
     {

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Create the trace of the file in a p.log file
+ * Create the trace of the file in a p.log file.
  *
  * @author Alexandre Clement
  * @see Meter
@@ -20,6 +20,12 @@ public class Trace implements Meter
     private long step;
     private PrintWriter writer;
 
+    /**
+     * Creer la trace de l'execution.
+     *
+     * @param filename le nom du fichier
+     * @throws ExitException si le log rencontre une erreur
+     */
     public Trace(String filename) throws ExitException
     {
         step = 0;
@@ -33,6 +39,9 @@ public class Trace implements Meter
         }
     }
 
+    /**
+     * Initialise le fichier en inscrivant le noms des colonnes.
+     */
     @Override
     public void initialize()
     {
@@ -40,7 +49,7 @@ public class Trace implements Meter
     }
 
     /**
-     * Close the logfile
+     * Close the logfile.
      */
     @Override
     public void getResult()
@@ -49,7 +58,7 @@ public class Trace implements Meter
     }
 
     /**
-     * Add the context in log
+     * Add the context in log.
      *
      * @param executionContext the current execution context of the program
      */

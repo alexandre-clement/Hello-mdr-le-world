@@ -6,7 +6,7 @@ import exception.ExitException;
 import exception.OutOfMemoryException;
 
 /**
- * Instruction Left
+ * Instruction Left.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -24,10 +24,10 @@ public class Left implements Executable
     }
 
     /**
-     * Décrémente le pointeur mémoire de 1
+     * Decremente le pointeur memoire de 1.
      *
      * @param executionContext le contexte
-     * @throws ExitException si le pointeur mémoire dépasse la capacité minimale de la mémoire
+     * @throws ExitException si le pointeur memoire depasse la capacite minimale de la memoire
      */
     @Override
     public void execute(ExecutionContext executionContext) throws ExitException

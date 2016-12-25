@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
- * Lit et écrit des images bitmap
+ * Lit et ecrit des images bitmap.
  *
  * @author Alexandre Clement
  * @see ReadFile
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class BitmapImage implements ReadFile
 {
     /**
-     * Côtés d'une instruction dans une image
+     * Cotes d'une instruction dans une image = {@value}.
      */
     public static final int SIZE = 3;
     private final ImageInputStream stream;
@@ -37,8 +37,10 @@ public class BitmapImage implements ReadFile
     private final int width;
 
     /**
+     * Construit un objet ReadFile permettant de lire les images.
+     *
      * @param filename le nom de l'image
-     * @throws IOException si l'image n'est pas trouvée
+     * @throws IOException si l'image n'est pas trouvee
      */
     BitmapImage(String filename) throws IOException
     {
@@ -57,11 +59,12 @@ public class BitmapImage implements ReadFile
     }
 
     /**
-     * Créer une image à partie d'un tableau des valeurs
+     * Creer une image a partie d'un tableau des valeurs.
      *
      * @param filename   le nom de l'image
-     * @param colorArray les valeurs à insérer dans l'image
+     * @param colorArray les valeurs a inserer dans l'image
      * @param size       la taille de l'image
+     * @throws IOException si l'image ne peut pas etre creer
      */
     public static void createImage(String filename, int[] colorArray, int size) throws IOException
     {
@@ -71,8 +74,8 @@ public class BitmapImage implements ReadFile
     }
 
     /**
-     * @return la valeur du prochain carré de côté SIZE
-     * @throws ExitException si le carré n'est pas conforme i.e les SIZExSIZE pixels ne sont pas de la même couleur
+     * @return la valeur du prochain carre de cote SIZE
+     * @throws ExitException si le carre n'est pas conforme i.e les SIZExSIZE pixels ne sont pas de la meme couleur
      */
     @Override
     public String next() throws ExitException
@@ -103,7 +106,9 @@ public class BitmapImage implements ReadFile
     }
 
     /**
-     * Ferme l'image
+     * Ferme l'image.
+     *
+     * @throws ExitException si l'image ne peut pas etre fermer
      */
     @Override
     public void close() throws ExitException

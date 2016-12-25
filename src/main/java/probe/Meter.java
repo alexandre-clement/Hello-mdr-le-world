@@ -3,7 +3,7 @@ package probe;
 import core.ExecutionContext;
 
 /**
- * Interface définissant une métrique
+ * Interface definissant une metrique.
  *
  * @author Alexandre Clement
  * @see Metrics
@@ -14,17 +14,17 @@ import core.ExecutionContext;
 public interface Meter
 {
     /**
-     * Initialise la métrique
+     * Initialise la metrique.
      */
     void initialize();
 
     /**
-     * Récupère le résultat de la métrique après exécution du programme
+     * Recupere le resultat de la metrique apres execution du programme.
      */
     void getResult();
 
     /**
-     * Récupère une image du contexte lors de l'exécution du programme
+     * Recupere une image du contexte lors de l'execution du programme.
      *
      * @param executionContext the current execution context of the program
      */

@@ -4,14 +4,14 @@ import java.awt.*;
 import java.util.regex.Pattern;
 
 /**
- * Définit les propriétés de chaque instructions
+ * Definit les proprietes de chaque instructions.
  *
  * @author Alexandre Clement
  * @since 24/11/2016.
  */
 public enum Instructions
 {
-    // Instructions     instructions        shortcut    color                       loop type           metrics metricsType                instructions semantics
+    // Instructions     instructions        shortcut    color                       loop type           metrics metricsType         instructions semantics
     INCREMENT(          "INCR",             '+',        new Color(255, 255, 255),   null,               MetricsType.DATA_WRITE,     "Increment the pointed cell by one"),
     DECREMENT(          "DECR",             '-',        new Color(75, 0, 130),      null,               MetricsType.DATA_WRITE,     "Decrement the pointed cell by one"),
     LEFT(               "LEFT",             '<',        new Color(148, 0, 211),     null,               MetricsType.DATA_MOVE,      "Move the memory pointer to the left"),
@@ -23,6 +23,9 @@ public enum Instructions
     ITERATIVE_JUMP(     "ITERATIVE_JUMP",   '(',        new Color(255, 127, 127),   LoopType.ITERATIVE, MetricsType.DATA_READ,      "Jump to the instruction right after the associated ITERATIVE_BACK if the pointed memory is equals to zero"),
     ITERATIVE_BACK(     "ITERATIVE_BACK",   ')',        new Color(255, 0, 127),     LoopType.ITERATIVE, MetricsType.DATA_READ,      "Go back to the instruction right after the associated ITERATIVE_JUMP if the pointer memory cell is not equals to zero");
 
+    /**
+     * Enumeration definissant les types de metriques.
+     */
     public enum MetricsType
     {
         DATA_MOVE,
@@ -30,6 +33,9 @@ public enum Instructions
         DATA_READ
     }
 
+    /**
+     * Enumeration definissant les type de boucles.
+     */
     public enum LoopType
     {
         ITERATIVE,
@@ -37,44 +43,46 @@ public enum Instructions
     }
 
     /**
-     * Les caractère commentaires
+     * Les caracteres commentaires = {@value}.
      */
     public static final String COMMENT = "#";
     /**
-     * La syntaxe longue
+     * La syntaxe longue.
      */
     private final String instruction;
     /**
-     * La syntaxe courte
+     * La syntaxe courte.
      */
     private final Character shortcut;
     /**
-     * La syntaxe couleur
+     * La syntaxe couleur.
      */
     private final Color color;
     /**
-     * Le type de boucle auquel appartient l'instruction
+     * Le type de boucle auquel appartient l'instruction.
      */
     private final LoopType loopType;
     /**
-     * Le type de métriques auquel appartient l'instruction
+     * Le type de metriques auquel appartient l'instruction.
      */
     private final MetricsType metricsType;
     /**
-     * La description
+     * La description.
      */
     private final String semantics;
     /**
-     * Le pattern pour identifié l'instruction dans un fichier
+     * Le pattern pour identifie l'instruction dans un fichier.
      */
     private final Pattern pattern;
 
     /**
+     * Definie les proprietes d'une instruction.
+     *
      * @param instruction   la syntaxe longue
      * @param shortcut      la syntaxe courte
      * @param color         la syntaxe couleur
      * @param loopType      le type de boucle
-     * @param metricsType   le type de métrique
+     * @param metricsType   le type de metrique
      * @param semantics     la description
      */
     Instructions(String instruction, Character shortcut, Color color, LoopType loopType, MetricsType metricsType, String semantics)
@@ -130,7 +138,7 @@ public enum Instructions
     }
 
     /**
-     * @return le type de métriques
+     * @return le type de metriques
      */
     public MetricsType getMetricsType()
     {

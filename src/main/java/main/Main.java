@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Brainfuck Interpreter
+ * Brainfuck Interpreter.
  *
  * @author Alexandre Clement
  * @since 09/11/2016.
@@ -21,15 +21,15 @@ import java.util.logging.Logger;
 public class Main
 {
     /**
-     * La version
+     * Version {@value}.
      */
     public static final double VERSION = 1.0;
     /**
-     * Le logger d'exception
+     * Le logger d'exception.
      */
     private static final Logger LOGGER = Logger.getLogger("Brainfuck - " + Calendar.getInstance().getTime().toString());
     /**
-     * La sortie standard
+     * La sortie standard.
      */
     public static final PrintStream DEFAULT_OUT = System.out;
 
@@ -38,7 +38,7 @@ public class Main
     }
 
     /**
-     * Interprète et exécute la ligne de commande en entrée
+     * Interprete et execute la ligne de commande en entree.
      *
      * @param args la ligne de commande
      */
@@ -69,7 +69,7 @@ public class Main
     }
 
     /**
-     * print out the parameter
+     * print out the parameter.
      *
      * @param object to be print out
      */

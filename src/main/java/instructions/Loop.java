@@ -2,7 +2,7 @@ package instructions;
 
 
 /**
- * Interface pour les boucles
+ * Interface pour les boucles.
  *
  * @author Alexandre Clement
  * @see Executable
@@ -12,7 +12,7 @@ package instructions;
 public interface Loop
 {
     /**
-     * @return true si l'instruction ouvre une boucle, false sinon
+     * @return true si l'instruction ouvre une boucle, false sinon.
      */
     boolean open();
 }

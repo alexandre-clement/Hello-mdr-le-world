@@ -4,7 +4,7 @@ import core.ExecutionContext;
 import main.Main;
 
 /**
- * Calculate the metrics of the program and print them out using the method getResult
+ * Calculate the metrics of the program and print them out using the method getResult.
  *
  * @author Alexandre Clement
  * @see Meter
@@ -20,7 +20,7 @@ public class Metrics implements Meter
     private long length;
 
     /**
-     * @param length la taille du programme
+     * @param length la taille du programme.
      */
     public Metrics(long length)
     {
@@ -28,7 +28,7 @@ public class Metrics implements Meter
     }
 
     /**
-     * Initialise toutes les valeurs
+     * Initialise toutes les valeurs.
      */
     @Override
     public void initialize()
@@ -41,7 +41,7 @@ public class Metrics implements Meter
     }
 
     /**
-     * Print out the metrics
+     * Print out the metrics.
      */
     @Override
     public void getResult()
@@ -56,7 +56,7 @@ public class Metrics implements Meter
     }
 
     /**
-     * calculate the metrics with the current instance
+     * calculate the metrics with the current instance.
      *
      * @param executionContext the current execution context of the program
      */

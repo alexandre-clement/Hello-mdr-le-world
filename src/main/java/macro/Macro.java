@@ -11,76 +11,76 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Définition des macros
- * <p>
- * Une macro doit être indentée
- * Une macro doit être suivis d'un retour à la ligne
- * Une macro peut appeler d'autres macro avec des valeurs constantes en paramètres (non variables, non évaluables)
- * Une macro possède un opérateur "APPLY x ON" en remplaçant x par une variable, une expression, ou une valeurs fixes
- * le corps sur lequel s'applique l'opérateur APPLY ON doit être indentée
- * <p>
- * les opérateurs sont insensibles à la casse
+ * Definition des macros.
+ *
+ * <p>Une macro doit etre indentee.
+ * Une macro doit etre suivis d'un retour a la ligne.
+ * Une macro peut appeler d'autres macro avec des valeurs constantes en parametres (non variables, non evaluables).
+ * Une macro possede un operateur "APPLY x ON" en remplacant x par une variable, une expression, ou une valeurs fixes.
+ * le corps sur lequel s'applique l'operateur APPLY ON doit etre indentee.
+ * </p>
+ * les operateurs sont insensibles a la casse
  * <p>
  * Exemple:
- * <p>
+ * <pre>
  * MACRO MULTI_DECR nombre_de_decrement
  *      APPLY nombre_de_decrement ON
  *          DECR
- * <p>
- * // Les 3 définitions de TO_DIGIT suivantes sont équivalentes
- * <p>
+ *
+ * // Les 3 definitions de TO_DIGIT suivantes sont equivalentes
+ *
  * MACRO TO_DIGIT
  *      MULTI_DECR 48
- * <p>
+ *
  * MACRO TO_DIGIT2
  *      APPLY 48 ON
  *          DECR
- * <p>
+ *
  * MACRO TO_DIGIT3
  *      APPLY 48/2 ON
  *          MULTI_DECR 1
- * -
- * <p>
- * // Incrémente 2^x cellules mémoire à la valeur y
- * <p>
+ *          -
+ *
+ * // Incremente 2^x cellules memoire a la valeur y
+ *
  * MACRO Incr_2^x_cell_to_y x y
  *      APPLY 2^x ON
  *          APPLY y ON
  *              INCR
  *          RIGHT
- *
+ *</pre>
  * @author Alexandre Clement
  * @since 24/12/2016.
  */
 public class Macro
 {
     /**
-     * Capture tous les caractère jusqu'à la fin de la chaîne
+     * Capture tous les caractere jusqu'a la fin de la chaine.
      */
     static final String MATCH_ALL = "(.*)$";
     /**
-     * Le pattern identifiant la macro
+     * Le pattern identifiant la macro.
      */
     private final Pattern pattern;
     /**
-     * Le nom de la macro
+     * Le nom de la macro.
      */
     private String name;
     /**
-     * La séquence associé à la macro
+     * La sequence associe a la macro.
      */
     private Sequence sequence;
     /**
-     * Les paramètres de la macro
+     * Les parametres de la macro.
      */
     private String[] parameters;
 
     /**
-     * Construit une macro
+     * Construit une macro.
      *
      * @param name       le nom de la macro
-     * @param parameters les paramètres de la macro
-     * @param sequence   la séquence de la macro
+     * @param parameters les parametres de la macro
+     * @param sequence   la sequence de la macro
      */
     Macro(String name, String parameters, String sequence)
     {
@@ -91,11 +91,11 @@ public class Macro
     }
 
     /**
-     * Construit un pattern indentée
+     * Construit un pattern indentee.
      *
      * @param indentation le nombre d'indentation
      * @param pattern     le pattern
-     * @return un pattern indentée
+     * @return un pattern indentee
      */
     private Pattern indentedPattern(int indentation, String pattern)
     {
@@ -103,10 +103,10 @@ public class Macro
     }
 
     /**
-     * Trouve les paramètres contenues dans une chaîne de caractère
+     * Trouve les parametres contenues dans une chaine de caractere.
      *
-     * @param parameters la chaîne de caractère
-     * @return le tableau contenant les paramètres
+     * @param parameters la chaine de caractere
+     * @return le tableau contenant les parametres
      */
     private String[] findParameters(String parameters)
     {
@@ -121,10 +121,10 @@ public class Macro
     }
 
     /**
-     * Cherche si la macro est dans la ligne, et remplace son nom par sa séquence
+     * Cherche si la macro est dans la ligne, et remplace son nom par sa sequence.
      *
      * @param string la ligne a match
-     * @return la ligne avec remplacement de la macro par sa séquence si la macro est dans la ligne
+     * @return la ligne avec remplacement de la macro par sa sequence si la macro est dans la ligne
      */
     String match(String string)
     {
@@ -146,10 +146,10 @@ public class Macro
     }
 
     /**
-     * Génère la liste de séquence contenue dans la macro
+     * Genere la liste de sequence contenue dans la macro.
      *
      * @param string le corps de la macro
-     * @return la séquence correspondante
+     * @return la sequence correspondante
      */
     private Sequence buildSequences(String string)
     {
@@ -192,7 +192,7 @@ public class Macro
     }
 
     /**
-     * Interface définissant une le corps d'une macro
+     * Interface definissant une le corps d'une macro.
      *
      * @see StringSequence
      * @see Sequence
@@ -201,16 +201,16 @@ public class Macro
     private interface Matchable
     {
         /**
-         * Renvoie la valeurs de la séquence en fonction des valeurs des paramètres données à la macro
+         * Renvoie la valeurs de la sequence en fonction des valeurs des parametres donnees a la macro.
          *
-         * @param values les valeurs des paramètres de la macro
-         * @return la valeur de la séquence
+         * @param values les valeurs des parametres de la macro
+         * @return la valeur de la sequence
          */
         String match(String[] values);
     }
 
     /**
-     * Une séquence ne contenant qu'une chaîne de caractère
+     * Une sequence ne contenant qu'une chaine de caractere.
      */
     private class StringSequence implements Matchable
     {
@@ -222,8 +222,10 @@ public class Macro
         }
 
         /**
-         * @param values les valeurs des paramètres de la macro
-         * @return la chaîne de caractère
+         * Renvoie la sequence associer a l'instance.
+         *
+         * @param values les valeurs des parametres de la macro
+         * @return la chaine de caractere
          */
         @Override
         public String match(String[] values)
@@ -239,7 +241,11 @@ public class Macro
     }
 
     /**
-     * Une séquence contenant d'autres séquence
+     * Une sequence contenant d'autres sequence.
+     *
+     * Represente un APPLY ON
+     * On peut ajouter des sequences a une sequence
+     * au même titre que l'on peut inserer plusieurs operateur APPLY ON dans un APPLY ON
      */
     private class Sequence implements Matchable
     {
@@ -251,6 +257,11 @@ public class Macro
             sequences = new ArrayList<>();
         }
 
+        /**
+         * Creer une sequence a parametre iterant son contenue en fonction des valeurs de ces parametres.
+         *
+         * @param parameter les parametres de la sequence
+         */
         private Sequence(String parameter)
         {
             this();
@@ -258,9 +269,9 @@ public class Macro
         }
 
         /**
-         * Ajoute une séquence
+         * Ajoute une sequence.
          *
-         * @param matchable la séquence a ajoutée
+         * @param matchable la sequence a ajoutee
          */
         private void add(Matchable matchable)
         {
