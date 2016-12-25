@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Alexandre Clement
- * @since Created the 25/12/2016.
+ * @since 25/12/2016.
  */
 public class LanguageTest
 {

@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author Alexandre Clement
- * @since  07/12/2016.
+ * @since 07/12/2016.
  */
 public class InTest {
     @Before

@@ -3,6 +3,8 @@ package probe;
 import core.ExecutionContext;
 import main.Main;
 
+import java.io.PrintStream;
+
 /**
  * Calculate the metrics of the program and print them out using the method getResult.
  *
@@ -12,6 +14,7 @@ import main.Main;
  */
 public class Metrics implements Meter
 {
+    private PrintStream out;
     private long start;
     private long execMove;
     private long dataMove;
@@ -25,6 +28,12 @@ public class Metrics implements Meter
     public Metrics(long length)
     {
         this.length = length;
+        out = Main.DEFAULT_OUT;
+    }
+
+    void setOut(PrintStream out)
+    {
+        this.out = out;
     }
 
     /**
@@ -52,7 +61,7 @@ public class Metrics implements Meter
         metrics += "DATA_MOVE: " + dataMove + '\n';
         metrics += "DATA_WRITE: " + dataWrite + '\n';
         metrics += "DATA_READ: " + dataRead;
-        Main.standardOutput(metrics);
+        out.print(metrics);
     }
 
     /**

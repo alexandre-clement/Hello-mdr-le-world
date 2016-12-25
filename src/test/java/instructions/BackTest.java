@@ -5,27 +5,37 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Alexandre Clement
- * @since  07/12/2016.
+ * @since 07/12/2016.
  */
-public class BackTest {
+public class BackTest
+{
     private ExecutionContext simpleLoopContext;
     private ExecutionContext loopInLoopContext;
 
     @Before
-    public void setUp() throws Exception {
-        byte[] memory1 = new byte[] {ExecutionContext.MAX};
-        byte[] memory2 = new byte[] {ExecutionContext.MAX, ExecutionContext.MAX, ExecutionContext.MAX, 0};
-        Executable[] simpleLoop = new Executable[] {new Jump(), new Decrement(), new Back()};
-        Executable[] loopInLoop = new Executable[] {new Jump(), new Jump(), new Decrement(), new Back(), new Right(), new Back()};
+    public void setUp() throws Exception
+    {
+        byte[] memory1 = new byte[]{ExecutionContext.MAX};
+        byte[] memory2 = new byte[]{ExecutionContext.MAX, ExecutionContext.MAX, ExecutionContext.MAX, 0};
+        Executable[] simpleLoop = new Executable[]{new Jump(), new Decrement(), new Back()};
+        Executable[] loopInLoop = new Executable[]{new Jump(), new Jump(), new Decrement(), new Back(), new Right(), new Back()};
         simpleLoopContext = new ExecutionContext(0, 0, memory1, simpleLoop, null, null, null);
         loopInLoopContext = new ExecutionContext(0, 0, memory2, loopInLoop, null, null, null);
     }
 
     @Test
-    public void execute() throws Exception {
+    public void open() throws Exception
+    {
+        assertFalse(new Back().open());
+    }
+
+    @Test
+    public void execute() throws Exception
+    {
         for (int instruction = 0; simpleLoopContext.hasNextInstruction(); simpleLoopContext.nextInstruction())
             simpleLoopContext.execute();
 

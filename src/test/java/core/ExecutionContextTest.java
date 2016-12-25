@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +25,12 @@ public class ExecutionContextTest {
         context1 = new ExecutionContext(0, 1, memory1);
     }
 
+    @After
+    public void tearDown() throws Exception
+    {
+
+    }
+
     @Test
     public void printValue() throws Exception {
         assertEquals(0, context0.printValue());
@@ -34,5 +41,143 @@ public class ExecutionContextTest {
     public void getMemorySnapshot() throws Exception {
         assertEquals("C1:  30   ", context1.getMemorySnapshot());
         assertEquals(String.format("C%d:%4d   ", 1, 30), context1.getMemorySnapshot());
+    }
+
+    @Test
+    public void execute() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getInstruction() throws Exception
+    {
+
+    }
+
+    @Test
+    public void nextInstruction() throws Exception
+    {
+
+    }
+
+    @Test
+    public void previousInstruction() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getPointer() throws Exception
+    {
+
+    }
+
+    @Test
+    public void hasNextCell() throws Exception
+    {
+
+    }
+
+    @Test
+    public void nextCell() throws Exception
+    {
+
+    }
+
+    @Test
+    public void hasPreviousCell() throws Exception
+    {
+
+    }
+
+    @Test
+    public void previousCell() throws Exception
+    {
+
+    }
+
+    @Test
+    public void increment() throws Exception
+    {
+
+    }
+
+    @Test
+    public void decrement() throws Exception
+    {
+
+    }
+
+    @Test
+    public void in() throws Exception
+    {
+
+    }
+
+    @Test
+    public void readNextValue() throws Exception
+    {
+
+    }
+
+    @Test
+    public void out() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getValue() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getCurrentExecutable() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getCurrentInstruction() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getProgramLength() throws Exception
+    {
+
+    }
+
+    @Test
+    public void hasNextInstruction() throws Exception
+    {
+
+    }
+
+    @Test
+    public void hasPreviousInstruction() throws Exception
+    {
+
+    }
+
+    @Test
+    public void bound() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getJumpLink() throws Exception
+    {
+
+    }
+
+    @Test
+    public void close() throws Exception
+    {
+
     }
 }
