@@ -1,4 +1,4 @@
-macro MULTI_INCR nb_INCR
+macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR
     apply nb_INCR on
         INCR
 

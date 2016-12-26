@@ -31,7 +31,7 @@ public class Language
     /**
      * Le flux d'entree.
      */
-    private InputStreamReader in;
+    private InputStream in;
     /**
      * Le flux de sortie.
      */
@@ -79,7 +79,7 @@ public class Language
      *
      * @return le flux d'entree
      */
-    public InputStreamReader getIn()
+    public InputStream getIn()
     {
         return in;
     }
@@ -162,19 +162,19 @@ public class Language
      * @return le flux d'entree
      * @throws ExitException si le flux d'entree n'existe pas
      */
-    private InputStreamReader getIn(Interpreter interpreter) throws ExitException
+    private InputStream getIn(Interpreter interpreter) throws ExitException
     {
         if (interpreter.hasOption(Flag.INPUT))
             try
             {
-                return new InputStreamReader(new FileInputStream(interpreter.getOptionValue(Flag.INPUT)));
+                return new FileInputStream(interpreter.getOptionValue(Flag.INPUT));
             }
             catch (FileNotFoundException exception)
             {
                 throw new ExitException(3, this.getClass().getSimpleName(), "#getIn", exception);
             }
         else
-            return new InputStreamReader(System.in);
+            return System.in;
     }
 
     /**

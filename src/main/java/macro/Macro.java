@@ -1,6 +1,7 @@
 package macro;
 
 import com.udojava.evalex.Expression;
+import core.Instructions;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * Definition des macros.
- *
+ * <p>
  * <p>Une macro doit etre indentee.
  * Une macro doit etre suivis d'un retour a la ligne.
  * Une macro peut appeler d'autres macro avec des valeurs constantes en parametres (non variables, non evaluables).
@@ -48,7 +49,8 @@ import java.util.stream.Collectors;
  *          APPLY y ON
  *              INCR
  *          RIGHT
- *</pre>
+ * </pre>
+ *
  * @author Alexandre Clement
  * @since 24/12/2016.
  */
@@ -57,7 +59,7 @@ public class Macro
     /**
      * Capture tous les caractere jusqu'a la fin de la chaine.
      */
-    static final String MATCH_ALL = "(.*)$";
+    static final String MATCH_ALL = "(.*?)(?=(?=" + Instructions.COMMENT + ")|(?=$))";
     /**
      * Le pattern identifiant la macro.
      */
@@ -173,7 +175,7 @@ public class Macro
                 matcher = body.matcher(line);
             }
             int start = matcher.group(1).length();
-            apply = indentedPattern(indentation, "(?i)APPLY[ \t]+([^\\s]+)[ \t]+ON[ \t]*$");
+            apply = indentedPattern(indentation, "(?i)APPLY[ \t]+([^\\s]+)[ \t]+ON[ \t]*(?:" + Instructions.COMMENT + ".*)?$");
             matcher = apply.matcher(line);
 
             if (matcher.matches())
@@ -242,7 +244,7 @@ public class Macro
 
     /**
      * Une sequence contenant d'autres sequence.
-     *
+     * <p>
      * Represente un APPLY ON
      * On peut ajouter des sequences a une sequence
      * au même titre que l'on peut inserer plusieurs operateur APPLY ON dans un APPLY ON

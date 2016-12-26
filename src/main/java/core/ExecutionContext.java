@@ -4,7 +4,7 @@ import exception.ExitException;
 import instructions.Executable;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class ExecutionContext
     /**
      * Le flux d'entree.
      */
-    private final InputStreamReader in;
+    private final InputStream in;
     /**
      * Le flux de sortie.
      */
@@ -79,7 +79,7 @@ public class ExecutionContext
      * @param in        le flux de donnees entrant
      * @param out       le flux de donnees sortant
      */
-    public ExecutionContext(Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
+    public ExecutionContext(Executable[] program, Map<Integer, Integer> jumpTable, InputStream in, PrintStream out)
     {
         this(0, 0, new byte[CAPACITY], program, jumpTable, in, out);
     }
@@ -95,7 +95,7 @@ public class ExecutionContext
      * @param in          le flux de donnees entrant
      * @param out         le flux de donnees sortant
      */
-    public ExecutionContext(int instruction, int pointer, byte[] memory, Executable[] program, Map<Integer, Integer> jumpTable, InputStreamReader in, PrintStream out)
+    public ExecutionContext(int instruction, int pointer, byte[] memory, Executable[] program, Map<Integer, Integer> jumpTable, InputStream in, PrintStream out)
     {
         this.instruction = instruction;
         this.pointer = pointer;
@@ -243,7 +243,10 @@ public class ExecutionContext
      */
     public byte readNextValue() throws IOException
     {
-        return (byte) in.read();
+        byte value = (byte) in.read();
+        if (in == System.in)
+            in.read(); // Consume the return line if the input is the standard input
+        return value;
     }
 
     /**

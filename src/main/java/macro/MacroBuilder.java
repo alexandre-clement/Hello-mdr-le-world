@@ -65,10 +65,11 @@ public class MacroBuilder
      */
     public MacroBuilder(String filename) throws IOException
     {
-        tmp = File.createTempFile(filename, ".tmp");
+        tmp = File.createTempFile(filename, ".tmp", new File("out"));
+        tmp.deleteOnExit();
         writer = new PrintWriter(new BufferedWriter(new FileWriter(tmp)));
         file = new RandomAccessFile(filename, "r");
-        definition = Pattern.compile("(?i)^[ \\t]*MACRO[ \\t]+(\\w+)([\\w \\t]*)$");
+        definition = Pattern.compile("(?i)^[ \\t]*MACRO[ \\t]+(\\w+)" + Macro.MATCH_ALL);
         sequence = Pattern.compile("^(?:\\t| {" + INDENTATION + "})+" + Macro.MATCH_ALL);
     }
 
@@ -87,7 +88,7 @@ public class MacroBuilder
         for (String line = file.readLine(); line != null; line = file.readLine())
         {
             defMatcher = definition.matcher(line);
-            if (defMatcher.matches())
+            if (defMatcher.find())
                 macros.push(createMacro(defMatcher));
             else
                 writer.write(applyMacroOn(macros, line) + '\n');

@@ -5,7 +5,7 @@ import instructions.Executable;
 import instructions.Loop;
 import language.ReadFile;
 
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -35,7 +35,7 @@ public class ExecutionContextBuilder
 
     /**
      * Permet de construire la jump table.
-     *
+     * <p>
      * une liste de stack (une stack par type de boucle)
      * permet de joindre chaque instruction ouvrant une boucle a l'instruction qui la ferme
      */
@@ -51,7 +51,7 @@ public class ExecutionContextBuilder
     /**
      * Le flux d'entree.
      */
-    private InputStreamReader in;
+    private InputStream in;
     /**
      * Le flux de sortie.
      */
@@ -79,7 +79,7 @@ public class ExecutionContextBuilder
      * @param in le flux d'entree
      * @return this
      */
-    public ExecutionContextBuilder setIn(InputStreamReader in)
+    public ExecutionContextBuilder setIn(InputStream in)
     {
         this.in = in;
         return this;
@@ -186,7 +186,7 @@ public class ExecutionContextBuilder
      */
     private Pattern compile(Executable[] executables)
     {
-        StringBuilder stringBuilder = new StringBuilder("([" + Instructions.COMMENT + "])");
+        StringBuilder stringBuilder = new StringBuilder("(" + Instructions.COMMENT + ")");
         for (Executable executable : executables)
         {
             stringBuilder.append("|");
