@@ -112,10 +112,14 @@ public class MacroBuilder
     private Macro createMacro(Matcher defMatcher) throws IOException
     {
         StringBuilder body;
+        String line;
         Matcher seqMatcher;
         body = new StringBuilder();
-        for (seqMatcher = sequence.matcher(file.readLine()); seqMatcher.matches(); seqMatcher = sequence.matcher(file.readLine()))
+        for (line = file.readLine(); line != null; line = file.readLine())
         {
+            seqMatcher = sequence.matcher(line);
+            if (!seqMatcher.matches())
+                break;
             body.append(seqMatcher.group()).append('\n');
         }
         return new Macro(defMatcher.group(1), defMatcher.group(2), body + "\n ");
