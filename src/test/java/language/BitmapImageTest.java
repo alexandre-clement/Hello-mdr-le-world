@@ -22,13 +22,13 @@ public class BitmapImageTest
     @Before
     public void setUp() throws Exception
     {
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf", "--translate");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf", "--translate");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context);
 
-        bitmapImage = new BitmapImage("src/test/test_out.bmp");
+        bitmapImage = new BitmapImage("test_out.bmp");
     }
 
     @After

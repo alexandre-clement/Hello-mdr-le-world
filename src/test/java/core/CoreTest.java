@@ -26,7 +26,7 @@ public class CoreTest
     @Before
     public void setUp() throws Exception
     {
-        File file = new File("src/test/test.bf");
+        File file = new File("test.bf");
         FileWriter write = new FileWriter(file);
         write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
                 "    apply nb_INCR on\n" +
@@ -43,7 +43,7 @@ public class CoreTest
     @Test
     public void runPrint() throws Exception
     {
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
@@ -60,7 +60,7 @@ public class CoreTest
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf", "--rewrite");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf", "--rewrite");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
@@ -73,23 +73,23 @@ public class CoreTest
     @Test
     public void runTranslate() throws Exception
     {
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf", "--translate");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf", "--translate");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context);
 
-        Interpreter interpreter1 = Interpreter.buildInterpreter("-p", "src/test/test.bf");
+        Interpreter interpreter1 = Interpreter.buildInterpreter("-p", "test.bf");
         Language language1 = new Language(interpreter);
         ExecutionContext context1 = new ExecutionContextBuilder().buildFromFile(language1.getFile());
 
-        new Core("src/test/test").run(interpreter1.getOptions(), interpreter1.getProbes(), context1);
+        new Core("test").run(interpreter1.getOptions(), interpreter1.getProbes(), context1);
 
-        Interpreter interpreter2 = Interpreter.buildInterpreter("-p", "src/test/test_out.bmp");
+        Interpreter interpreter2 = Interpreter.buildInterpreter("-p", "test_out.bmp");
         Language language2 = new Language(interpreter);
         ExecutionContext context2 = new ExecutionContextBuilder().buildFromFile(language2.getFile());
 
-        new Core("src/test/test").run(interpreter2.getOptions(), interpreter2.getProbes(), context2);
+        new Core("test").run(interpreter2.getOptions(), interpreter2.getProbes(), context2);
 
 
         assertEquals(context1.getMemorySnapshot(), context2.getMemorySnapshot());
@@ -100,11 +100,11 @@ public class CoreTest
     @Test
     public void runCheck() throws Exception
     {
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf", "--check");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf", "--check");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context);
 
         Deque<Executable> notWellFormed = new ArrayDeque<>();
         notWellFormed.add(new BackOptimised()); // ]
@@ -112,7 +112,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
@@ -127,7 +127,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
@@ -142,7 +142,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
@@ -156,7 +156,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
@@ -168,7 +168,7 @@ public class CoreTest
         notWellFormed.push(new Jump());
         notWellFormed.add(new BackOptimised()); // ([(])[)]
         context1 = new ExecutionContextBuilder().setProgram(notWellFormed).build();
-        new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+        new Core("test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context1);
     }
 
 }

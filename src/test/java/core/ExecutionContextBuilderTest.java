@@ -19,7 +19,7 @@ public class ExecutionContextBuilderTest
     @Before
     public void setUp() throws Exception
     {
-        File file = new File("src/test/test.bf");
+        File file = new File("test.bf");
         FileWriter write = new FileWriter(file);
         write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
                 "    apply nb_INCR on\n" +
@@ -36,7 +36,7 @@ public class ExecutionContextBuilderTest
     @Test
     public void buildFromFile() throws Exception
     {
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
         assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
