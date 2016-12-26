@@ -1,6 +1,10 @@
 package language;
 
+import core.Core;
+import core.ExecutionContext;
+import core.ExecutionContextBuilder;
 import exception.ExitException;
+import interpreter.Interpreter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +22,13 @@ public class BitmapImageTest
     @Before
     public void setUp() throws Exception
     {
-        bitmapImage = new BitmapImage("src/test/test.bmp");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf", "--translate");
+        Language language = new Language(interpreter);
+        ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
+
+        new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context);
+
+        bitmapImage = new BitmapImage("src/test/test_out.bmp");
     }
 
     @After

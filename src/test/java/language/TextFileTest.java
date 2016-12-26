@@ -5,6 +5,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileWriter;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -19,6 +22,18 @@ public class TextFileTest
     @Before
     public void setUp() throws Exception
     {
+        File file = new File("src/test/test.bf");
+        FileWriter write = new FileWriter(file);
+        write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
+                "    apply nb_INCR on\n" +
+                "        INCR\n" +
+                "\n" +
+                "MULTI_INCR 3\n" +
+                "# CO: 3\n" +
+                "RIGHT\n" +
+                "++++ # C1: 4\n" +
+                "<[->[->+>+<<]>[-<+>]<<]>[-] # C3: C0 * C1 = 12");
+        write.close();
         textFile = new TextFile("src/test/test.bf");
     }
 

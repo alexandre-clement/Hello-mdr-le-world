@@ -4,8 +4,7 @@ import core.ExecutionContext;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
+import java.io.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,6 +18,10 @@ public class InTest
     public void setUp() throws Exception
     {
         System.setIn(new ByteArrayInputStream(new byte[]{65, 100}));
+        File file = new File("src/test/input.txt");
+        Writer write = new FileWriter(file);
+        write.write("Hello world !\n");
+        write.close();
     }
 
     @Test

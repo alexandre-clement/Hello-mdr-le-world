@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -24,7 +26,18 @@ public class CoreTest
     @Before
     public void setUp() throws Exception
     {
-
+        File file = new File("src/test/test.bf");
+        FileWriter write = new FileWriter(file);
+        write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
+                "    apply nb_INCR on\n" +
+                "        INCR\n" +
+                "\n" +
+                "MULTI_INCR 3\n" +
+                "# CO: 3\n" +
+                "RIGHT\n" +
+                "++++ # C1: 4\n" +
+                "<[->[->+>+<<]>[-<+>]<<]>[-] # C3: C0 * C1 = 12");
+        write.close();
     }
 
     @Test
@@ -34,7 +47,7 @@ public class CoreTest
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context);
 
         assertEquals(0, context.getValue());
         new Right().execute(context);
@@ -64,19 +77,19 @@ public class CoreTest
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context);
 
         Interpreter interpreter1 = Interpreter.buildInterpreter("-p", "src/test/test.bf");
         Language language1 = new Language(interpreter);
         ExecutionContext context1 = new ExecutionContextBuilder().buildFromFile(language1.getFile());
 
-        new Core("src/test/test.bf").run(interpreter1.getOptions(), interpreter1.getProbes(), context1);
+        new Core("src/test/test").run(interpreter1.getOptions(), interpreter1.getProbes(), context1);
 
         Interpreter interpreter2 = Interpreter.buildInterpreter("-p", "src/test/test_out.bmp");
         Language language2 = new Language(interpreter);
         ExecutionContext context2 = new ExecutionContextBuilder().buildFromFile(language2.getFile());
 
-        new Core("src/test/test.bf").run(interpreter2.getOptions(), interpreter2.getProbes(), context2);
+        new Core("src/test/test").run(interpreter2.getOptions(), interpreter2.getProbes(), context2);
 
 
         assertEquals(context1.getMemorySnapshot(), context2.getMemorySnapshot());
@@ -91,7 +104,7 @@ public class CoreTest
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context);
 
         Deque<Executable> notWellFormed = new ArrayDeque<>();
         notWellFormed.add(new BackOptimised()); // ]
@@ -99,7 +112,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
@@ -114,7 +127,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
@@ -129,7 +142,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
@@ -143,7 +156,7 @@ public class CoreTest
 
         try
         {
-            new Core("src/test/test.bf").run(interpreter.getOptions(), interpreter.getProbes(), context1);
+            new Core("src/test/test").run(interpreter.getOptions(), interpreter.getProbes(), context1);
             fail("le programme est mal forme");
         }
         catch (ExitException e)
