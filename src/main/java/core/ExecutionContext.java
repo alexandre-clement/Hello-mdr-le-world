@@ -243,10 +243,7 @@ public class ExecutionContext
      */
     public byte readNextValue() throws IOException
     {
-        byte value = (byte) in.read();
-        if (in == System.in)
-            in.read(); // Consume the return line if the input is the standard input
-        return value;
+        return (byte) in.read();
     }
 
     /**

@@ -18,7 +18,7 @@ public class InTest
     @Before
     public void setUp() throws Exception
     {
-        System.setIn(new ByteArrayInputStream(new byte[]{65, 10, 100}));
+        System.setIn(new ByteArrayInputStream(new byte[]{65, 100}));
     }
 
     @Test
