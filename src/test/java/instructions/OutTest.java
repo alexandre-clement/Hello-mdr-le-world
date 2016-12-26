@@ -17,9 +17,17 @@ public class OutTest
     @Test
     public void execute() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ExecutionContext context = new ExecutionContext(0, 0, new byte[]{65}, new Executable[]{new Out()}, null, null, new PrintStream(out));
+        ExecutionContext context = new ExecutionContext(0, 0, new byte[]{65, 98, 33}, new Executable[]{new Out()}, null, null, new PrintStream(out));
         context.execute();
         assertEquals("A", out.toString());
+        out.reset();
+        context.nextCell();
+        context.execute();
+        assertEquals("b", out.toString());
+        out.reset();
+        context.nextCell();
+        context.execute();
+        assertEquals("!", out.toString());
     }
 
 }

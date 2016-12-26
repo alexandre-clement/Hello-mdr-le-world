@@ -1,7 +1,11 @@
 package core;
 
+import interpreter.Interpreter;
+import language.Language;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Alexandre Clement
@@ -16,33 +20,33 @@ public class ExecutionContextBuilderTest
     }
 
     @Test
-    public void setIn() throws Exception
-    {
-
-    }
-
-    @Test
-    public void setOut() throws Exception
-    {
-
-    }
-
-    @Test
-    public void setExecutables() throws Exception
-    {
-
-    }
-
-    @Test
-    public void build() throws Exception
-    {
-
-    }
-
-    @Test
     public void buildFromFile() throws Exception
     {
-
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", "src/test/test.bf");
+        Language language = new Language(interpreter);
+        ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
+        assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.RIGHT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.LEFT, context.getCurrentInstruction());
+        context.nextInstruction();
+        assertEquals(Instructions.OPTIMISED_JUMP, context.getCurrentInstruction());
+        assertEquals(30, context.getJumpLink());
     }
+
+
 
 }

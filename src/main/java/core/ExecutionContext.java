@@ -330,14 +330,18 @@ public class ExecutionContext
      */
     void close() throws ExitException
     {
-        try
+        if (in != null)
         {
-            in.close();
+            try
+            {
+                in.close();
+            }
+            catch (IOException e)
+            {
+                throw new ExitException(3, this.getClass().getSimpleName(), "#close", e);
+            }
         }
-        catch (IOException e)
-        {
-            throw new ExitException(3, this.getClass().getSimpleName(), "#close", e);
-        }
-        out.close();
+        if (out != null)
+            out.close();
     }
 }

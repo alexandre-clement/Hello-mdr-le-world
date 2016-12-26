@@ -109,6 +109,12 @@ public class ExecutionContextBuilder
         return this;
     }
 
+    public ExecutionContextBuilder setProgram(Deque<Executable> program)
+    {
+        this.program = program;
+        return this;
+    }
+
     /**
      * Construit le contexte d'execution.
      *
