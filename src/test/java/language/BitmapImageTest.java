@@ -27,7 +27,7 @@ public class BitmapImageTest
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core(MainTest.PATH).run(interpreter.getOptions(), interpreter.getProbes(), context);
 
         bitmapImage = new BitmapImage(MainTest.BITMAP);
     }
