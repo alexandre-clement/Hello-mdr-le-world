@@ -6,6 +6,7 @@ import interpreter.Interpreter;
 import language.Language;
 import main.MainTest;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -56,6 +57,7 @@ public class CoreTest
         assertEquals(12, context.getValue());
     }
 
+    @Ignore
     @Test
     public void runRewrite() throws Exception
     {
