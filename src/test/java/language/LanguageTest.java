@@ -4,6 +4,7 @@ import core.Core;
 import core.ExecutionContext;
 import core.ExecutionContextBuilder;
 import interpreter.Interpreter;
+import main.MainTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class LanguageTest
     @Before
     public void setUp() throws Exception
     {
-        File file = new File("test.bf");
+        File file = new File(MainTest.FILENAME);
         FileWriter write = new FileWriter(file);
         write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
                 "    apply nb_INCR on\n" +
@@ -38,18 +39,18 @@ public class LanguageTest
                 "++++ # C1: 4\n" +
                 "<[->[->+>+<<]>[-<+>]<<]>[-] # C3: C0 * C1 = 12");
         write.close();
-        file = new File("input.txt");
+        file = new File(MainTest.INPUT);
         write = new FileWriter(file);
         write.write("Hello world !\n");
         write.close();
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf", "--translate");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", MainTest.FILENAME, "--translate");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
-        new Core("test").run(interpreter.getOptions(), interpreter.getProbes(), context);
+        new Core(MainTest.PATH).run(interpreter.getOptions(), interpreter.getProbes(), context);
 
-        Interpreter noOption = Interpreter.buildInterpreter("-p", "test.bf");
-        Interpreter image = Interpreter.buildInterpreter("-p", "test_out.bmp");
-        Interpreter twoFilesOptions = Interpreter.buildInterpreter("-p", "test.bf", "-i", "input.txt", "-o", "output.txt");
+        Interpreter noOption = Interpreter.buildInterpreter("-p", MainTest.FILENAME);
+        Interpreter image = Interpreter.buildInterpreter("-p", MainTest.BITMAP);
+        Interpreter twoFilesOptions = Interpreter.buildInterpreter("-p", MainTest.FILENAME, "-i", MainTest.INPUT, "-o", MainTest.OUTPUT);
         noOptionLanguage = new Language(noOption);
         imageLanguage = new Language(image);
         twoFilesOptionsLanguage = new Language(twoFilesOptions);
@@ -66,9 +67,9 @@ public class LanguageTest
     @Test
     public void getFilename() throws Exception
     {
-        assertEquals("test", noOptionLanguage.getFilename());
-        assertEquals("test_out", imageLanguage.getFilename());
-        assertEquals("test", twoFilesOptionsLanguage.getFilename());
+        assertEquals("target/test", noOptionLanguage.getFilename());
+        assertEquals("target/test_out", imageLanguage.getFilename());
+        assertEquals("target/test", twoFilesOptionsLanguage.getFilename());
     }
 
     @Test

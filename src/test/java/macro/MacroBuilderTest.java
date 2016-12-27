@@ -1,9 +1,11 @@
 package macro;
 
+import main.MainTest;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +22,19 @@ public class MacroBuilderTest
     @Before
     public void setUp() throws Exception
     {
-        macroBuilder = new MacroBuilder("src/test/test.bf");
+        File file = new File(MainTest.FILENAME);
+        FileWriter write = new FileWriter(file);
+        write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
+                "    apply nb_INCR on\n" +
+                "        INCR\n" +
+                "\n" +
+                "MULTI_INCR 3\n" +
+                "# CO: 3\n" +
+                "RIGHT\n" +
+                "++++ # C1: 4\n" +
+                "<[->[->+>+<<]>[-<+>]<<]>[-] # C3: C0 * C1 = 12");
+        write.close();
+        macroBuilder = new MacroBuilder(MainTest.FILENAME);
     }
 
     @Test

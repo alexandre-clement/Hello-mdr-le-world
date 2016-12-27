@@ -1,6 +1,7 @@
 package language;
 
 import exception.ExitException;
+import main.MainTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class TextFileTest
     @Before
     public void setUp() throws Exception
     {
-        File file = new File("test.bf");
+        File file = new File(MainTest.FILENAME);
         FileWriter write = new FileWriter(file);
         write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
                 "    apply nb_INCR on\n" +
@@ -34,7 +35,7 @@ public class TextFileTest
                 "++++ # C1: 4\n" +
                 "<[->[->+>+<<]>[-<+>]<<]>[-] # C3: C0 * C1 = 12");
         write.close();
-        textFile = new TextFile("test.bf");
+        textFile = new TextFile(MainTest.FILENAME);
     }
 
     @After

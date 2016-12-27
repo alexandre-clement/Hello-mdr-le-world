@@ -1,6 +1,7 @@
 package instructions;
 
 import core.ExecutionContext;
+import main.MainTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class InTest
     public void setUp() throws Exception
     {
         System.setIn(new ByteArrayInputStream(new byte[]{65, 100}));
-        File file = new File("src/test/input.txt");
+        File file = new File(MainTest.INPUT);
         Writer write = new FileWriter(file);
         write.write("Hello world !\n");
         write.close();
@@ -38,7 +39,7 @@ public class InTest
     @Test
     public void execute2() throws Exception
     {
-        ExecutionContext context = new ExecutionContext(0, 0, new byte[1], new Executable[]{new In()}, null, new FileInputStream("src/test/input.txt"), null);
+        ExecutionContext context = new ExecutionContext(0, 0, new byte[1], new Executable[]{new In()}, null, new FileInputStream(MainTest.INPUT), null);
         context.execute();
         assertEquals(72, context.printValue());
         context.execute();

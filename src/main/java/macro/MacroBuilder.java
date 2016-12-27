@@ -65,7 +65,7 @@ public class MacroBuilder
      */
     public MacroBuilder(String filename) throws IOException
     {
-        tmp = File.createTempFile(filename, ".tmp", new File("out"));
+        tmp = File.createTempFile(filename, ".tmp", new File("target"));
         tmp.deleteOnExit();
         writer = new PrintWriter(new BufferedWriter(new FileWriter(tmp)));
         file = new RandomAccessFile(filename, "r");

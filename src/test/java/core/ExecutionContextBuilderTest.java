@@ -2,6 +2,7 @@ package core;
 
 import interpreter.Interpreter;
 import language.Language;
+import main.MainTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class ExecutionContextBuilderTest
     @Before
     public void setUp() throws Exception
     {
-        File file = new File("test.bf");
+        File file = new File(MainTest.FILENAME);
         FileWriter write = new FileWriter(file);
         write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
                 "    apply nb_INCR on\n" +
@@ -36,7 +37,7 @@ public class ExecutionContextBuilderTest
     @Test
     public void buildFromFile() throws Exception
     {
-        Interpreter interpreter = Interpreter.buildInterpreter("-p", "test.bf");
+        Interpreter interpreter = Interpreter.buildInterpreter("-p", MainTest.FILENAME);
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
         assertEquals(Instructions.INCREMENT, context.getCurrentInstruction());
