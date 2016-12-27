@@ -12,6 +12,7 @@ import probe.Time;
 import probe.Trace;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -36,12 +37,15 @@ public class Core
      */
     private final String filename;
 
+    private PrintStream out;
+
     /**
      * @param filename Le nom du fichier a execute
      */
     public Core(String filename)
     {
         this.filename = filename;
+        out = Main.DEFAULT_OUT;
     }
 
     /**
@@ -50,6 +54,11 @@ public class Core
     public static Executable[] getExecutables()
     {
         return new Executable[]{new Increment(), new Decrement(), new Left(), new Right(), new Out(), new In(), new Jump(), new Back(), new JumpOptimised(), new BackOptimised()};
+    }
+
+    public void setOut(PrintStream out)
+    {
+        this.out = out;
     }
 
     /**
@@ -132,7 +141,7 @@ public class Core
             probe.acknowledge(executionContext);
         }
         probe.getResult();
-        Main.standardOutput("\n" + executionContext.getMemorySnapshot());
+        out.print("\n" + executionContext.getMemorySnapshot());
     }
 
     /**
@@ -143,8 +152,8 @@ public class Core
     private void rewrite(ExecutionContext executionContext)
     {
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
-            Main.standardOutput(executionContext.getCurrentInstruction().getShortcut());
-        Main.standardOutput('\n');
+           out.print(executionContext.getCurrentInstruction().getShortcut());
+        out.print('\n');
     }
 
     /**

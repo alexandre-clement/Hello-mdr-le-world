@@ -6,7 +6,6 @@ import interpreter.Interpreter;
 import language.Language;
 import main.MainTest;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -45,32 +44,31 @@ public class CoreTest
     @Test
     public void runPrint() throws Exception
     {
+        Core core = new Core(MainTest.PATH);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        core.setOut(new PrintStream(out));
         Interpreter interpreter = Interpreter.buildInterpreter("-p", MainTest.FILENAME);
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core(MainTest.PATH).run(interpreter.getOptions(), interpreter.getProbes(), context);
+        core.run(interpreter.getOptions(), interpreter.getProbes(), context);
 
-        assertEquals(0, context.getValue());
-        new Right().execute(context);
-        new Right().execute(context);
-        assertEquals(12, context.getValue());
+        assertEquals("\nC3:  12   ", out.toString());
     }
 
-    @Ignore
     @Test
     public void runRewrite() throws Exception
     {
+        Core core = new Core(MainTest.PATH);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+        core.setOut(new PrintStream(out));
         Interpreter interpreter = Interpreter.buildInterpreter("-p", MainTest.FILENAME, "--rewrite");
         Language language = new Language(interpreter);
         ExecutionContext context = new ExecutionContextBuilder().buildFromFile(language.getFile());
 
-        new Core(MainTest.PATH).run(interpreter.getOptions(), interpreter.getProbes(), context);
+        core.run(interpreter.getOptions(), interpreter.getProbes(), context);
 
         assertEquals("+++>++++<[->[->+>+<<]>[-<+>]<<]>[-]\n", out.toString());
-        System.setOut(null);
     }
 
     @Test
@@ -83,21 +81,23 @@ public class CoreTest
         new Core(MainTest.PATH).run(interpreter.getOptions(), interpreter.getProbes(), context);
 
         Interpreter interpreter1 = Interpreter.buildInterpreter("-p", MainTest.FILENAME);
-        Language language1 = new Language(interpreter);
+        Language language1 = new Language(interpreter1);
         ExecutionContext context1 = new ExecutionContextBuilder().buildFromFile(language1.getFile());
 
-        new Core(MainTest.PATH).run(interpreter1.getOptions(), interpreter1.getProbes(), context1);
-
         Interpreter interpreter2 = Interpreter.buildInterpreter("-p", MainTest.BITMAP);
-        Language language2 = new Language(interpreter);
+        Language language2 = new Language(interpreter2);
         ExecutionContext context2 = new ExecutionContextBuilder().buildFromFile(language2.getFile());
-
-        new Core(MainTest.PATH).run(interpreter2.getOptions(), interpreter2.getProbes(), context2);
-
 
         assertEquals(context1.getMemorySnapshot(), context2.getMemorySnapshot());
         assertEquals(context1.getInstruction(), context2.getInstruction());
         assertEquals(context1.getPointer(), context2.getPointer());
+        assertEquals(context1.getProgramLength(), context2.getProgramLength());
+        for (int i = 0; i < context1.getProgramLength(); i++)
+        {
+            assertEquals(context1.getCurrentInstruction(), context2.getCurrentInstruction());
+            context1.nextInstruction();
+            context2.nextInstruction();
+        }
     }
 
     @Test
