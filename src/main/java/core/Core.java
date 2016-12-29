@@ -141,7 +141,7 @@ public class Core
             probe.acknowledge(executionContext);
         }
         probe.getResult();
-        out.print("\n" + executionContext.getMemorySnapshot());
+        out.print("\n" + executionContext.getMemorySnapshot() + "\n");
     }
 
     /**

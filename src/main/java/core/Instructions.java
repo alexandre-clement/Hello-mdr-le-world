@@ -18,8 +18,8 @@ public enum Instructions
     RIGHT(              "RIGHT",            '>',        new Color(0, 0, 255),       null,               MetricsType.DATA_MOVE,      "Move the memory pointer to the right"),
     OUT(                "OUT",              '.',        new Color(0, 255, 0),       null,               MetricsType.DATA_READ,      "Print out the content of the memory cell as ASCII"),
     IN(                 "IN",               ',',        new Color(255, 255, 0),     null,               MetricsType.DATA_WRITE,     "Read the value present in the input as an ASCII character"),
-    OPTIMISED_JUMP(     "OPTIMISED_JUMP",   '[',        new Color(255, 127, 0),     LoopType.OPTIMISED, MetricsType.DATA_READ,      "Jump to the instruction right after the associated OPTIMISED_BACK if the pointed memory is equals to zero (using a jump table)"),
-    OPTIMISED_BACK(     "OPTIMISED_BACK",   ']',        new Color(255, 0, 0),       LoopType.OPTIMISED, MetricsType.DATA_READ,      "Go back to the instruction right after the associated OPTIMISED_JUMP if the pointer memory cell is not equals to zero (using a jump table)"),
+    OPTIMISED_JUMP(     "JUMP",             '[',        new Color(255, 127, 0),     LoopType.OPTIMISED, MetricsType.DATA_READ,      "Jump to the instruction right after the associated OPTIMISED_BACK if the pointed memory is equals to zero (using a jump table)"),
+    OPTIMISED_BACK(     "BACK",             ']',        new Color(255, 0, 0),       LoopType.OPTIMISED, MetricsType.DATA_READ,      "Go back to the instruction right after the associated OPTIMISED_JUMP if the pointer memory cell is not equals to zero (using a jump table)"),
     ITERATIVE_JUMP(     "ITERATIVE_JUMP",   '(',        new Color(255, 127, 127),   LoopType.ITERATIVE, MetricsType.DATA_READ,      "Jump to the instruction right after the associated ITERATIVE_BACK if the pointed memory is equals to zero"),
     ITERATIVE_BACK(     "ITERATIVE_BACK",   ')',        new Color(255, 0, 127),     LoopType.ITERATIVE, MetricsType.DATA_READ,      "Go back to the instruction right after the associated ITERATIVE_JUMP if the pointer memory cell is not equals to zero");
 

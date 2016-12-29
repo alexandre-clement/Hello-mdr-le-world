@@ -53,7 +53,7 @@ public class CoreTest
 
         core.run(interpreter.getOptions(), interpreter.getProbes(), context);
 
-        assertEquals("\nC3:  12   ", out.toString());
+        assertEquals("\nC3:  12   \n", out.toString());
     }
 
     @Test
