@@ -25,7 +25,7 @@ public class TextFileTest
     {
         File file = new File(MainTest.FILENAME);
         FileWriter write = new FileWriter(file);
-        write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_DECR\n" +
+        write.write("macro MULTI_INCR nb_INCR # definition de la macro MULTI_INCR\n" +
                 "    apply nb_INCR on\n" +
                 "        INCR\n" +
                 "\n" +
