@@ -60,6 +60,10 @@ public class ExecutionContextBuilder
      * la longueur du programme.
      */
     private int length;
+    /**
+     * Definie si la jump table doit etre construite
+     */
+    private boolean buildJumpTable;
 
     /**
      * Initialise le builder.
@@ -71,6 +75,7 @@ public class ExecutionContextBuilder
         executables = Core.getExecutables();
         loops = new ArrayList<>();
         length = 0;
+        buildJumpTable = true;
     }
 
     /**
@@ -112,6 +117,12 @@ public class ExecutionContextBuilder
     public ExecutionContextBuilder setProgram(Deque<Executable> program)
     {
         this.program = program;
+        return this;
+    }
+
+    public ExecutionContextBuilder setBuildJumpTable(boolean buildJumpTable)
+    {
+        this.buildJumpTable = buildJumpTable;
         return this;
     }
 
@@ -211,7 +222,7 @@ public class ExecutionContextBuilder
         program.add(executable);
         Instructions instructions = executable.getInstructions();
         // si c'est une instruction de type boucle
-        if (instructions.getLoopType() != null)
+        if (instructions.getLoopType() != null && buildJumpTable)
             addLoop(executable);
         length += 1;
     }

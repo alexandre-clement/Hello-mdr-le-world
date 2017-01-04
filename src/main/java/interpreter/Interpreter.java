@@ -149,7 +149,7 @@ public class Interpreter
      *
      * @return true if the commandline have standard output option, false otherwise
      */
-    private boolean hasStandardOutputOption()
+    public boolean hasStandardOutputOption()
     {
         return hasStandardOutputOption;
     }

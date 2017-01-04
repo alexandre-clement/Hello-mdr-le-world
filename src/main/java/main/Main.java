@@ -58,6 +58,7 @@ public class Main
                     .setIn(language.getIn())
                     .setOut(language.getOut())
                     .setExecutables(Core.getExecutables())
+                    .setBuildJumpTable(!interpreter.hasStandardOutputOption())
                     .buildFromFile(language.getFile());
             core.run(interpreter.getOptions(), interpreter.getProbes(), context);
         }

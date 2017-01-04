@@ -34,7 +34,7 @@ public enum Instructions
     }
 
     /**
-     * Enumeration definissant les type de boucles.
+     * Enumeration definissant les types de boucles.
      */
     public enum LoopType
     {
