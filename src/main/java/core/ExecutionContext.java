@@ -324,6 +324,16 @@ public class ExecutionContext
     }
 
     /**
+     * Renvoie la capacite memoire
+     *
+     * @return le nombre de cellule memoire
+     */
+    int getCapacity()
+    {
+        return memory.length;
+    }
+
+    /**
      * Ferme les flux d'entree et de sortie.
      *
      * @throws ExitException si le flux d'entree ne peut pas etre fermer

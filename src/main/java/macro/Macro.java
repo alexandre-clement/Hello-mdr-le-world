@@ -3,10 +3,7 @@ package macro;
 import com.udojava.evalex.Expression;
 import core.Instructions;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -86,7 +83,7 @@ public class Macro
      */
     Macro(String name, String parameters, String sequence)
     {
-        this.pattern = Pattern.compile("(?m)^[ \\t]*" + name + MATCH_ALL);
+        this.pattern = Pattern.compile("(?m)^[ \\t]*" + name + "(?:\\s|$)" + MATCH_ALL);
         this.name = name;
         this.parameters = findParameters(parameters);
         this.sequence = buildSequences(sequence);
@@ -112,7 +109,7 @@ public class Macro
      */
     private String[] findParameters(String parameters)
     {
-        Pattern p = Pattern.compile("(\\w+)");
+        Pattern p = Pattern.compile("([^\\s]+)");
         Matcher m = p.matcher(parameters);
         List<String> params = new ArrayList<>();
         while (m.find())
@@ -130,13 +127,17 @@ public class Macro
      */
     String match(String string)
     {
-        Matcher matcher = pattern.matcher(string);
         String temp = string;
+        Matcher matcher = pattern.matcher(temp);
+
         while (matcher.find())
         {
             String[] values = findParameters(matcher.group(1));
-            if (values.length == parameters.length)
-                temp = matcher.replaceAll(sequence.match(values));
+            values = Arrays.stream(values).map(value -> new Expression(value).eval().toBigInteger().toString()).toArray(String[]::new);
+            if (values.length != parameters.length)
+                break;
+            temp = temp.replace(matcher.group(), sequence.match(values));
+            matcher = pattern.matcher(temp);
         }
         return temp;
     }
@@ -175,7 +176,7 @@ public class Macro
                 matcher = body.matcher(line);
             }
             int start = matcher.group(1).length();
-            apply = indentedPattern(indentation, "(?i)APPLY[ \t]+([^\\s]+)[ \t]+ON[ \t]*(?:" + Instructions.COMMENT + ".*)?$");
+            apply = indentedPattern(indentation, "(?i)APPLY[ \t]+(.+?)[ \t]+ON[ \t]*(?:" + Instructions.COMMENT + ".*)?$");
             matcher = apply.matcher(line);
 
             if (matcher.matches())
@@ -232,7 +233,12 @@ public class Macro
         @Override
         public String match(String[] values)
         {
-            return sequence;
+            String temp = sequence;
+            for (int i = 0; i < parameters.length; i++)
+            {
+                temp = temp.replaceAll("(?<![\\w])(" + parameters[i] + ")(?![\\w])", values[i]);
+            }
+            return temp;
         }
 
         @Override
