@@ -7,7 +7,7 @@ package language;
  * @author Alexandre Clement
  * @since 17/11/2016.
  */
-public enum FileType
+enum FileType
 {
     /**
      * Fichier texte standard .bf

@@ -11,7 +11,7 @@ import core.ExecutionContext;
  * @see Trace
  * @since 08/12/2016.
  */
-public interface Meter
+interface Meter
 {
     /**
      * Initialise la metrique.

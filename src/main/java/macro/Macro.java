@@ -6,7 +6,6 @@ import core.Instructions;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Definition des macros.
@@ -51,7 +50,7 @@ import java.util.stream.Collectors;
  * @author Alexandre Clement
  * @since 24/12/2016.
  */
-public class Macro
+class Macro
 {
     /**
      * Capture tous les caractere jusqu'a la fin de la chaine.
@@ -136,7 +135,7 @@ public class Macro
             values = Arrays.stream(values).map(value -> new Expression(value).eval().toBigInteger().toString()).toArray(String[]::new);
             if (values.length != parameters.length)
                 break;
-            temp = temp.replace(matcher.group(), sequence.match(values));
+            temp = temp.replace(matcher.group(), sequence.match(parameters, values));
             matcher = pattern.matcher(temp);
         }
         return temp;
@@ -194,127 +193,4 @@ public class Macro
         return sequences.pop();
     }
 
-    /**
-     * Interface definissant les sequences composant le corps d'une macro.
-     *
-     * @see StringSequence
-     * @see Sequence
-     */
-    @FunctionalInterface
-    private interface Matchable
-    {
-        /**
-         * Renvoie la valeurs de la sequence en fonction des valeurs des parametres donnees a la macro.
-         *
-         * @param values les valeurs des parametres de la macro
-         * @return la valeur de la sequence
-         */
-        String match(String[] values);
-    }
-
-    /**
-     * Une sequence ne contenant qu'une chaine de caractere.
-     */
-    private class StringSequence implements Matchable
-    {
-        private String sequence;
-
-        private StringSequence(String sequence)
-        {
-            this.sequence = sequence;
-        }
-
-        /**
-         * Renvoie la sequence associer a l'instance.
-         *
-         * @param values les valeurs des parametres de la macro
-         * @return la chaine de caractere
-         */
-        @Override
-        public String match(String[] values)
-        {
-            String temp = sequence;
-            for (int i = 0; i < parameters.length; i++)
-            {
-                temp = temp.replaceAll("(?<![\\w])(" + parameters[i] + ")(?![\\w])", values[i]);
-            }
-            return temp;
-        }
-
-        @Override
-        public String toString()
-        {
-            return sequence;
-        }
-    }
-
-    /**
-     * Une sequence contenant d'autres sequence.
-     * <p>
-     * Represente un APPLY ON
-     * On peut ajouter des sequences a une sequence
-     * au même titre que l'on peut inserer plusieurs operateur APPLY ON dans un APPLY ON
-     */
-    private class Sequence implements Matchable
-    {
-        private String parameter;
-        private List<Matchable> sequences;
-
-        private Sequence()
-        {
-            sequences = new ArrayList<>();
-        }
-
-        /**
-         * Creer une sequence a parametre iterant son contenue en fonction des valeurs de ces parametres.
-         *
-         * @param parameter les parametres de la sequence
-         */
-        private Sequence(String parameter)
-        {
-            this();
-            this.parameter = parameter;
-        }
-
-        /**
-         * Ajoute une sequence.
-         *
-         * @param matchable la sequence a ajoutee
-         */
-        private void add(Matchable matchable)
-        {
-            sequences.add(matchable);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String match(String[] values)
-        {
-            String seq = sequences.stream().map(matchable -> matchable.match(values)).collect(Collectors.joining("\n"));
-            if (parameter == null)
-                return seq;
-            Expression expression = new Expression(parameter);
-            for (int i = 0; i < parameters.length; i++)
-            {
-                expression.with(parameters[i], values[i]);
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (int i = 0; i < expression.eval().intValue(); i++)
-            {
-                stringBuilder.append(seq).append("\n");
-            }
-            if (stringBuilder.length() > 0)
-                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-            return stringBuilder.toString();
-        }
-
-        @Override
-        public String toString()
-        {
-            return sequences == null ? null : "[" + sequences.stream().map(Object::toString).collect(Collectors.joining("\t")) + "]";
-        }
-    }
 }

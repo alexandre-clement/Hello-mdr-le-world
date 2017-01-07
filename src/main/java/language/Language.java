@@ -46,7 +46,7 @@ public class Language
     public Language(Interpreter interpreter) throws ExitException
     {
         String pArgument = interpreter.getOptionValue(Flag.PRINT);
-        int separator = pArgument.indexOf('.');
+        int separator = pArgument.lastIndexOf('.');
         filename = getFilename(pArgument, separator);
         FileType type = getType(pArgument, separator);
         file = getFile(pArgument, type);
