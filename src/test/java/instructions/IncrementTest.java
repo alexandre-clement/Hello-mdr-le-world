@@ -1,4 +1,3 @@
-
 package instructions;
 
 import core.ExecutionContext;
@@ -9,8 +8,9 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Test for Increment Instruction
- *
+ * <p>
  * Created on 07/12/2016.
+ *
  * @author TANG Yi
  */
 public class IncrementTest

@@ -3,6 +3,7 @@ package probe;
 import core.ExecutionContext;
 import core.ExecutionContextBuilder;
 import instructions.Increment;
+import main.MainTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class TraceTest
     @Before
     public void setUp() throws Exception
     {
-        trace = new Trace("test");
+        trace = new Trace(MainTest.PATH);
         context = new ExecutionContextBuilder().build();
     }
 
@@ -36,7 +37,7 @@ public class TraceTest
         context.nextInstruction();
         trace.acknowledge(context);
         trace.getResult();
-        Scanner scanner = new Scanner(new File("test.log"));
+        Scanner scanner = new Scanner(new File(MainTest.PATH + ".log"));
         assertEquals("Execution step        Execution pointer        Data pointer             Memory snapshot", scanner.nextLine());
         assertEquals("", scanner.nextLine());
         assertEquals("1                     0                        0                        ", scanner.nextLine());

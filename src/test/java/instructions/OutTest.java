@@ -15,7 +15,8 @@ import static org.junit.Assert.assertEquals;
 public class OutTest
 {
     @Test
-    public void execute() throws Exception {
+    public void execute() throws Exception
+    {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ExecutionContext context = new ExecutionContext(0, 0, new byte[]{65, 98, 33}, new Executable[]{new Out()}, null, null, new PrintStream(out));
         context.execute();

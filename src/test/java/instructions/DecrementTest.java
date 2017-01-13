@@ -8,16 +8,20 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created on 07/12/2016.
+ *
  * @author TANG Yi
  */
-public class DecrementTest {
+public class DecrementTest
+{
 
     /**
      * Decrement 255 fois une cellule memoire
+     *
      * @throws Exception OverflowException lorsque la cellule depasse la valeur max i.e 255
      */
     @Test(expected = OverflowException.class)
-    public void emptyFailTest() throws Exception {
+    public void emptyFailTest() throws Exception
+    {
         ExecutionContext full = new ExecutionContext(0, 0, new byte[]{ExecutionContext.MAX});
         Decrement decrement = new Decrement();
         for (int i = 254; i >= 0; i--)

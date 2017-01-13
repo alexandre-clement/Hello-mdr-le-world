@@ -25,13 +25,13 @@ public class Main
      */
     public static final double VERSION = 1.0;
     /**
-     * Le logger d'exception.
-     */
-    private static final Logger LOGGER = Logger.getLogger("Brainfuck - " + Calendar.getInstance().getTime().toString());
-    /**
      * La sortie standard.
      */
     public static final PrintStream DEFAULT_OUT = System.out;
+    /**
+     * Le logger d'exception.
+     */
+    private static final Logger LOGGER = Logger.getLogger("Brainfuck - " + Calendar.getInstance().getTime().toString());
 
     /**
      * No default constructor.

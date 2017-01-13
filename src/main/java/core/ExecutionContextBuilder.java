@@ -21,6 +21,13 @@ import java.util.regex.Pattern;
 public class ExecutionContextBuilder
 {
     /**
+     * Permet de construire la jump table.
+     * <p>
+     * une liste de stack (une stack par type de boucle)
+     * permet de joindre chaque instruction ouvrant une boucle a l'instruction qui la ferme
+     */
+    private final List<Deque<Integer>> loops;
+    /**
      * La table utilisee par les boucles.
      */
     private Map<Integer, Integer> jumpTable;
@@ -32,14 +39,6 @@ public class ExecutionContextBuilder
      * Le tableau des instructions disponibles.
      */
     private Executable[] executables;
-
-    /**
-     * Permet de construire la jump table.
-     * <p>
-     * une liste de stack (une stack par type de boucle)
-     * permet de joindre chaque instruction ouvrant une boucle a l'instruction qui la ferme
-     */
-    private final List<Deque<Integer>> loops;
     /**
      * le paterne contenant toutes les instructions ainsi que les caracteres de commentaire.
      */

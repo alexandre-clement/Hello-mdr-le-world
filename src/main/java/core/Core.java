@@ -164,7 +164,7 @@ public class Core
     private void rewrite(ExecutionContext executionContext)
     {
         for (; executionContext.hasNextInstruction(); executionContext.nextInstruction())
-           out.print(executionContext.getCurrentInstruction().getShortcut());
+            out.print(executionContext.getCurrentInstruction().getShortcut());
         out.print('\n');
     }
 
