@@ -1,12 +1,8 @@
 package probe;
 
 import core.ExecutionContext;
-import exception.ExitException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 /**
  * Create the trace of the file in a p.log file.
@@ -24,19 +20,12 @@ public class Trace implements Meter
      * Creer la trace de l'execution.
      *
      * @param filename le nom du fichier
-     * @throws ExitException si le log rencontre une erreur
+     * @throws IOException si le log rencontre une erreur
      */
-    public Trace(String filename) throws ExitException
+    public Trace(String filename) throws IOException
     {
         step = 0;
-        try
-        {
-            writer = new PrintWriter(new BufferedWriter(new FileWriter(filename + ".log")));
-        }
-        catch (IOException e)
-        {
-            throw new ExitException(127, this.getClass().getSimpleName(), "#Trace", e);
-        }
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(filename + ".log"))));
     }
 
     /**

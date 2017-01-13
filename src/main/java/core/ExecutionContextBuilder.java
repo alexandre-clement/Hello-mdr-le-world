@@ -117,6 +117,7 @@ public class ExecutionContextBuilder
     public ExecutionContextBuilder setProgram(Deque<Executable> program)
     {
         this.program = program;
+        length = program.size();
         return this;
     }
 

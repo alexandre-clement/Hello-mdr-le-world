@@ -113,7 +113,7 @@ public class Core
                     createdProbe.addMeter(new Metrics(programLength));
                     break;
                 case TRACE:
-                    createdProbe.addMeter(new Trace(filename));
+                    addTrace(createdProbe);
                     break;
                 case TIME:
                     createdProbe.addMeter(new Time());
@@ -123,6 +123,18 @@ public class Core
             }
         }
         return createdProbe;
+    }
+
+    private void addTrace(Probe createdProbe) throws ExitException
+    {
+        try
+        {
+            createdProbe.addMeter(new Trace(filename));
+        }
+        catch (IOException e)
+        {
+            throw new ExitException(127, this.getClass().getSimpleName(), "#Trace", e);
+        }
     }
 
     /**
